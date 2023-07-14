@@ -17,10 +17,13 @@ export const Button = <T extends ElementType = 'button'>(
     fullWidth,
     className = '',
     as: Component = 'button',
-    ...rest
+    ...otherProps
   } = props
 
   return (
-    <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...rest} />
+    <Component
+      className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`}
+      {...otherProps}
+    />
   )
 }

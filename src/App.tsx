@@ -1,14 +1,11 @@
-import { Link } from 'react-router-dom'
+import { FontStyle, Typography } from './components/ui/Typography'
 
-import { Button } from './components/ui/Button/Button'
-
-export function App() {
+export const App = () => {
   return (
-    <div>
-      <h1>Title</h1>
-      <Button as={Link} to={'/'}>
-        Home
-      </Button>
-    </div>
+    <>
+      <Typography fontStyle={FontStyle.Link1} tag="h1">
+        Title 2
+      </Typography>
+    </>
   )
 }
