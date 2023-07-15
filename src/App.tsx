@@ -1,12 +1,9 @@
-import { Card } from './components/ui/Card'
-import { FontStyle, Typography } from './components/ui/Typography'
+import { Checkbox } from './components/ui/Checkbox'
 
 export const App = () => {
   return (
     <div style={{ margin: '150px 100px' }}>
-      <Card>
-        <Typography fontStyle={FontStyle.H2}>Hello World!</Typography>
-      </Card>
+      <Checkbox text={'Accept terms and conditions'}></Checkbox>
     </div>
   )
 }
