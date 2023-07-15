@@ -1,3 +1,9 @@
+const baseConfig = require('@it-incubator/stylelint-config');
+
 module.exports = {
-    extends: '@it-incubator/stylelint-config',
-}
+    ...baseConfig,
+    rules: {
+        "selector-combinator-space-after": null,
+        ...baseConfig.rules,
+    }
+};

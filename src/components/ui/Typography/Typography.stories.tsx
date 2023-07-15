@@ -39,6 +39,13 @@ export const Large: Story = {
   },
   render: args => <Typography {...args}>This is Large Text</Typography>,
 }
+export const H1: Story = {
+  args: {
+    fontStyle: FontStyle.H1,
+    tag: 'h1',
+  },
+  render: args => <Typography {...args}>This is H1 Text</Typography>,
+}
 
 export const H2: Story = {
   args: {
