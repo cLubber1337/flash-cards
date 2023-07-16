@@ -1,0 +1,145 @@
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  width: 233px;
+}
+
+.title {
+  color: var(--color-dark-100);
+}
+
+.input {
+  all: unset;
+
+  position: relative;
+
+  width: 100%;
+  max-height: 36px;
+  padding: 6px 12px;
+
+  font: var(--font-body-1);
+  color: var(--color-dark-100);
+
+  background-color: transparent;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--color-dark-300);
+
+  &:hover {
+    background: var(--color-dark-700);
+  }
+
+  &:focus {
+    color: var(--color-light-100);
+    background-color: transparent;
+    box-shadow: 0 0 0 1px var(--color-light-100);
+  }
+}
+
+.input.error::placeholder {
+  color: var(--color-danger-300);
+}
+
+.input.disabled::placeholder {
+  color: var(--color-dark-300);
+}
+
+.input.disabled {
+  &:hover {
+    background: transparent;
+  }
+}
+
+.error {
+  color: var(--color-danger-300);
+  box-shadow: 0 0 0 1px var(--color-danger-300);
+}
+
+.errorText {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-m);
+  color: var(--color-danger-300);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.search {
+  padding-right: 10px;
+  padding-left: 41px;
+
+  background-image: url('./assets/search.svg');
+  background-repeat: no-repeat;
+  background-position: 12px 50%;
+
+  &:hover {
+    background-image: url('./assets/search.svg');
+    background-repeat: no-repeat;
+    background-position: 12px 50%;
+  }
+
+  &:focus {
+    background-image: url('./assets/search-active.svg');
+    background-repeat: no-repeat;
+  }
+
+  &:focus:hover {
+    background-image: url('./assets/search-active.svg');
+    background-repeat: no-repeat;
+  }
+}
+
+.search.disabled {
+  background-image: url('./assets/search-disabled.svg');
+
+  &:hover {
+    background-image: url('./assets/search-disabled.svg');
+    background-repeat: no-repeat;
+    background-position: 12px 50%;
+  }
+}
+
+.xMark {
+  cursor: pointer;
+  content: '';
+
+  position: absolute;
+  z-index: var(--z-index-x-mark);
+  top: 10px;
+  right: -41px;
+
+  width: 16px;
+  height: 16px;
+
+  background-image: url('./assets/xMark.svg');
+  background-repeat: no-repeat;
+}
+
+.eye {
+  cursor: pointer;
+  content: '';
+
+  position: absolute;
+  top: 50%;
+  right: -13px;
+  transform: translateY(-140%);
+
+  width: 20px;
+  height: 20px;
+
+  background-image: url('./assets/eye.svg');
+  background-repeat: no-repeat;
+}
+
+.eye.disabled {
+  cursor: auto;
+  background-image: url('./assets/eye-disabled.svg');
+}
+
+.disabled {
+  color: var(--color-dark-300);
+}
+
+.password {
+  position: relative;
+}

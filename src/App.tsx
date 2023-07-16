@@ -1,9 +1,23 @@
-import { Checkbox } from './components/ui/Checkbox'
+import { useState } from 'react'
+
+import { Input } from './components/ui/Input'
 
 export const App = () => {
+  const [value, setValue] = useState('')
+
   return (
     <div style={{ margin: '150px 100px' }}>
-      <Checkbox text={'Accept terms and conditions'}></Checkbox>
+      <Input
+        onChange={setValue}
+        value={value}
+        title="Input"
+        placeholder="Input search"
+        error={''}
+        fullWidth={false}
+        search={false}
+        type="password"
+        disabled={false}
+      />
     </div>
   )
 }

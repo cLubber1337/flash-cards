@@ -25,13 +25,15 @@ interface TypographyProps<T extends HTMLTag | ComponentType<any> = 'p'> extends 
   children?: ReactNode
   fontStyle?: FontStyle
   tag?: T extends keyof IntrinsicElements ? T : ComponentType<any>
+  className?: string
 }
 
 export const Typography = <T extends HTMLTag | ComponentType<any> = 'p'>({
   children,
   fontStyle = FontStyle.Body1,
   tag: Tag = 'p' as T extends keyof IntrinsicElements ? T : ComponentType<any>,
+  className,
   ...rest
 }: TypographyProps<T>) => {
-  return createElement(Tag, { className: s[fontStyle], ...rest }, children)
+  return createElement(Tag, { className: `${s[fontStyle]} ${className}`, ...rest }, children)
 }
