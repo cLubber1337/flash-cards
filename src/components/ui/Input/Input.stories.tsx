@@ -6,10 +6,7 @@ const meta = {
   title: 'Components/Input',
   component: Input,
   tags: ['autodocs'],
-  argTypes: {
-    text: 'Accept terms and conditions.',
-    disabled: false,
-  },
+  argTypes: {},
 }
 
 export default meta
@@ -46,6 +43,7 @@ export const SearchDisabled: Story = {
 
 export const Password: Story = {
   args: {
+    title: 'Password',
     disabled: false,
     type: 'password',
   },
@@ -57,10 +55,18 @@ export const PasswordDisabled: Story = {
     type: 'password',
   },
 }
+export const PasswordError: Story = {
+  args: {
+    title: 'Password',
+    disabled: false,
+    type: 'password',
+    error: 'Invalid password',
+  },
+}
 
 export const DefaultError: Story = {
   args: {
-    title: 'Input',
+    title: 'Login',
     disabled: false,
     value: 'em@il.@.wrong.com',
     error: 'Invalid email',

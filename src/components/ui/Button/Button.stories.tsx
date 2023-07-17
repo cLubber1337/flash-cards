@@ -1,5 +1,7 @@
 import type { StoryObj } from '@storybook/react'
 
+import { ReactComponent as LogoutIcon } from '../../../assets/svg/logoutIcon.svg'
+
 import { Button } from './Button'
 
 const meta = {
@@ -25,6 +27,14 @@ export const Primary: Story = {
   },
 }
 
+export const PrimaryDisabled: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Primary Button',
+    disabled: true,
+  },
+}
+
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
@@ -32,6 +42,15 @@ export const Secondary: Story = {
     disabled: false,
   },
 }
+
+export const SecondaryDisabled: Story = {
+  args: {
+    variant: 'secondary',
+    children: 'Secondary Button',
+    disabled: true,
+  },
+}
+
 export const Tertiary: Story = {
   args: {
     variant: 'tertiary',
@@ -39,11 +58,27 @@ export const Tertiary: Story = {
     disabled: false,
   },
 }
+export const TertiaryDisabled: Story = {
+  args: {
+    variant: 'tertiary',
+    children: 'Tertiary Button',
+    disabled: true,
+  },
+}
+
 export const Link: Story = {
   args: {
     variant: 'link',
     children: 'Tertiary Button',
     disabled: false,
+  },
+}
+
+export const LinkDisabled: Story = {
+  args: {
+    variant: 'link',
+    children: 'Tertiary Button',
+    disabled: true,
   },
 }
 
@@ -61,5 +96,18 @@ export const AsLink: Story = {
     children: 'Link that looks like a button',
     as: 'a',
     href: 'https://google.com',
+  },
+}
+
+export const LogoutButton: Story = {
+  args: {
+    variant: 'secondary',
+    disabled: false,
+    children: (
+      <>
+        <LogoutIcon />
+        Logout
+      </>
+    ),
   },
 }
