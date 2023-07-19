@@ -1,4 +1,4 @@
-.inputForm {
+.inputContainer {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -7,6 +7,10 @@
 
 .title {
   color: var(--color-dark-100);
+}
+
+.title.disabled {
+  color: var(--color-dark-300);
 }
 
 .input {
@@ -36,10 +40,6 @@
   }
 }
 
-.input.error::placeholder {
-  color: var(--color-danger-300);
-}
-
 .input.disabled::placeholder {
   color: var(--color-dark-300);
 }
@@ -61,12 +61,8 @@
   color: var(--color-danger-300);
 }
 
-.fullWidth {
-  width: 100%;
-}
-
 .search {
-  padding-right: 10px;
+  padding-right: 26px;
   padding-left: 41px;
 
   background-image: url('./assets/search.svg');
@@ -100,47 +96,34 @@
   }
 }
 
-.xMark {
+.xIcon {
   cursor: pointer;
   content: '';
 
   position: absolute;
-  z-index: 11;
-  top: 10px;
-  right: -41px;
+  z-index: var(--z-index-x-icon);
+  top: 11px;
+  right: -60px;
 
   width: 16px;
   height: 16px;
-
-  background-image: url('./assets/xMark.svg');
-  background-repeat: no-repeat;
 }
 
 .eye {
   cursor: pointer;
   content: '';
+  user-select: none;
 
   position: absolute;
   top: 50%;
-  right: -13px;
-  transform: translateY(-140%);
-
-  width: 20px;
-  height: 20px;
-
-  background-image: url('./assets/eye.svg');
-  background-repeat: no-repeat;
-}
-
-.eye.disabled {
-  cursor: auto;
-  background-image: url('./assets/eye-disabled.svg');
+  right: -38px;
+  transform: translateY(-50%);
 }
 
 .disabled {
   color: var(--color-dark-300);
 }
 
-.password {
-  position: relative;
+.fullWidth {
+  width: 100%;
 }

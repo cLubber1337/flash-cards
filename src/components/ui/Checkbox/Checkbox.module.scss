@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.label {
+  user-select: none;
+}
+
 .checkboxRoot {
   position: relative;
 

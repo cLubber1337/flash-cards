@@ -31,7 +31,7 @@ export const Checkbox = ({ text, disabled, ...rest }: CheckboxProps) => {
             )}
           </checkbox.Indicator>
         </checkbox.Root>
-        <label htmlFor="c1">
+        <label htmlFor="c1" className={s.label}>
           <Typography tag="span" fontStyle={FontStyle.Body2} className={disabled ? s.disabled : ''}>
             {text}
           </Typography>

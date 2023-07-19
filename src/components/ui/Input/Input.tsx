@@ -1,8 +1,12 @@
-import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, useRef } from 'react'
+import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, useRef, useState } from 'react'
 
-import { FontStyle, Typography } from '../Typography'
-
+import { ReactComponent as EyeDisabledIcon } from './assets/eye-disabled.svg'
+import { ReactComponent as EyeHidePassIcon } from './assets/eye-off.svg'
+import { ReactComponent as EyeIcon } from './assets/eye.svg'
+import { ReactComponent as XIcon } from './assets/xMark.svg'
 import s from './Input.module.scss'
+
+import { FontStyle, Typography } from '@/components/ui/Typography'
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
 
@@ -31,71 +35,78 @@ export const Input = ({
   search,
   ...rest
 }: InputProps) => {
+  const [inputType, setInputType] = useState(type)
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value)
   }
+  const inputRef = useRef<HTMLInputElement>(null)
   const handlerClearInput = () => {
     onChange?.('')
     if (inputRef.current !== null) {
       inputRef.current.focus()
     }
   }
-  const inputRef = useRef<HTMLInputElement>(null)
+  const handlerShowPassword = () => {
+    setInputType(prevType => (prevType === 'password' ? 'text' : 'password'))
+  }
 
   return (
-    <form className={fullWidth ? `${s.inputForm} ${s.fullWidth}` : s.inputForm}>
+    <div>
       {!!title && !search && (
         <Typography
           tag="span"
           fontStyle={FontStyle.Body2}
-          className={disabled ? s.disabled : s.title}
+          className={disabled ? `${s.title} ${s.disabled}` : s.title}
         >
           {title}
         </Typography>
       )}
-      {!!value && search && <div className={s.xMark} onClick={handlerClearInput} />}
+      <div className={fullWidth ? `${s.inputContainer} ${s.fullWidth}` : s.inputContainer}>
+        {!!value && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
 
-      {search ? (
-        <input
-          ref={inputRef}
-          className={
-            // eslint-disable-next-line no-nested-ternary
-            error
-              ? `${s.input} ${s.search} ${s.error}`
-              : disabled
-              ? `${s.input} ${s.search} ${s.disabled}`
-              : `${s.input} ${s.search}`
-          }
-          value={value}
-          onChange={onChangeHandler}
-          placeholder={placeholder}
-          type={type}
-          disabled={disabled}
-          {...rest}
-        />
-      ) : (
-        <input
-          className={
-            // eslint-disable-next-line no-nested-ternary
-            error ? `${s.input} ${s.error}` : disabled ? `${s.input} ${s.disabled}` : s.input
-          }
-          value={value}
-          onChange={onChangeHandler}
-          placeholder={placeholder}
-          type={type}
-          disabled={disabled}
-          {...rest}
-        />
-      )}
-      <div className={s.password}>
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {type === 'password' && disabled ? (
-          <div className={`${s.eye} ${s.disabled}`} />
-        ) : type === 'password' ? (
-          <div className={s.eye} />
-        ) : null}
+        {search ? (
+          <input
+            ref={inputRef}
+            className={
+              error
+                ? `${s.input} ${s.search} ${s.error}`
+                : disabled
+                ? `${s.input} ${s.search} ${s.disabled}`
+                : `${s.input} ${s.search}`
+            }
+            value={value}
+            onChange={onChangeHandler}
+            placeholder={placeholder}
+            type={type}
+            disabled={disabled}
+            {...rest}
+          />
+        ) : (
+          <input
+            style={type === 'password' ? { paddingRight: '36px' } : undefined}
+            className={
+              error ? `${s.input} ${s.error}` : disabled ? `${s.input} ${s.disabled}` : s.input
+            }
+            value={value}
+            onChange={onChangeHandler}
+            placeholder={placeholder}
+            type={inputType}
+            disabled={disabled}
+            {...rest}
+          />
+        )}
+
+        {type === 'password' && !disabled && (
+          <EyeIcon onClick={handlerShowPassword} className={s.eye} />
+        )}
+        {type === 'password' && !disabled && inputType === 'text' && (
+          <EyeHidePassIcon onClick={handlerShowPassword} className={s.eye} />
+        )}
+        {type === 'password' && disabled && (
+          <EyeDisabledIcon onClick={handlerShowPassword} className={s.eye} />
+        )}
       </div>
       {!!error && <span className={s.errorText}>{error}</span>}
-    </form>
+    </div>
   )
 }

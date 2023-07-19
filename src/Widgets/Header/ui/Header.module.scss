@@ -11,21 +11,24 @@
 }
 
 .actions {
+  position: relative;
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
 .name {
-  position: relative;
+  cursor: pointer;
 
   &::after {
     content: '';
 
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: 6px;
     left: 0;
+
+    width: calc(100% - 48px);
 
     border-bottom: 1px dashed var(--color-light-100);
   }

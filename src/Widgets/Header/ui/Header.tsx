@@ -1,19 +1,18 @@
-import { ReactComponent as Logo } from '../../../assets/svg/Logo.svg'
-import { Avatar } from '../../../components/ui'
-import { Button } from '../../../components/ui/Button'
-import { FontStyle, Typography } from '../../../components/ui/Typography'
-
 import s from './Header.module.scss'
 
+import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
+import { Avatar } from '@/components/ui'
+import { Button } from '@/components/ui/Button'
+import { FontStyle, Typography } from '@/components/ui/Typography'
+
 interface HeaderProps {
-  isAuth: boolean
+  isAuth?: boolean
 }
 
 export const Header = ({ isAuth }: HeaderProps) => {
   return (
     <header className={s.header}>
       <Logo />
-
       {isAuth ? (
         <div className={s.actions}>
           <Typography fontStyle={FontStyle.Subtitle1} className={s.name}>

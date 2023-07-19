@@ -29,7 +29,6 @@ export const Search: Story = {
   args: {
     disabled: false,
     search: true,
-    value: 'Search',
   },
 }
 
