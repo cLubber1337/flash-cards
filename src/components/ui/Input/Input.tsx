@@ -52,7 +52,7 @@ export const Input = ({
 
   return (
     <div>
-      {!!title && !search && (
+      {!!title && (
         <Typography
           tag="span"
           fontStyle={FontStyle.Body2}

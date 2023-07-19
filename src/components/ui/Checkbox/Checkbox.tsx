@@ -4,8 +4,8 @@ import * as checkbox from '@radix-ui/react-checkbox'
 
 import { FontStyle, Typography } from '../Typography'
 
-import CheckDisabledIcon from './assets/checkDisabledIcon.svg'
-import CheckIcon from './assets/checkIcon.svg'
+import { ReactComponent as CheckDisabledIcon } from './assets/checkDisabledIcon.svg'
+import { ReactComponent as CheckIcon } from './assets/checkIcon.svg'
 import s from './Checkbox.module.scss'
 
 interface CheckboxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -24,11 +24,7 @@ export const Checkbox = ({ text, disabled, ...rest }: CheckboxProps) => {
           id="c1"
         >
           <checkbox.Indicator className={s.checkboxIndicator}>
-            {!disabled ? (
-              <img src={CheckIcon} alt={'checkIcon'} />
-            ) : (
-              <img src={CheckDisabledIcon} alt={'checkIcon'} />
-            )}
+            {!disabled ? <CheckIcon /> : <CheckDisabledIcon />}
           </checkbox.Indicator>
         </checkbox.Root>
         <label htmlFor="c1" className={s.label}>

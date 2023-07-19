@@ -1,8 +1,7 @@
 .inputContainer {
   position: relative;
   display: flex;
-  flex-direction: column;
-  width: 233px;
+  width: 284px;
 }
 
 .title {
@@ -62,7 +61,7 @@
 }
 
 .search {
-  padding-right: 26px;
+  padding-right: 30px;
   padding-left: 41px;
 
   background-image: url('./assets/search.svg');
@@ -103,7 +102,7 @@
   position: absolute;
   z-index: var(--z-index-x-icon);
   top: 11px;
-  right: -60px;
+  right: 10px;
 
   width: 16px;
   height: 16px;
@@ -116,7 +115,7 @@
 
   position: absolute;
   top: 50%;
-  right: -38px;
+  right: 12px;
   transform: translateY(-50%);
 }
 
