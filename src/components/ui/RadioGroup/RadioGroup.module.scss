@@ -12,7 +12,7 @@
   margin: 4px 12px 4px 4px;
 
   background-color: transparent;
-  border: 1.8px solid var(--color-accent-500);
+  border: 2px solid var(--color-accent-500);
   border-radius: 100%;
 
   &:hover {
@@ -21,8 +21,8 @@
 
       position: absolute;
       z-index: var(--z-index-checkbox);
-      top: -11px;
-      left: -11px;
+      top: -12px;
+      left: -12px;
 
       width: 36px;
       height: 36px;
@@ -41,8 +41,8 @@
 
       position: absolute;
       z-index: var(--z-index-checkbox);
-      top: -11px;
-      left: -11px;
+      top: -12px;
+      left: -12px;
 
       width: 36px;
       height: 36px;
@@ -60,8 +60,8 @@
 
       position: absolute;
       z-index: var(--z-index-checkbox);
-      top: -11px;
-      left: -11px;
+      top: -12px;
+      left: -12px;
 
       width: 36px;
       height: 36px;

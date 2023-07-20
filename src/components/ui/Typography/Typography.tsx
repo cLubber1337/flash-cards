@@ -6,7 +6,7 @@ import IntrinsicElements = React.JSX.IntrinsicElements
 
 type HTMLTag = keyof IntrinsicElements
 
-export enum FontStyle {
+export enum TypographyVariant {
   Body1 = 'body-1',
   Body2 = 'body-2',
   Subtitle1 = 'subtitle-1',
@@ -23,17 +23,17 @@ export enum FontStyle {
 
 interface TypographyProps<T extends HTMLTag | ComponentType<any> = 'p'> extends HTMLAttributes<T> {
   children?: ReactNode
-  fontStyle?: FontStyle
+  variant?: TypographyVariant
   tag?: T extends keyof IntrinsicElements ? T : ComponentType<any>
   className?: string
 }
 
 export const Typography = <T extends HTMLTag | ComponentType<any> = 'p'>({
   children,
-  fontStyle = FontStyle.Body1,
+  variant = TypographyVariant.Body1,
   tag: Tag = 'p' as T extends keyof IntrinsicElements ? T : ComponentType<any>,
   className,
   ...rest
 }: TypographyProps<T>) => {
-  return createElement(Tag, { className: `${s[fontStyle]} ${className}`, ...rest }, children)
+  return createElement(Tag, { className: `${s[variant]} ${className}`, ...rest }, children)
 }

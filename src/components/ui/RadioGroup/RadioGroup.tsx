@@ -4,7 +4,7 @@ import { ReactComponent as RadioCheckedDisabledIcon } from './assets/radio-check
 import { ReactComponent as RadioCheckedIcon } from './assets/radio-checked.svg'
 import s from './RadioGroup.module.scss'
 
-import { FontStyle, Typography } from '@/components/ui/Typography'
+import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 interface RadioGroupProps {
   disabled?: boolean
@@ -35,7 +35,7 @@ export const RadioGroup = ({ disabled }: RadioGroupProps) => {
               </radioGroup.Indicator>
             </radioGroup.Item>
             <label className={disabled ? s.labelDisabled : ''} htmlFor={item}>
-              <Typography tag="span" fontStyle={FontStyle.Body2}>
+              <Typography tag="span" variant={TypographyVariant.Body2}>
                 {item}
               </Typography>
             </label>

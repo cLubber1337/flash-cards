@@ -1,9 +1,9 @@
 import s from './Header.module.scss'
 
 import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
-import { Avatar } from '@/components/ui'
+import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
-import { FontStyle, Typography } from '@/components/ui/Typography'
+import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 interface HeaderProps {
   isAuth?: boolean
@@ -15,14 +15,14 @@ export const Header = ({ isAuth }: HeaderProps) => {
       <Logo />
       {isAuth ? (
         <div className={s.actions}>
-          <Typography fontStyle={FontStyle.Subtitle1} className={s.name}>
+          <Typography variant={TypographyVariant.Subtitle1} className={s.name}>
             Ivan
           </Typography>
           <Avatar alt="avatar" avatarFallback={'I'} />
         </div>
       ) : (
         <Button>
-          <Typography tag="span" fontStyle={FontStyle.Subtitle2}>
+          <Typography tag="span" variant={TypographyVariant.Subtitle2}>
             Sign In
           </Typography>
         </Button>

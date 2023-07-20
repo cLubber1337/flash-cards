@@ -6,7 +6,7 @@ import { ReactComponent as EyeIcon } from './assets/eye.svg'
 import { ReactComponent as XIcon } from './assets/xMark.svg'
 import s from './Input.module.scss'
 
-import { FontStyle, Typography } from '@/components/ui/Typography'
+import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
 
@@ -55,7 +55,7 @@ export const Input = ({
       {!!title && (
         <Typography
           tag="span"
-          fontStyle={FontStyle.Body2}
+          variant={TypographyVariant.Body2}
           className={disabled ? `${s.title} ${s.disabled}` : s.title}
         >
           {title}
