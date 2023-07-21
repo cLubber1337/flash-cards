@@ -35,9 +35,7 @@ export const RadioGroup = ({ disabled }: RadioGroupProps) => {
               </radioGroup.Indicator>
             </radioGroup.Item>
             <label className={disabled ? s.labelDisabled : ''} htmlFor={item}>
-              <Typography tag="span" variant={TypographyVariant.Body2}>
-                {item}
-              </Typography>
+              <Typography variant={TypographyVariant.Body2}>{item}</Typography>
             </label>
           </div>
         ))}

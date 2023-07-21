@@ -1,4 +1,4 @@
-import { Slider } from '@/components/ui/Slider'
+import { TabSwitcher } from '@/components/ui/TabSwitcher'
 import { Header } from '@/Widgets/Header'
 
 export const App = () => {
@@ -7,7 +7,7 @@ export const App = () => {
       <Header isAuth={false} />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', margin: '50px' }}>
-        <Slider defaultValue={[0, 100]} max={100} />
+        <TabSwitcher tabs={['Account', 'Password', 'Register', 'Information']} disabled={true} />
       </div>
     </div>
   )
