@@ -5,8 +5,13 @@ import s from './Card.module.scss'
 interface CardProps {
   children?: ReactNode
   className?: string
+  style?: React.CSSProperties
 }
 
-export const Card = ({ children, className = '' }: CardProps) => {
-  return <div className={`${s.card} ${className}`}>{children}</div>
+export const Card = ({ children, className = '', style }: CardProps) => {
+  return (
+    <div style={style} className={`${s.card} ${className}`}>
+      {children}
+    </div>
+  )
 }

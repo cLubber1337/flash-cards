@@ -1,8 +1,11 @@
 .checkbox {
   user-select: none;
+
   display: flex;
   gap: 8px;
   align-items: center;
+
+  margin: 6px;
 }
 
 .checkboxRoot {
@@ -92,6 +95,10 @@
 }
 
 .checkboxIndicator {
+  height: 24px;
+}
+
+.label {
   height: 24px;
 }
 

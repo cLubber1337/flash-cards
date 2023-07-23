@@ -1,7 +1,5 @@
-import { useState } from 'react'
-
-import { CardFooter } from '@/components/ui'
-import { Modal } from '@/components/ui/Modal/Modal.tsx'
+import { Card, Checkbox, RadioGroup } from '@/components/ui'
+import { AddNewPack } from '@/widgets/AddNewPack'
 import { Header } from '@/widgets/Header'
 
 // const items: { id: number; title: string }[] = [
@@ -12,15 +10,16 @@ import { Header } from '@/widgets/Header'
 // ]
 
 export const App = () => {
-  const [isOpen, setIsOpen] = useState(true)
-
   return (
     <div className="container">
       <Header isAuth={true} />
       <div style={{ margin: '100px' }}>
-        <CardFooter onAction={() => null} twoButtons onDismiss={() => null} />
+        <Checkbox text={'asdasdadas'} id={'c3'} />
+        <AddNewPack />
+        <Card style={{ padding: '20px' }}>
+          <Checkbox text={'1111'} id={'c2'} />
+        </Card>
       </div>
-      <Modal lazy isOpen={false} onClose={setIsOpen}></Modal>
     </div>
   )
 }
