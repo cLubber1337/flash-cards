@@ -1,4 +1,5 @@
 import type { StoryObj } from '@storybook/react'
+import { Meta } from '@storybook/react'
 
 import { TypographyVariant, Typography } from './Typography.tsx'
 
@@ -6,11 +7,10 @@ const meta = {
   title: 'Components/Typography',
   component: Typography,
   tags: ['autodocs'],
-  argTypes: {
-    fontStyle: TypographyVariant,
+  args: {
     tag: 'p',
   },
-}
+} satisfies Meta<typeof Typography>
 
 export default meta
 
@@ -19,7 +19,6 @@ type Story = StoryObj<typeof meta>
 export const Body1: Story = {
   args: {
     variant: TypographyVariant.Body1,
-    tag: 'p',
   },
   render: args => <Typography {...args}>This is Body 1 Text</Typography>,
 }

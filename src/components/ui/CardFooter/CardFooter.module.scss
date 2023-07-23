@@ -1,0 +1,19 @@
+.cardFooter {
+  width: 100%;
+  height: auto;
+  padding: 12px 24px 36px;
+
+  border-top: none;
+  box-shadow: drop-shadow(1px 0 2px rgb(0 0 0 / 10%)) drop-shadow(-1px 0 2px rgb(0 0 0 / 10%))
+    drop-shadow(0 1px 2px rgb(0 0 0 / 10%));
+}
+
+.twoButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.oneButton {
+  display: flex;
+  justify-content: flex-end;
+}
