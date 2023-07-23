@@ -1,4 +1,5 @@
 import type { StoryObj } from '@storybook/react'
+import { Meta } from '@storybook/react'
 
 import { ReactComponent as LogoutIcon } from '../../../assets/svg/logoutIcon.svg'
 
@@ -14,7 +15,7 @@ const meta = {
       control: { type: 'radio' },
     },
   },
-}
+} satisfies Meta<typeof Button>
 
 export default meta
 type Story = StoryObj<typeof meta>

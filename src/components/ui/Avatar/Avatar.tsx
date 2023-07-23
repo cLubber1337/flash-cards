@@ -12,9 +12,7 @@ export const Avatar = ({ src, alt, avatarFallback }: AvatarProps) => {
   return (
     <avatar.Root className={s.avatarRoot}>
       <avatar.Image className={s.avatarImage} src={src} alt={alt} />
-      <avatar.Fallback className={s.avatarFallback} delayMs={600}>
-        {avatarFallback}
-      </avatar.Fallback>
+      <avatar.Fallback className={s.avatarFallback}>{avatarFallback}</avatar.Fallback>
     </avatar.Root>
   )
 }

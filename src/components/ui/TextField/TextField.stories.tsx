@@ -1,20 +1,22 @@
-import type { StoryObj } from '@storybook/react'
+import { useState } from 'react'
 
-import { Input } from './Input.tsx'
+import type { StoryObj } from '@storybook/react'
+import { Meta } from '@storybook/react'
+
+import { TextField } from './TextField.tsx'
 
 const meta = {
-  title: 'Components/Input',
-  component: Input,
+  title: 'Components/TextField',
+  component: TextField,
   tags: ['autodocs'],
   argTypes: {},
-}
+} satisfies Meta<typeof TextField>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    disabled: false,
     title: 'Input',
   },
 }
@@ -25,11 +27,13 @@ export const DefaultDisabled: Story = {
   },
 }
 
-export const Search: Story = {
-  args: {
-    disabled: false,
-    search: true,
-  },
+export const Search = () => {
+  const [value, setValue] = useState('')
+  const handleChange = (newValue: any) => {
+    setValue(newValue)
+  }
+
+  return <TextField value={value} onChange={handleChange} search placeholder="Search..." />
 }
 
 export const SearchDisabled: Story = {
@@ -43,11 +47,9 @@ export const SearchDisabled: Story = {
 export const Password: Story = {
   args: {
     title: 'Password',
-    disabled: false,
     type: 'password',
   },
 }
-
 export const PasswordDisabled: Story = {
   args: {
     disabled: true,
@@ -56,8 +58,8 @@ export const PasswordDisabled: Story = {
 }
 export const PasswordError: Story = {
   args: {
+    value: 'password123',
     title: 'Password',
-    disabled: false,
     type: 'password',
     error: 'Invalid password',
   },

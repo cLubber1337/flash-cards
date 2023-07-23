@@ -1,4 +1,4 @@
-import type { StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Select } from './Select.tsx'
 
@@ -7,33 +7,25 @@ const meta = {
   component: Select,
   tags: ['autodocs'],
   argTypes: {},
-}
+  args: {
+    items: [
+      { id: 1, title: 'Account' },
+      { id: 2, title: 'Password' },
+      { id: 3, title: 'Register' },
+      { id: 4, title: 'Information' },
+    ],
+  },
+} satisfies Meta<typeof Select>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {
-    items: [
-      { id: 1, title: 'Account' },
-      { id: 2, title: 'Password' },
-      { id: 3, title: 'Register' },
-      { id: 4, title: 'Information' },
-    ],
-    fullWidth: false,
-    disabled: false,
-  },
+  args: {},
 }
 
 export const DefaultDisabled: Story = {
   args: {
-    items: [
-      { id: 1, title: 'Account' },
-      { id: 2, title: 'Password' },
-      { id: 3, title: 'Register' },
-      { id: 4, title: 'Information' },
-    ],
-    fullWidth: false,
     disabled: true,
   },
 }

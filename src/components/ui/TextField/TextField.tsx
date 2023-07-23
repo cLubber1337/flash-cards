@@ -1,11 +1,11 @@
 import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, useRef, useState } from 'react'
 
-import { ReactComponent as EyeDisabledIcon } from './assets/eye-disabled.svg'
-import { ReactComponent as EyeHidePassIcon } from './assets/eye-off.svg'
-import { ReactComponent as EyeIcon } from './assets/eye.svg'
-import { ReactComponent as XIcon } from './assets/xMark.svg'
-import s from './Input.module.scss'
+import s from './TextField.module.scss'
 
+import { ReactComponent as EyeDisabledIcon } from '@/components/ui/TextField/assets/eye-disabled.svg'
+import { ReactComponent as EyeHidePassIcon } from '@/components/ui/TextField/assets/eye-off.svg'
+import { ReactComponent as EyeIcon } from '@/components/ui/TextField/assets/eye.svg'
+import { ReactComponent as XIcon } from '@/components/ui/TextField/assets/xMark.svg'
 import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
@@ -14,20 +14,16 @@ interface InputProps extends HTMLInputProps {
   value?: string
   onChange?: (value: string) => void
   type?: HTMLInputTypeAttribute
-  placeholder?: string
-  autoFocus?: boolean
   title?: string
   error?: string
   fullWidth?: boolean
   search?: boolean
   disabled?: boolean
 }
-export const Input = ({
+export const TextField = ({
   value,
   onChange,
   type = 'text',
-  placeholder,
-  autoFocus,
   title,
   error,
   fullWidth,
@@ -42,9 +38,7 @@ export const Input = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const handlerClearInput = () => {
     onChange?.('')
-    if (inputRef.current !== null) {
-      inputRef.current.focus()
-    }
+    inputRef.current!.focus()
   }
   const handlerShowPassword = () => {
     setInputType(prevType => (prevType === 'password' ? 'text' : 'password'))
@@ -76,7 +70,6 @@ export const Input = ({
             }
             value={value}
             onChange={onChangeHandler}
-            placeholder={placeholder}
             type={type}
             disabled={disabled}
             {...rest}
@@ -89,7 +82,6 @@ export const Input = ({
             }
             value={value}
             onChange={onChangeHandler}
-            placeholder={placeholder}
             type={inputType}
             disabled={disabled}
             {...rest}

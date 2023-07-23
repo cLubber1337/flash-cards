@@ -25,8 +25,8 @@
   color: var(--color-dark-100);
 
   background-color: transparent;
+  border: 1px solid var(--color-dark-300);
   border-radius: 2px;
-  box-shadow: 0 0 0 1px var(--color-dark-300);
 
   &:hover {
     background: var(--color-dark-700);
@@ -35,7 +35,7 @@
   &:focus {
     color: var(--color-light-100);
     background-color: transparent;
-    box-shadow: 0 0 0 1px var(--color-light-100);
+    border: 1px solid var(--color-light-100);
   }
 }
 
@@ -51,7 +51,7 @@
 
 .error {
   color: var(--color-danger-300);
-  box-shadow: 0 0 0 1px var(--color-danger-300);
+  border-color: var(--color-danger-300);
 }
 
 .errorText {
@@ -64,32 +64,32 @@
   padding-right: 30px;
   padding-left: 41px;
 
-  background-image: url('./assets/search.svg');
+  background-image: url('../TextField/assets/search.svg');
   background-repeat: no-repeat;
   background-position: 12px 50%;
 
   &:hover {
-    background-image: url('./assets/search.svg');
+    background-image: url('../TextField/assets/search.svg');
     background-repeat: no-repeat;
     background-position: 12px 50%;
   }
 
   &:focus {
-    background-image: url('./assets/search-active.svg');
+    background-image: url('../TextField/assets/search-active.svg');
     background-repeat: no-repeat;
   }
 
   &:focus:hover {
-    background-image: url('./assets/search-active.svg');
+    background-image: url('../TextField/assets/search-active.svg');
     background-repeat: no-repeat;
   }
 }
 
 .search.disabled {
-  background-image: url('./assets/search-disabled.svg');
+  background-image: url('../TextField/assets/search-disabled.svg');
 
   &:hover {
-    background-image: url('./assets/search-disabled.svg');
+    background-image: url('../TextField/assets/search-disabled.svg');
     background-repeat: no-repeat;
     background-position: 12px 50%;
   }

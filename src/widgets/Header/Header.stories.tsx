@@ -3,7 +3,7 @@ import type { StoryObj } from '@storybook/react'
 import { Header } from './Header.tsx'
 
 const meta = {
-  title: 'Components/Header',
+  title: 'Widgets/Header',
   component: Header,
   tags: ['autodocs'],
   argTypes: {},
