@@ -17,7 +17,7 @@ export const App = () => {
         <Checkbox text={'asdasdadas'} id={'c3'} />
         <AddNewPack />
         <Card style={{ padding: '20px' }}>
-          <Checkbox text={'1111'} id={'c2'} />
+          <Checkbox text={'1111'} id={'xui'} defaultChecked />
         </Card>
       </div>
     </div>

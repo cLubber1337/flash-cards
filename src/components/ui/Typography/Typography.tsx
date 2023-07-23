@@ -32,7 +32,7 @@ export const Typography = <T extends HTMLTag | ComponentType<any> = 'p'>({
   children,
   variant = TypographyVariant.Body1,
   tag: Tag = 'p' as T extends keyof IntrinsicElements ? T : ComponentType<any>,
-  className,
+  className = '',
   ...rest
 }: TypographyProps<T>) => {
   return createElement(Tag, { className: `${s[variant]} ${className}`, ...rest }, children)

@@ -22,15 +22,11 @@ export const Checkbox = ({ text, disabled, ...rest }: CheckboxProps) => {
         id={rest.id}
       >
         <checkbox.Indicator className={s.checkboxIndicator}>
-          {!disabled ? <CheckIcon /> : <CheckDisabledIcon />}
+          {disabled ? <CheckDisabledIcon /> : <CheckIcon />}
         </checkbox.Indicator>
       </checkbox.Root>
-      <label htmlFor={rest.id} className={s.label}>
-        <Typography
-          tag="span"
-          variant={TypographyVariant.Body2}
-          className={disabled ? s.disabled : ''}
-        >
+      <label htmlFor={rest.id} className={disabled ? `${s.label} ${s.disabled}` : s.label}>
+        <Typography tag="span" variant={TypographyVariant.Body2}>
           {text}
         </Typography>
       </label>

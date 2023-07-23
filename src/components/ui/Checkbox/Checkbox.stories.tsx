@@ -6,9 +6,8 @@ const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
-  argTypes: {
-    text: 'Accept terms and conditions.',
-    disabled: false,
+  args: {
+    id: 'c3',
   },
 }
 
@@ -21,24 +20,10 @@ export const Default: Story = {
   },
 }
 
-export const DefaultChecked: Story = {
-  args: {
-    disabled: false,
-    defaultChecked: true,
-  },
-}
-
-export const DefaultWithText: Story = {
+export const WithText: Story = {
   args: {
     text: 'Accept terms and conditions',
     disabled: false,
-  },
-}
-export const DefaultCheckedWithText: Story = {
-  args: {
-    text: 'Accept terms and conditions',
-    disabled: false,
-    defaultChecked: true,
   },
 }
 
