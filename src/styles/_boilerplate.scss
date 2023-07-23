@@ -25,6 +25,11 @@ option {
   color: inherit;
 }
 
+svg,
+button {
+  cursor: pointer;
+}
+
 a:visited {
   color: inherit;
 }
