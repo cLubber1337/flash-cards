@@ -14,7 +14,7 @@ export const CardHeader = ({ title, onClick }: CardHeaderProps) => {
       <Typography tag="h2" variant={TypographyVariant.H2}>
         {title}
       </Typography>
-      <CloseIcon onClick={onClick} />
+      <CloseIcon className={s.closeIcon} onClick={onClick} />
     </Card>
   )
 }

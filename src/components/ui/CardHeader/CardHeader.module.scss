@@ -9,3 +9,12 @@
 
   border-bottom: none;
 }
+
+.closeIcon {
+  fill: var(--color-light-100);
+  transition: fill 0.25s ease;
+
+  &:hover {
+    fill: var(--color-accent-700);
+  }
+}

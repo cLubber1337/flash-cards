@@ -8,34 +8,31 @@ import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 interface RadioGroupProps {
   disabled?: boolean
+  items: { id: number; title: string }[]
 }
 
-export const RadioGroup = ({ disabled }: RadioGroupProps) => {
+export const RadioGroup = ({ disabled, items }: RadioGroupProps) => {
   return (
     <form>
       <radioGroup.Root
-        className={s.root}
+        className={s.radioGroup}
         defaultValue="default"
         aria-label="View density"
         disabled={disabled}
       >
-        {['Default', 'Spacious', 'Always', 'Compact'].map(item => (
-          <div style={{ display: 'flex', alignItems: 'center' }} key={item}>
+        {items.map(({ id, title }) => (
+          <div key={id} className={s.item}>
             <radioGroup.Item
-              className={disabled ? `${s.item} ${s.disabled}` : `${s.item}`}
-              value={item}
-              id={item}
+              className={disabled ? `${s.radio} ${s.disabled}` : `${s.radio}`}
+              value={title}
+              id={title}
             >
               <radioGroup.Indicator className={`${s.indicator}`}>
-                {disabled ? (
-                  <RadioCheckedDisabledIcon className={s.indicatorIcon} />
-                ) : (
-                  <RadioCheckedIcon className={s.indicatorIcon} />
-                )}
+                {disabled ? <RadioCheckedDisabledIcon /> : <RadioCheckedIcon />}
               </radioGroup.Indicator>
             </radioGroup.Item>
-            <label className={disabled ? s.labelDisabled : ''} htmlFor={item}>
-              <Typography variant={TypographyVariant.Body2}>{item}</Typography>
+            <label htmlFor={title} className={disabled ? `${s.label} ${s.disabled}` : s.label}>
+              <Typography variant={TypographyVariant.Body2}>{title}</Typography>
             </label>
           </div>
         ))}

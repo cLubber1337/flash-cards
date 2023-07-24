@@ -6,7 +6,12 @@ const meta = {
   title: 'Components/Card',
   component: Card,
   tags: ['autodocs'],
-  argTypes: {},
+  args: {
+    style: {
+      width: '100%',
+      height: '100%',
+    },
+  },
 }
 
 export default meta
