@@ -1,0 +1,12 @@
+.popover {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.button {
+  all: unset;
+  margin-bottom: 12px;
+  padding-right: 6px;
+}
