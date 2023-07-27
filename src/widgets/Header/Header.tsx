@@ -1,12 +1,20 @@
+import { UserMenu } from '../UserMenu'
+
 import s from './Header.module.scss'
 
 import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
+import { Dropdown } from '@/components/ui'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { TypographyVariant, Typography } from '@/components/ui/Typography'
 
 interface HeaderProps {
   isAuth?: boolean
+}
+
+const userData = {
+  name: 'John DoeDoe',
+  email: 'JohnDoe666@ya.com',
 }
 
 export const Header = ({ isAuth }: HeaderProps) => {
@@ -16,9 +24,11 @@ export const Header = ({ isAuth }: HeaderProps) => {
       {isAuth ? (
         <div className={s.actions}>
           <Typography variant={TypographyVariant.Subtitle1} className={s.name}>
-            Ivan
+            {userData.name}
           </Typography>
-          <Avatar alt="avatar" avatarFallback={'I'} />
+          <Dropdown action={<Avatar avatarFallback="JD" />}>
+            <UserMenu userData={userData} />
+          </Dropdown>
         </div>
       ) : (
         <Button>

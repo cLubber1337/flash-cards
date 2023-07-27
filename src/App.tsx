@@ -1,5 +1,5 @@
 import { Header } from '@/widgets/Header'
-import { UserDropdownMenu } from '@/widgets/UserDropdownMenu'
+import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 
 // const items: { id: number; title: string }[] = [
 //   { id: 1, title: 'Picture' },
@@ -13,7 +13,7 @@ export const App = () => {
     <div className="container">
       <Header isAuth={true} />
       <div style={{ margin: '100px' }}>
-        <UserDropdownMenu />
+        <MyPackMenu />
       </div>
     </div>
   )

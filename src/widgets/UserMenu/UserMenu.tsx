@@ -1,4 +1,4 @@
-import s from './UserDropdownMenu.module.scss'
+import s from './UserMenu.module.scss'
 
 import { ReactComponent as BeakTopIcon } from '@/assets/svg/beakTop.svg'
 import { ReactComponent as LogoutIcon } from '@/assets/svg/logoutIcon.svg'
@@ -12,7 +12,7 @@ interface UserDropdownMenuProps {
   }
 }
 
-export const UserDropdownMenu = ({ userData }: UserDropdownMenuProps) => {
+export const UserMenu = ({ userData }: UserDropdownMenuProps) => {
   return (
     <div className={s.userMenu}>
       <BeakTopIcon className={s.beakTopIcon} />

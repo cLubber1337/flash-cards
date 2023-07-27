@@ -1,19 +1,18 @@
 import type { StoryObj } from '@storybook/react'
 import { Meta } from '@storybook/react'
 
-import { UserDropdownMenu } from './UserDropdownMenu.tsx'
+import { MyPackMenu } from './MyPackMenu.tsx'
 
 const meta = {
-  title: 'Widgets/UserDropdownMenu',
-  component: UserDropdownMenu,
-  tags: ['autodocs'],
+  title: 'Widgets/MyPackMenu',
+  component: MyPackMenu,
   args: {
     userData: {
       name: 'John DoeD',
       email: 'jDJohnDoeD@jd.com',
     },
   },
-} satisfies Meta<typeof UserDropdownMenu>
+} satisfies Meta<typeof MyPackMenu>
 
 export default meta
 type Story = StoryObj<typeof meta>

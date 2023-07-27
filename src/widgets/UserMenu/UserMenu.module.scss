@@ -22,8 +22,10 @@
 }
 
 .name {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
 }
 
 .email {
@@ -37,10 +39,13 @@
 }
 
 .btn {
+  display: flex;
   gap: 6px;
-  justify-content: flex-start;
-  padding: 0;
-  color: var(--color-light-100);
+  justify-content: flex-start !important;
+
+  padding: 0 !important;
+
+  color: var(--color-light-100) !important;
 }
 
 .beakTopIcon {
