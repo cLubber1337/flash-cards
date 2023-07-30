@@ -1,19 +1,18 @@
-import { Header } from '@/widgets/Header'
-import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
+import { useState } from 'react'
 
-// const items: { id: number; title: string }[] = [
-//   { id: 1, title: 'Picture' },
-//   { id: 2, title: 'Video' },
-//   { id: 3, title: 'Audio' },
-//   { id: 4, title: 'Document' },
-// ]
+import { TextField } from '@/components/ui'
+import { Header } from '@/widgets/Header'
 
 export const App = () => {
+  const [value, setValue] = useState('')
+
+  // console.log(value)
+
   return (
     <div className="container">
       <Header isAuth={true} />
       <div style={{ margin: '100px' }}>
-        <MyPackMenu />
+        <TextField search customValue={value} onChangeValue={setValue} />
       </div>
     </div>
   )

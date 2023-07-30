@@ -6,9 +6,15 @@ interface TabSwitcherProps {
   disabled?: boolean
   tabs: string[]
   ariaLabel?: string
+  onClick: () => void
 }
 
-export const TabSwitcher = ({ disabled, tabs, ariaLabel = 'Tab Switcher' }: TabSwitcherProps) => {
+export const TabSwitcher = ({
+  disabled,
+  tabs,
+  ariaLabel = 'Tab Switcher',
+  onClick,
+}: TabSwitcherProps) => {
   return (
     <Tabs.Root className={s.root} defaultValue={tabs[0]}>
       <Tabs.List className={s.list} aria-label={ariaLabel}>
@@ -18,6 +24,7 @@ export const TabSwitcher = ({ disabled, tabs, ariaLabel = 'Tab Switcher' }: TabS
             disabled={disabled}
             key={tab}
             value={tab}
+            onClick={onClick}
           >
             {tab}
           </Tabs.Trigger>

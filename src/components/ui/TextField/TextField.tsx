@@ -1,4 +1,11 @@
-import { ChangeEvent, HTMLInputTypeAttribute, InputHTMLAttributes, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  forwardRef,
+  HTMLInputTypeAttribute,
+  InputHTMLAttributes,
+  useRef,
+  useState,
+} from 'react'
 
 import s from './TextField.module.scss'
 
@@ -6,99 +13,108 @@ import { ReactComponent as EyeDisabledIcon } from '@/components/ui/TextField/ass
 import { ReactComponent as EyeHidePassIcon } from '@/components/ui/TextField/assets/eye-off.svg'
 import { ReactComponent as EyeIcon } from '@/components/ui/TextField/assets/eye.svg'
 import { ReactComponent as XIcon } from '@/components/ui/TextField/assets/xMark.svg'
-import { TypographyVariant, Typography } from '@/components/ui/Typography'
+import { Typography, TypographyVariant } from '@/components/ui/Typography'
 
-type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>
-
-interface InputProps extends HTMLInputProps {
-  value?: string
-  onChange?: (value: string) => void
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: HTMLInputTypeAttribute
-  title?: string
-  error?: string
+  label?: string
+  errorMessage?: string
   fullWidth?: boolean
   search?: boolean
   disabled?: boolean
+  onChangeValue?: (value: string) => void
+  customValue?: string
 }
-export const TextField = ({
-  value,
-  onChange,
-  type = 'text',
-  title,
-  error,
-  fullWidth,
-  disabled,
-  search,
-  ...rest
-}: InputProps) => {
-  const [inputType, setInputType] = useState(type)
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e.target.value)
-  }
-  const inputRef = useRef<HTMLInputElement>(null)
-  const handlerClearInput = () => {
-    onChange?.('')
-    inputRef.current!.focus()
-  }
-  const handlerShowPassword = () => {
-    setInputType(prevType => (prevType === 'password' ? 'text' : 'password'))
-  }
+export const TextField = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      type = 'text',
+      label,
+      errorMessage,
+      fullWidth,
+      disabled,
+      search,
+      onChangeValue,
+      customValue,
+      ...rest
+    },
+    ref
+  ) => {
+    const [inputType, setInputType] = useState(type)
 
-  return (
-    <div>
-      {!!title && (
-        <Typography
-          tag="span"
-          variant={TypographyVariant.Body2}
-          className={disabled ? `${s.title} ${s.disabled}` : s.title}
-        >
-          {title}
-        </Typography>
-      )}
-      <div className={fullWidth ? `${s.inputContainer} ${s.fullWidth}` : s.inputContainer}>
-        {!!value && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
+    const inputRef = useRef<HTMLInputElement>(null)
+    const handlerClearInput = () => {
+      onChangeValue?.('')
+      inputRef.current!.focus()
+    }
+    const handlerShowPassword = () => {
+      setInputType(prevType => (prevType === 'password' ? 'text' : 'password'))
+    }
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      onChangeValue?.(e.target.value)
+    }
 
-        {search ? (
-          <input
-            ref={inputRef}
-            className={
-              error
-                ? `${s.input} ${s.search} ${s.error}`
-                : disabled
-                ? `${s.input} ${s.search} ${s.disabled}`
-                : `${s.input} ${s.search}`
-            }
-            value={value}
-            onChange={onChangeHandler}
-            type={type}
-            disabled={disabled}
-            {...rest}
-          />
-        ) : (
-          <input
-            style={type === 'password' ? { paddingRight: '36px' } : undefined}
-            className={
-              error ? `${s.input} ${s.error}` : disabled ? `${s.input} ${s.disabled}` : s.input
-            }
-            value={value}
-            onChange={onChangeHandler}
-            type={inputType}
-            disabled={disabled}
-            {...rest}
-          />
+    return (
+      <div>
+        {label && (
+          <Typography
+            tag="span"
+            variant={TypographyVariant.Body2}
+            className={disabled ? `${s.title} ${s.disabled}` : s.title}
+          >
+            {label}
+          </Typography>
         )}
+        <div className={fullWidth ? `${s.inputContainer} ${s.fullWidth}` : s.inputContainer}>
+          {customValue && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
 
-        {type === 'password' && !disabled && (
-          <EyeIcon onClick={handlerShowPassword} className={s.eye} />
-        )}
-        {type === 'password' && !disabled && inputType === 'text' && (
-          <EyeHidePassIcon onClick={handlerShowPassword} className={s.eye} />
-        )}
-        {type === 'password' && disabled && (
-          <EyeDisabledIcon onClick={handlerShowPassword} className={s.eye} />
-        )}
+          {search ? (
+            <input
+              ref={ref || inputRef}
+              value={customValue}
+              onChange={onChangeHandler}
+              className={
+                errorMessage
+                  ? `${s.input} ${s.search} ${s.error}`
+                  : disabled
+                  ? `${s.input} ${s.search} ${s.disabled}`
+                  : `${s.input} ${s.search}`
+              }
+              type={type}
+              disabled={disabled}
+              {...rest}
+            />
+          ) : (
+            <input
+              ref={ref || inputRef}
+              value={customValue}
+              onChange={onChangeHandler}
+              style={type === 'password' ? { paddingRight: '36px' } : undefined}
+              className={
+                errorMessage
+                  ? `${s.input} ${s.error}`
+                  : disabled
+                  ? `${s.input} ${s.disabled}`
+                  : s.input
+              }
+              type={inputType}
+              disabled={disabled}
+              {...rest}
+            />
+          )}
+
+          {type === 'password' && !disabled && (
+            <EyeIcon onClick={handlerShowPassword} className={s.eye} />
+          )}
+          {type === 'password' && !disabled && inputType === 'text' && (
+            <EyeHidePassIcon onClick={handlerShowPassword} className={s.eye} />
+          )}
+          {type === 'password' && disabled && (
+            <EyeDisabledIcon onClick={handlerShowPassword} className={s.eye} />
+          )}
+        </div>
+        {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
       </div>
-      {!!error && <span className={s.errorText}>{error}</span>}
-    </div>
-  )
-}
+    )
+  }
+)
