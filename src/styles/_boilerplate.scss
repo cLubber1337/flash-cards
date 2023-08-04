@@ -25,6 +25,29 @@ option {
   color: inherit;
 }
 
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+figure,
+figcaption,
+blockquote,
+pre,
+address,
+fieldset,
+form {
+  margin: 0;
+}
+
 svg,
 button {
   cursor: pointer;

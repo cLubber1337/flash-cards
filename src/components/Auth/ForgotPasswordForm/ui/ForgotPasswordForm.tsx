@@ -3,30 +3,33 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import s from './RegistrationForm.module.scss'
+import s from './ForgotPasswordForm.module.scss'
 
-import { registrationFormSchema, RegistrationFormValues } from '@/components/Auth/RegistrationForm'
+import {
+  forgotPasswordFormSchema,
+  ForgotPasswordFormValues,
+} from '@/components/Auth/ForgotPasswordForm'
 import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
 
-interface SignUpFormProps {
-  onSubmit?: SubmitHandler<RegistrationFormValues>
+interface ForgotPasswordFormProps {
+  onSubmit?: SubmitHandler<ForgotPasswordFormValues>
 }
 
-export const RegistrationForm = ({ onSubmit }: SignUpFormProps) => {
+export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<RegistrationFormValues>({
-    resolver: zodResolver(registrationFormSchema),
+  } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordFormSchema),
   })
 
   return (
-    <Card className={s.registrationForm}>
+    <Card className={s.forgotPasswordForm}>
       <div className={s.title}>
         <Typography tag="h1" variant={TypographyVariant.Large}>
-          Sign Up
+          Forgot your password?
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
@@ -38,22 +41,9 @@ export const RegistrationForm = ({ onSubmit }: SignUpFormProps) => {
           className={s.textField}
           fullWidth
         />
-        <TextField
-          {...register('password')}
-          type="password"
-          label="Password"
-          errorMessage={errors.confirmPassword && errors.confirmPassword.message}
-          className={s.textField}
-          fullWidth
-        />
-        <TextField
-          {...register('confirmPassword')}
-          type="password"
-          label="Confirm Password"
-          errorMessage={errors.confirmPassword && errors.confirmPassword.message}
-          className={s.textField}
-          fullWidth
-        />
+        <Typography variant={TypographyVariant.Body2} className={s.subtitle}>
+          Enter your email address and we will send you further instructions
+        </Typography>
         <div className={s.submitBtn}>
           <Button type="submit" fullWidth>
             Submit
@@ -61,11 +51,11 @@ export const RegistrationForm = ({ onSubmit }: SignUpFormProps) => {
         </div>
       </form>
       <div className={s.signInLink}>
-        <Typography variant={TypographyVariant.Body2} className={s.subtitle}>
-          Already have an account?
+        <Typography variant={TypographyVariant.Body2} className={s.subtitle_2}>
+          Did you remember your password?
         </Typography>
         <Link to="/login" className={s.link}>
-          Sign In
+          Try logging in
         </Link>
       </div>
     </Card>
