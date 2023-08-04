@@ -2,7 +2,7 @@ import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { FormValues, loginSchema } from '@/components/Auth/LoginForm'
+import { LoginFormValues, loginFormSchema } from '@/components/Auth/LoginForm'
 import { Button, TextField } from '@/components/ui'
 import { ControlledCheckbox } from '@/components/ui/Controlled/ControlledCheckbox'
 
@@ -12,11 +12,11 @@ export const LoginForm = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
   })
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<LoginFormValues> = data => {
     console.log(data)
   }
 

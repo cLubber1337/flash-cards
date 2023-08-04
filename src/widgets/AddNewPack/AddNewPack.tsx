@@ -37,7 +37,7 @@ export const AddNewPack = ({}: AddNewPackProps) => {
             </Typography>
           </Button>
           <TextField title="Name Pack" placeholder="Name..." fullWidth search />
-          <Checkbox text="Private pack" id="check_AnP" />
+          <Checkbox label="Private pack" id="check_AnP" />
         </Card>
         <CardFooter twoButtons onAction={() => null} onDismiss={handlerClose} />
       </div>

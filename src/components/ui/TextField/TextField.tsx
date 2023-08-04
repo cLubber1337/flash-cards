@@ -24,6 +24,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean
   onChangeValue?: (value: string) => void
   customValue?: string
+  className?: string
 }
 export const TextField = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -36,6 +37,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       search,
       onChangeValue,
       customValue,
+      className,
       ...rest
     },
     ref
@@ -55,7 +57,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div>
+      <div className={className}>
         {label && (
           <Typography
             tag="span"

@@ -9,10 +9,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { App } from './App.tsx'
 
+import { LoginForm } from '@/components/Auth/LoginForm'
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+  },
+  {
+    path: '/login',
+    element: <LoginForm />,
   },
 ])
 
