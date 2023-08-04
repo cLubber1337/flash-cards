@@ -1,10 +1,13 @@
 import { SubmitHandler } from 'react-hook-form'
 
-import { ForgotPasswordForm, ForgotPasswordFormValues } from '@/components/Auth/ForgotPasswordForm'
+import {
+  CreateNewPasswordForm,
+  CreateNewPasswordFormValues,
+} from '@/components/Auth/CreateNewPasswordForm'
 import { Header } from '@/widgets/Header'
 
 export const App = () => {
-  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = data => {
+  const onSubmit: SubmitHandler<CreateNewPasswordFormValues> = data => {
     console.log(data)
   }
 
@@ -12,7 +15,7 @@ export const App = () => {
     <div className="container">
       <Header isAuth={true} />
       <div style={{ margin: '100px' }}>
-        <ForgotPasswordForm onSubmit={onSubmit} />
+        <CreateNewPasswordForm onSubmit={onSubmit} />
       </div>
     </div>
   )

@@ -27,11 +27,9 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
 
   return (
     <Card className={s.forgotPasswordForm}>
-      <div className={s.title}>
-        <Typography tag="h1" variant={TypographyVariant.Large}>
-          Forgot your password?
-        </Typography>
-      </div>
+      <Typography tag="h1" variant={TypographyVariant.Large} className={s.title}>
+        Forgot your password?
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
         <DevTool control={control} />
         <TextField
@@ -46,7 +44,7 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
         </Typography>
         <div className={s.submitBtn}>
           <Button type="submit" fullWidth>
-            Submit
+            Send Instructions
           </Button>
         </div>
       </form>
