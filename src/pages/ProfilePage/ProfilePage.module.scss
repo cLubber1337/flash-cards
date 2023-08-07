@@ -1,0 +1,42 @@
+.profilePage {
+  display: flex;
+  justify-content: center;
+  padding: 36px 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-width: 420px;
+  padding: 33px 33px 41px;
+}
+
+.avatar {
+  position: relative;
+  margin-top: 27px;
+  margin-bottom: 6px;
+}
+
+.editAvatarBtn {
+  position: absolute;
+  right: -10px;
+  bottom: -12px;
+}
+
+.name {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.editIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.email {
+  margin-bottom: 13px;
+  color: var(--color-dark-100);
+}

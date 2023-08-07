@@ -11,7 +11,7 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={s.layout}>
-      <Header />
+      <Header isAuth />
       <div className={s.content}>{children}</div>
     </div>
   )

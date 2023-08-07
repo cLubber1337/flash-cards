@@ -8,12 +8,23 @@ import {
 
 import { Layout } from '@/components/Layout'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
+import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
 import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
+import { ProfilePage } from '@/pages/ProfilePage/ProfilePage.tsx'
+import { RegistrationPage } from '@/pages/RegistrationPage/RegistrationPage.tsx'
 
 const publicRoutes: RouteObject[] = [
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegistrationPage />,
+  },
+  {
+    path: '/recover',
+    element: <ForgotPasswordPage />,
   },
 ]
 
@@ -21,6 +32,10 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/',
     element: <DecksPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
 ]
 

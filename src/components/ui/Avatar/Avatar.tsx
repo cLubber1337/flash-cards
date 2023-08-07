@@ -6,11 +6,17 @@ interface AvatarProps {
   src?: string
   alt?: string
   avatarFallback?: string
+  size?: number
 }
 
-export const Avatar = ({ src, alt, avatarFallback }: AvatarProps) => {
+export const Avatar = ({ src, alt, avatarFallback, size = 36 }: AvatarProps) => {
+  const style = {
+    width: size,
+    height: size,
+  }
+
   return (
-    <avatar.Root className={s.avatarRoot}>
+    <avatar.Root style={style} className={s.avatarRoot}>
       <avatar.Image className={s.avatarImage} src={src} alt={alt} />
       <avatar.Fallback className={s.avatarFallback}>{avatarFallback}</avatar.Fallback>
     </avatar.Root>
