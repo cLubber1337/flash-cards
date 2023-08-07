@@ -37,7 +37,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       search,
       onChangeValue,
       customValue,
-      className,
+      className = '',
       ...rest
     },
     ref
@@ -57,7 +57,11 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div className={className}>
+      <div
+        className={
+          fullWidth ? `${s.textField} ${s.fullWidth} ${className}` : `${s.textField} ${className}`
+        }
+      >
         {label && (
           <Typography
             tag="span"
@@ -67,7 +71,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </Typography>
         )}
-        <div className={fullWidth ? `${s.inputContainer} ${s.fullWidth}` : s.inputContainer}>
+        <div className={s.inputContainer}>
           {customValue && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
 
           {search ? (

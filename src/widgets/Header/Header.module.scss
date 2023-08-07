@@ -1,13 +1,22 @@
 .header {
   display: flex;
-  justify-content: space-between;
 
   width: 100%;
   height: var(--header-height);
-  padding: 12px 137px 12px 136px;
+  padding: 12px 0;
 
   background-color: var(--color-dark-700);
   box-shadow: 0 0 0 1px var(--color-dark-500);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: 1058px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .actions {

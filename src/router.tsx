@@ -6,19 +6,21 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { Decks } from '@/pages/Decks/Decks.tsx'
+import { Layout } from '@/components/Layout'
+import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
+import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
 
 const publicRoutes: RouteObject[] = [
   {
     path: '/login',
-    element: <div>login</div>,
+    element: <LoginPage />,
   },
 ]
 
 const privateRoutes: RouteObject[] = [
   {
     path: '/',
-    element: <Decks />,
+    element: <DecksPage />,
   },
 ]
 
@@ -37,5 +39,9 @@ const router = createBrowserRouter([
 ])
 
 export const Router = () => {
-  return <RouterProvider router={router} />
+  return (
+    <Layout>
+      <RouterProvider router={router} />
+    </Layout>
+  )
 }
