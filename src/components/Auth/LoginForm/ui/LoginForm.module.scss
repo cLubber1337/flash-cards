@@ -1,0 +1,61 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 420px;
+  padding: 33px 36px 29px;
+}
+
+.title {
+  margin-bottom: 26px;
+  text-align: center;
+}
+
+.form {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  position: absolute;
+  bottom: 131px;
+  left: -9px;
+}
+
+.email {
+  height: 84px;
+}
+
+.password {
+  height: 114px;
+}
+
+.submitBtn {
+  display: flex;
+  padding-top: 66px;
+}
+
+.forgotPasswordLink {
+  padding-top: 200px;
+  text-align: end;
+}
+
+.registerLink {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: center;
+}
+
+.subtitle {
+  color: var(--color-light-900);
+}
+
+.link {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+  color: var(--color-accent-500) !important;
+  text-decoration-line: underline;
+}

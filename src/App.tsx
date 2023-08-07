@@ -1,13 +1,12 @@
-import { Header } from '@/widgets/Header'
-import { Table } from '@/widgets/Table'
+import { Provider } from 'react-redux'
 
-export const App = () => {
+import { Router } from '@/router'
+import { store } from '@/services/store.ts'
+
+export function App() {
   return (
-    <div className="container">
-      <Header isAuth={true} />
-      <div style={{ margin: '100px' }}>
-        <Table />
-      </div>
-    </div>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   )
 }

@@ -1,22 +1,32 @@
 import { memo } from 'react'
 
 import s from './Table.module.scss'
+import { TableHeader } from './TableHeader/TableHeader.tsx'
+import { TableRow } from './TableRow/TableRow.tsx'
 
-import { TableHeader } from '@/widgets/Table/TableHeader/TableHeader.tsx'
-import { TableRow } from '@/widgets/Table/TableRow/TableRow.tsx'
+import { Deck } from '@/services/decks/types.ts'
 
-interface TableProps {}
+interface TableProps {
+  data?: Deck[]
+}
 
-export const Table = memo(({}: TableProps) => {
+export const Table = memo(({ data }: TableProps) => {
   return (
     <table className={s.table}>
       <tbody>
         <TableHeader />
-        <TableRow createdBy="John" lastUpdate="12.12.2022" numberOfCards={4} packName="Packs" />
-        <TableRow createdBy="John" lastUpdate="12.12.2022" numberOfCards={4} packName="Packs" />
-        <TableRow createdBy="John" lastUpdate="12.12.2022" numberOfCards={4} packName="Packs" />
-        <TableRow createdBy="John" lastUpdate="12.12.2022" numberOfCards={4} packName="Packs" />
-        <TableRow createdBy="John" lastUpdate="12.12.2022" numberOfCards={4} packName="Packs" />
+        {data &&
+          data?.map(deck => {
+            return (
+              <TableRow
+                key={deck.id}
+                numberOfCards={deck.cardsCount}
+                createdBy={deck.author.name}
+                packName={deck.name}
+                lastUpdate={new Date(deck.updated).toLocaleDateString('en-GB')}
+              />
+            )
+          })}
       </tbody>
     </table>
   )
