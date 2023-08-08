@@ -11,10 +11,12 @@ import {
   TypographyVariant,
 } from '@/components/ui'
 import { useGetDecksQuery } from '@/services/decks'
-import { useAppSelector } from '@/services/store.ts'
+import { decksActions } from '@/services/decks/decksSlice.ts'
+import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { Table } from '@/widgets/Table'
 
 export const DecksPage = () => {
+  const dispatch = useAppDispatch()
   const itemsPerPage = useAppSelector(state => state.decks.itemsPerPage)
   const currentPage = useAppSelector(state => state.decks.currentPage)
   const searchByName = useAppSelector(state => state.decks.searchByName)
@@ -37,7 +39,13 @@ export const DecksPage = () => {
       </div>
       <div className={s.actions}>
         <div className={s.search}>
-          <TextField placeholder="Search by name" search fullWidth />
+          <TextField
+            placeholder="Search by name"
+            search
+            fullWidth
+            value={searchByName}
+            onChangeValue={e => dispatch(decksActions.setSearchByName(e))}
+          />
         </div>
         <div className={s.tabSwitcher}>
           <Typography variant={TypographyVariant.Body2}>Show packs cards</Typography>

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {
-  itemsPerPage: 10,
+  itemsPerPage: 20,
   currentPage: 1,
   searchByName: '',
 }

@@ -10,6 +10,7 @@ import { Layout } from '@/components/Layout'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
 import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
+import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage.tsx'
 import { ProfilePage } from '@/pages/ProfilePage/ProfilePage.tsx'
 import { RegistrationPage } from '@/pages/RegistrationPage/RegistrationPage.tsx'
 
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
     children: privateRoutes,
   },
   ...publicRoutes,
+  {
+    path: '*',
+    element: (
+      <Layout>
+        <NotFoundPage />
+      </Layout>
+    ),
+  },
 ])
 
 export const Router = () => {
