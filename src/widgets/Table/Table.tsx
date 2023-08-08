@@ -13,21 +13,20 @@ interface TableProps {
 export const Table = memo(({ data }: TableProps) => {
   return (
     <table className={s.table}>
+      <TableHeader />
       <tbody>
-        <TableHeader />
-        {data &&
-          data?.map(deck => {
-            return (
-              <TableRow
-                key={deck.id}
-                numberOfCards={deck.cardsCount}
-                createdBy={deck.author.name}
-                packName={deck.name}
-                lastUpdate={new Date(deck.updated).toLocaleDateString('en-GB')}
-                cover={deck.cover}
-              />
-            )
-          })}
+        {data?.map(deck => {
+          return (
+            <TableRow
+              key={deck.id}
+              numberOfCards={deck.cardsCount}
+              createdBy={deck.author.name}
+              packName={deck.name}
+              lastUpdate={new Date(deck.updated).toLocaleDateString('en-GB')}
+              cover={deck.cover}
+            />
+          )
+        })}
       </tbody>
     </table>
   )

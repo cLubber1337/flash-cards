@@ -76,7 +76,12 @@ export const DecksPage = () => {
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
       <Table data={data?.items} />
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      <Pagination currentPage={currentPage} totalPages={data?.pagination.totalPages} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={data?.pagination.totalPages}
+        siblingsCount={1}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   )
 }
