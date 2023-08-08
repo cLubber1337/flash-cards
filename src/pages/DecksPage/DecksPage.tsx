@@ -4,6 +4,7 @@ import s from './DecksPage.module.scss'
 
 import {
   Button,
+  Pagination,
   Slider,
   TabSwitcher,
   TextField,
@@ -12,14 +13,19 @@ import {
 } from '@/components/ui'
 import { useGetDecksQuery } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
+import {
+  selectCurrentPage,
+  selectItemsPerPage,
+  selectSearchByName,
+} from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { Table } from '@/widgets/Table'
 
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
-  const itemsPerPage = useAppSelector(state => state.decks.itemsPerPage)
-  const currentPage = useAppSelector(state => state.decks.currentPage)
-  const searchByName = useAppSelector(state => state.decks.searchByName)
+  const itemsPerPage = useAppSelector(selectItemsPerPage)
+  const currentPage = useAppSelector(selectCurrentPage)
+  const searchByName = useAppSelector(selectSearchByName)
 
   const { data } = useGetDecksQuery({
     itemsPerPage: itemsPerPage,
@@ -60,7 +66,10 @@ export const DecksPage = () => {
           Clear Filter
         </Button>
       </div>
+      {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
       <Table data={data?.items} />
+      {/*-------------------------------------PAGINATION------------------------------------------*/}
+      <Pagination />
     </div>
   )
 }

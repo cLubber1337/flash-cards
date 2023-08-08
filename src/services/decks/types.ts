@@ -19,7 +19,7 @@ export interface Deck {
   name: string
   isPrivate: boolean
   shots: number
-  cover?: any
+  cover: string | null
   rating: number
   isDeleted?: any
   isBlocked?: any

@@ -1,6 +1,6 @@
 .tableHeader {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 210px)) auto;
+  grid-template-columns: 260px minmax(0, 140px) minmax(0, 200px) minmax(0, 286px) auto;
   justify-items: start;
 
   padding: 6px 0;

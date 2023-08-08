@@ -109,3 +109,29 @@
   position: relative;
   width: 100%;
 }
+
+.pagination {
+  gap: 4px;
+
+  height: 24px;
+  padding: 0 6px;
+
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+}
+
+.paginationItems {
+  top: 24px;
+}
+
+.paginationItem {
+  height: 24px;
+  padding: 0 6px;
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+}
+
+.paginationItem:first-child {
+  height: 24px;
+  margin-top: 0;
+}

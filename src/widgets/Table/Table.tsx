@@ -24,6 +24,7 @@ export const Table = memo(({ data }: TableProps) => {
                 createdBy={deck.author.name}
                 packName={deck.name}
                 lastUpdate={new Date(deck.updated).toLocaleDateString('en-GB')}
+                cover={deck.cover}
               />
             )
           })}
