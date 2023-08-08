@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import s from './AddNewPack.module.scss'
 
 import { ReactComponent as ImageIcon } from '@/assets/svg/image.svg'
@@ -15,19 +13,16 @@ import {
   TypographyVariant,
 } from '@/components/ui'
 
-interface AddNewPackProps {}
+interface AddNewPackProps {
+  isOpen: boolean
+  onClose: (isOpen: boolean) => void
+}
 
-export const AddNewPack = ({}: AddNewPackProps) => {
-  const [isOpen, setIsOpen] = useState(true)
-
-  const handlerClose = () => {
-    setIsOpen(false)
-  }
-
+export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={handlerClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <div className={s.addNewPack}>
-        <CardHeader title="Add New Pack" onClick={handlerClose} />
+        <CardHeader title="Add New Pack" onClose={onClose} />
         <Card className={s.content}>
           <div className={s.img} />
           <Button variant="secondary">
@@ -39,7 +34,7 @@ export const AddNewPack = ({}: AddNewPackProps) => {
           <TextField title="Name Pack" placeholder="Name..." fullWidth search />
           <Checkbox label="Private pack" id="check_AnP" />
         </Card>
-        <CardFooter twoButtons onAction={() => null} onDismiss={handlerClose} />
+        <CardFooter twoButtons onAction={() => null} onDismiss={onClose} />
       </div>
     </Modal>
   )

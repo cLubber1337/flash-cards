@@ -12,7 +12,7 @@ const userData = {
 }
 
 export const Header = () => {
-  const isAuth = false
+  const isAuth = true
 
   return (
     <header className={s.header}>

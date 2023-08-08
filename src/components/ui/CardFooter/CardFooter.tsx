@@ -9,7 +9,7 @@ type CardFooterProps = {
   | {
       twoButtons: true
       onAction: () => void
-      onDismiss: () => void
+      onDismiss: (isOpen: boolean) => void
       titleOnDismiss?: string
     }
   | {
@@ -31,7 +31,7 @@ export const CardFooter = ({
     <Card className={s.cardFooter}>
       {twoButtons ? (
         <div className={s.twoButtons}>
-          <Button variant="secondary" onClick={onDismiss}>
+          <Button variant="secondary" onClick={() => onDismiss(false)}>
             {titleOnDismiss}
           </Button>
           <Button onClick={onAction}>{titleOnAction}</Button>

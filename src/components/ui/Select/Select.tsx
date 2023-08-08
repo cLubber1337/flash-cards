@@ -10,16 +10,26 @@ import { ReactComponent as ArrowUpIcon } from '@/assets/svg/arrowUp.svg'
 
 interface SelectProps {
   items: { id: number; title: string }[]
+  currentItem?: number
   fullWidth?: boolean
   disabled?: boolean
   pagination?: boolean
+  onClickItem?: (title: any) => void
 }
 
-export const Select = ({ items, fullWidth, disabled, pagination }: SelectProps) => {
-  const [title, setTitle] = useState(items[0].title)
+export const Select = ({
+  items,
+  fullWidth,
+  disabled,
+  pagination,
+  onClickItem,
+  currentItem,
+}: SelectProps) => {
+  const [title, setTitle] = useState(currentItem ? currentItem : items[0].title)
 
   const handlerClickItem = (title: string) => {
     setTitle(title)
+    onClickItem?.(Number(title))
   }
 
   const ClassesForDefault = disabled ? `${s.button} ${s.disabled}` : s.button

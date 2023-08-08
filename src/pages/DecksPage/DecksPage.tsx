@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { ReactComponent as TrashIcon } from '../../assets/svg/trash.svg'
 
 import s from './DecksPage.module.scss'
@@ -19,6 +21,7 @@ import {
   selectSearchByName,
 } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { AddNewPack } from '@/widgets/AddNewPack'
 import { Table } from '@/widgets/Table'
 
 export const DecksPage = () => {
@@ -26,6 +29,7 @@ export const DecksPage = () => {
   const itemsPerPage = useAppSelector(selectItemsPerPage)
   const currentPage = useAppSelector(selectCurrentPage)
   const searchByName = useAppSelector(selectSearchByName)
+  const [isOpen, setIsOpen] = useState(false)
 
   const { data } = useGetDecksQuery({
     itemsPerPage: itemsPerPage,
@@ -41,7 +45,10 @@ export const DecksPage = () => {
             Packs list
           </Typography>
         </div>
-        <Button className={s.AddNewPackBtn}>Add New Pack</Button>
+        <Button className={s.AddNewPackBtn} onClick={() => setIsOpen(true)}>
+          Add New Pack
+        </Button>
+        <AddNewPack isOpen={isOpen} onClose={setIsOpen} />
       </div>
       <div className={s.actions}>
         <div className={s.search}>
@@ -49,7 +56,7 @@ export const DecksPage = () => {
             placeholder="Search by name"
             search
             fullWidth
-            value={searchByName}
+            customValue={searchByName}
             onChangeValue={e => dispatch(decksActions.setSearchByName(e))}
           />
         </div>
@@ -69,7 +76,7 @@ export const DecksPage = () => {
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
       <Table data={data?.items} />
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      <Pagination />
+      <Pagination currentPage={currentPage} totalPages={data?.pagination.totalPages} />
     </div>
   )
 }

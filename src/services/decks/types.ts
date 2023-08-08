@@ -1,9 +1,9 @@
 export interface DecksResponse {
   maxCardsCount: number
-  pagination: Pagination
+  pagination: PaginationType
   items: Deck[]
 }
-export interface Pagination {
+export interface PaginationType {
   totalPages: number
   currentPage: number
   itemsPerPage: number
