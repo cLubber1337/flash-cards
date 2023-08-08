@@ -27,7 +27,7 @@ export const CreateNewPasswordForm = ({ onSubmit }: CreateNewPasswordFormProps) 
   return (
     <Card className={s.createNewPasswordForm}>
       <Typography tag="h1" variant={TypographyVariant.Large} className={s.title}>
-        Sign Up
+        Create new password
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
         <DevTool control={control} />

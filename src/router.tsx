@@ -26,7 +26,10 @@ const publicRoutes: RouteObject[] = [
     path: '/recover',
     element: <ForgotPasswordPage />,
   },
-]
+].map(route => ({
+  ...route,
+  element: <Layout>{route.element}</Layout>,
+}))
 
 const privateRoutes: RouteObject[] = [
   {
@@ -47,16 +50,16 @@ function PrivateRoutes() {
 
 const router = createBrowserRouter([
   {
-    element: <PrivateRoutes />,
+    element: (
+      <Layout>
+        <PrivateRoutes />
+      </Layout>
+    ),
     children: privateRoutes,
   },
   ...publicRoutes,
 ])
 
 export const Router = () => {
-  return (
-    <Layout>
-      <RouterProvider router={router} />
-    </Layout>
-  )
+  return <RouterProvider router={router} />
 }

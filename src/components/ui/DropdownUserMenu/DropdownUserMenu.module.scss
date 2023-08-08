@@ -1,3 +1,43 @@
+.popover {
+  position: relative;
+  display: inline;
+}
+
+.action {
+  all: unset;
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.username {
+  cursor: pointer;
+
+  &::after {
+    content: '';
+
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+    left: 0;
+
+    width: calc(100% - 48px);
+
+    border-bottom: 1px dashed var(--color-light-100);
+  }
+}
+
+.content {
+  content: '';
+  position: absolute;
+  top: 46px;
+  right: -8px;
+}
+
 .userMenu {
   position: relative;
   z-index: 2;
@@ -46,7 +86,11 @@
 
   padding: 0 !important;
 
-  color: var(--color-light-100);
+  color: var(--color-light-100) !important;
+
+  &:hover {
+    color: var(--color-accent-500) !important;
+  }
 }
 
 .beakTopIcon {

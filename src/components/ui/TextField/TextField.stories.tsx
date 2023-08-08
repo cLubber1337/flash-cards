@@ -48,7 +48,7 @@ export const SearchDisabled: Story = {
 
 export const Password: Story = {
   args: {
-    title: 'Password',
+    label: 'Password',
     type: 'password',
   },
 }
@@ -61,17 +61,17 @@ export const PasswordDisabled: Story = {
 export const PasswordError: Story = {
   args: {
     value: 'password123',
-    title: 'Password',
+    label: 'Password',
     type: 'password',
-    error: 'Invalid password',
+    errorMessage: 'Invalid password',
   },
 }
 
 export const DefaultError: Story = {
   args: {
-    title: 'Login',
+    label: 'Login',
     disabled: false,
     value: 'em@il.@.wrong.com',
-    error: 'Invalid email',
+    errorMessage: 'Invalid email',
   },
 }

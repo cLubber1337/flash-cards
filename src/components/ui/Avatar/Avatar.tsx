@@ -7,12 +7,14 @@ interface AvatarProps {
   alt?: string
   avatarFallback?: string
   size?: number
+  cursor?: 'pointer' | 'auto'
 }
 
-export const Avatar = ({ src, alt, avatarFallback, size = 36 }: AvatarProps) => {
+export const Avatar = ({ src, alt, avatarFallback, size = 36, cursor = 'auto' }: AvatarProps) => {
   const style = {
     width: size,
     height: size,
+    cursor: cursor,
   }
 
   return (

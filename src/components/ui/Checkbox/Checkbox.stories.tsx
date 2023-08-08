@@ -22,7 +22,7 @@ export const Default: Story = {
 
 export const WithText: Story = {
   args: {
-    text: 'Accept terms and conditions',
+    label: 'Accept terms and conditions',
     disabled: false,
   },
 }
@@ -35,14 +35,14 @@ export const Disabled: Story = {
 
 export const DisabledWithText: Story = {
   args: {
-    text: 'Accept terms and conditions',
+    label: 'Accept terms and conditions',
     disabled: true,
   },
 }
 
 export const DisabledCheckedWithText: Story = {
   args: {
-    text: 'Accept terms and conditions',
+    label: 'Accept terms and conditions',
     disabled: true,
     defaultChecked: true,
   },

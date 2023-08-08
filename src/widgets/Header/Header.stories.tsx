@@ -6,7 +6,6 @@ const meta = {
   title: 'Widgets/Header',
   component: Header,
   tags: ['autodocs'],
-  argTypes: {},
 }
 
 export default meta
@@ -18,8 +17,4 @@ export const HeaderWithAuth: Story = {
   },
 }
 
-export const HeaderWithoutAuth: Story = {
-  args: {
-    isAuth: false,
-  },
-}
+export const HeaderWithoutAuth: Story = {}

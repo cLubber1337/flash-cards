@@ -1,41 +1,30 @@
-import { UserMenu } from '../UserMenu'
+import { Link } from 'react-router-dom'
 
 import s from './Header.module.scss'
 
 import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
-import { Dropdown } from '@/components/ui'
-import { Avatar } from '@/components/ui/Avatar'
+import { DropdownUserMenu } from '@/components/ui'
 import { Button } from '@/components/ui/Button'
-import { TypographyVariant, Typography } from '@/components/ui/Typography'
-
-interface HeaderProps {
-  isAuth?: boolean
-}
 
 const userData = {
   name: 'John DoeDoe',
   email: 'JohnDoe666@ya.com',
 }
 
-export const Header = ({ isAuth }: HeaderProps) => {
+export const Header = () => {
+  const isAuth = false
+
   return (
     <header className={s.header}>
       <div className={s.container}>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         {isAuth ? (
-          <div className={s.actions}>
-            <Typography variant={TypographyVariant.Subtitle1} className={s.name}>
-              {userData.name}
-            </Typography>
-            <Dropdown action={<Avatar avatarFallback="JD" />}>
-              <UserMenu userData={userData} />
-            </Dropdown>
-          </div>
+          <DropdownUserMenu userData={userData} />
         ) : (
-          <Button>
-            <Typography tag="span" variant={TypographyVariant.Subtitle2}>
-              Sign In
-            </Typography>
+          <Button as={Link} to="/login">
+            Sign In
           </Button>
         )}
       </div>

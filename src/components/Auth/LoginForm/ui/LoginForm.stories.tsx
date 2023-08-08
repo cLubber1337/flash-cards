@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { MemoryRouter } from 'react-router-dom'
 
 import { LoginForm } from '@/components/Auth/LoginForm'
 
@@ -12,12 +11,4 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
-  render: () => {
-    return (
-      <MemoryRouter>
-        <LoginForm />
-      </MemoryRouter>
-    )
-  },
-}
+export const Primary: Story = {}
