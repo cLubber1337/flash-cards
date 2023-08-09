@@ -1,12 +1,11 @@
 import { memo } from 'react'
 
-import { ReactComponent as EditIcon } from '../../../assets/svg/edit.svg'
-import { ReactComponent as PlayIcon } from '../../../assets/svg/play.svg'
-import { ReactComponent as TrashIcon } from '../../../assets/svg/trash.svg'
-
 import s from './TableRow.module.scss'
 
 import deckImg from '@/assets/img/deckImage.jpg'
+import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
+import { ReactComponent as PlayIcon } from '@/assets/svg/play.svg'
+import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 import { TableCell } from '@/widgets/Table/TableCell/TableCell.tsx'
 

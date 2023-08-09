@@ -32,6 +32,7 @@ export const DecksPage = () => {
   const searchByName = useAppSelector(selectSearchByName)
   const sortBy = useAppSelector(selectSortBy)
   const [isOpen, setIsOpen] = useState(false)
+  const [sliderValue, setSliderValue] = useState<[number, number]>([0, 20])
 
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
@@ -40,6 +41,8 @@ export const DecksPage = () => {
     name: searchByName,
     currentPage: currentPage,
     orderBy: orderBy,
+    minCardsCount: sliderValue[0],
+    maxCardsCount: sliderValue[1],
   })
 
   return (
@@ -71,7 +74,13 @@ export const DecksPage = () => {
         </div>
         <div className={s.slider}>
           <Typography variant={TypographyVariant.Body2}>Number of cards</Typography>
-          <Slider defaultValue={[0, 10]} />
+          <Slider
+            defaultValue={sliderValue}
+            min={0}
+            max={20}
+            step={1}
+            onValueChange={setSliderValue}
+          />
         </div>
         <Button variant="secondary" className={s.clearBtn}>
           <TrashIcon />
