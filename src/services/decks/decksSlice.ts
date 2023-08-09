@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+import { DecksState } from './types.ts'
+
+const initialState: DecksState = {
   itemsPerPage: 8,
   currentPage: 1,
   searchByName: '',
+  sortBy: '',
 }
 
 export const decksSlice = createSlice({
@@ -18,6 +21,9 @@ export const decksSlice = createSlice({
     },
     setSearchByName: (state, action: PayloadAction<string>) => {
       state.searchByName = action.payload
+    },
+    setSortBy: (state, action: PayloadAction<DecksState['sortBy']>) => {
+      state.sortBy = action.payload
     },
   },
 })

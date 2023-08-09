@@ -19,6 +19,7 @@ import {
   selectCurrentPage,
   selectItemsPerPage,
   selectSearchByName,
+  selectSortBy,
 } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewPack } from '@/widgets/AddNewPack'
@@ -29,12 +30,16 @@ export const DecksPage = () => {
   const itemsPerPage = useAppSelector(selectItemsPerPage)
   const currentPage = useAppSelector(selectCurrentPage)
   const searchByName = useAppSelector(selectSearchByName)
+  const sortBy = useAppSelector(selectSortBy)
   const [isOpen, setIsOpen] = useState(false)
+
+  const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
   const { data } = useGetDecksQuery({
     itemsPerPage: itemsPerPage,
     name: searchByName,
     currentPage: currentPage,
+    orderBy: orderBy,
   })
 
   return (
@@ -74,7 +79,7 @@ export const DecksPage = () => {
         </Button>
       </div>
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
-      <Table data={data?.items} />
+      <Table data={data?.items} sortBy={sortBy} />
       {/*-------------------------------------PAGINATION------------------------------------------*/}
       <Pagination
         currentPage={currentPage}

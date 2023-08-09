@@ -45,7 +45,7 @@ export const Pagination = memo(
 
           {/*-------------------------------------Pages range------------------------------------------*/}
 
-          {pages.map(page => (
+          {pages.map((page, id) => (
             <li
               className={
                 typeof page !== 'number'
@@ -54,7 +54,7 @@ export const Pagination = memo(
                   ? `${s.item} ${s.activeItem}`
                   : s.item
               }
-              key={page}
+              key={id}
               onClick={() => onClickPage(page)}
             >
               <Typography variant={TypographyVariant.Body2}>{page}</Typography>

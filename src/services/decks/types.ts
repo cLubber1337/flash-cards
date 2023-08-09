@@ -28,3 +28,15 @@ export interface Deck {
   cardsCount: number
   author: Author
 }
+
+export type SortByType = {
+  key: 'name' | 'cardsCount' | 'updated' | 'created'
+  direction: 'asc' | 'desc'
+}
+
+export interface DecksState {
+  itemsPerPage: number
+  currentPage: number
+  searchByName: string
+  sortBy: SortByType | ''
+}
