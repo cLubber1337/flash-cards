@@ -27,6 +27,7 @@ export const Slider = memo(
           <Typography variant={TypographyVariant.Body1}>{defaultValue?.[0]}</Typography>
         </div>
         <slider.Root
+          value={defaultValue}
           className={s.root}
           defaultValue={defaultValue}
           max={max}

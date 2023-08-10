@@ -7,9 +7,7 @@ import s from './THeader.module.scss'
 import { ReactComponent as ArrowDownIcon } from '@/assets/svg/arrowDown.svg'
 import { ReactComponent as ArrowUpIcon } from '@/assets/svg/arrowUp.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
-import { decksActions } from '@/services/decks/decksSlice.ts'
 import { SortByType } from '@/services/decks/types.ts'
-import { useAppDispatch } from '@/services/store.ts'
 import { CardsHeaderColumnsType } from '@/utils/constants/cardsHeaderColumns.ts'
 import { DecksHeaderColumnsType } from '@/utils/constants/decksHeaderColumns.ts'
 
@@ -17,20 +15,18 @@ interface TableHeaderProps {
   sortBy?: SortByType | ''
   columns: DecksHeaderColumnsType[] | CardsHeaderColumnsType[]
   className?: string
+  setSortBy?: (sortBy: SortByType | '') => void
 }
 
-export const THeader = memo(({ sortBy, columns, className = '' }: TableHeaderProps) => {
-  const dispatch = useAppDispatch()
+export const THeader = memo(({ sortBy, columns, className = '', setSortBy }: TableHeaderProps) => {
   const handleSort = (key: SortByType['key']) => () => {
     if (sortBy && sortBy?.direction === 'desc') {
-      dispatch(decksActions.setSortBy(''))
+      setSortBy?.('')
     } else {
-      dispatch(
-        decksActions.setSortBy({
-          key,
-          direction: sortBy && sortBy?.direction === 'asc' ? 'desc' : 'asc',
-        })
-      )
+      setSortBy?.({
+        key,
+        direction: sortBy && sortBy?.direction === 'asc' ? 'desc' : 'asc',
+      })
     }
   }
 

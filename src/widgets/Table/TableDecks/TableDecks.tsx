@@ -26,27 +26,37 @@ interface TableProps {
 export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const dispatch = useAppDispatch()
 
-  const handleLinkClick = (id: string) => {
+  const handleLinkClick = (id: string, cover: string | null) => {
     dispatch(decksActions.setDeckId(id))
+    dispatch(decksActions.setDeckCover(cover))
   }
 
   return (
     <table className={s.table}>
-      <THeader sortBy={sortBy} columns={decksHeaderColumns} />
+      <THeader
+        sortBy={sortBy}
+        columns={decksHeaderColumns}
+        setSortBy={sortBy => dispatch(decksActions.setSortBy(sortBy))}
+      />
       <tbody>
         {data?.map(({ id, cover, name, cardsCount, updated, author }) => {
           return (
             <TRow key={id}>
-              <Link to={'/cards'} onClick={() => handleLinkClick(id)}>
-                <TCell className={s.deckName}>
+              <TCell>
+                <Link
+                  className={s.deckName}
+                  to={'/cards'}
+                  onClick={() => handleLinkClick(id, cover)}
+                >
                   <div className={s.deckImg}>
                     <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
                   </div>
                   <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
                     {name}
                   </Typography>
-                </TCell>
-              </Link>
+                </Link>
+              </TCell>
+
               <TCell>
                 <Typography variant={TypographyVariant.Body2}>{cardsCount}</Typography>
               </TCell>

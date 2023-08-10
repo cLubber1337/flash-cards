@@ -13,7 +13,7 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useGetCardsOfDeckQuery } from '@/services/decks'
-import { selectDeckId } from '@/services/decks/selectors.ts'
+import { selectDeckCover, selectDeckId } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
@@ -27,6 +27,7 @@ export const CardsPage = ({}: PackPageProps) => {
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
   const deckId = useAppSelector(selectDeckId)
+  const cover = useAppSelector(selectDeckCover)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
   const { data } = useGetCardsOfDeckQuery({
@@ -51,7 +52,7 @@ export const CardsPage = ({}: PackPageProps) => {
         <Button onClick={() => null}>Learn to Pack</Button>
       </div>
       <div className={s.deckImg}>
-        <img src={deckImg} alt="deck" className={s.img} />
+        <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
       </div>
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}

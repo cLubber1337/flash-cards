@@ -4,6 +4,7 @@ import { DecksState } from './types.ts'
 
 const initialState: DecksState = {
   deckId: '',
+  deckCover: null,
   itemsPerPage: 8,
   currentPage: 1,
   searchByName: '',
@@ -28,6 +29,9 @@ export const decksSlice = createSlice({
     },
     setDeckId: (state, action: PayloadAction<string>) => {
       state.deckId = action.payload
+    },
+    setDeckCover: (state, action: PayloadAction<string | null>) => {
+      state.deckCover = action.payload
     },
   },
 })

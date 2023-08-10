@@ -45,6 +45,13 @@ export const DecksPage = () => {
     maxCardsCount: sliderValue[1],
   })
 
+  const handleClearFilter = () => {
+    dispatch(decksActions.setSearchByName(''))
+    dispatch(decksActions.setSortBy(''))
+    dispatch(decksActions.setCurrentPage(1))
+    setSliderValue([0, 20])
+  }
+
   return (
     <div className={s.decksPage}>
       <div className={s.header}>
@@ -82,14 +89,17 @@ export const DecksPage = () => {
             onValueChange={setSliderValue}
           />
         </div>
-        <Button variant="secondary" className={s.clearBtn}>
+        <Button variant="secondary" className={s.clearBtn} onClick={handleClearFilter}>
           <TrashIcon />
           Clear Filter
         </Button>
       </div>
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
+
       <TableDecks data={data?.items} sortBy={sortBy} />
+
       {/*-------------------------------------PAGINATION------------------------------------------*/}
+
       <Pagination
         currentPage={currentPage}
         totalPages={data?.pagination.totalPages}

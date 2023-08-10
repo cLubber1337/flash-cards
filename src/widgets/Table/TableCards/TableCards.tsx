@@ -5,8 +5,9 @@ import s from './TableCards.module.scss'
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
-import { Card } from '@/services/cards'
+import { Card, cardsActions } from '@/services/cards'
 import { SortByType } from '@/services/decks/types.ts'
+import { useAppDispatch } from '@/services/store.ts'
 import { cardsHeaderColumns } from '@/utils/constants/cardsHeaderColumns.ts'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
 import { THeader } from '@/widgets/Table/THeader/THeader.tsx'
@@ -18,6 +19,7 @@ interface TableCardsProps {
 }
 
 export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
+  const dispatch = useAppDispatch()
   const myCards = false
 
   return (
@@ -26,6 +28,7 @@ export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
         sortBy={sortBy}
         columns={cardsHeaderColumns}
         className={myCards ? s.myRow : s.friendsRow}
+        setSortBy={sortBy => dispatch(cardsActions.setSortBy(sortBy))}
       />
 
       <tbody>
