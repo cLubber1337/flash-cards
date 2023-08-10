@@ -2,3 +2,27 @@
   width: 100%;
   max-width: 1010px;
 }
+
+.myRow {
+  grid-template-columns: 302px 302px minmax(0, 131px) 168px auto !important;
+}
+
+.friendsRow {
+  grid-template-columns: 302px 302px minmax(0, 201px) auto !important;
+}
+
+.col_1 {
+  gap: 10px;
+}
+
+.deckImg {
+  width: 118px;
+  height: 48px;
+}
+
+.img {
+  width: 118px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 2px;
+}

@@ -33,7 +33,6 @@ export type SortByType = {
   key: 'name' | 'cardsCount' | 'updated' | 'created' | 'answer' | 'question' | 'rating'
   direction: 'asc' | 'desc'
 }
-
 export interface DecksState {
   itemsPerPage: number
   currentPage: number

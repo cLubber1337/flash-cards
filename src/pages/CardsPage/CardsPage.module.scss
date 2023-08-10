@@ -9,11 +9,16 @@
   margin-bottom: 33px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
 .title {
   display: flex;
   gap: 16px;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .deckImg {

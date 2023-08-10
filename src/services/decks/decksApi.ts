@@ -1,4 +1,5 @@
 import { baseApi } from '@/services/baseApi.ts'
+import { CardsResponse } from '@/services/cards'
 import { DecksResponse } from '@/services/decks/types.ts'
 
 const decksApi = baseApi.injectEndpoints({
@@ -23,6 +24,18 @@ const decksApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Decks'],
     }),
+    getCardsOfDeck: builder.query<CardsResponse, GetCardsOfDeckArgs>({
+      query: args => {
+        const { id, ...params } = args
+
+        return {
+          url: `v1/decks/${id}/cards`,
+          method: 'GET',
+          params: params,
+        }
+      },
+      providesTags: ['Decks'],
+    }),
   }),
 })
 
@@ -35,4 +48,19 @@ type GetDecksArgs = {
   currentPage?: number
   itemsPerPage?: number
 }
-export const { useGetDecksQuery, useLazyGetDecksQuery, useCreateDeckMutation } = decksApi
+
+type GetCardsOfDeckArgs = {
+  id: string
+  answer?: string
+  question?: string
+  orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
+}
+
+export const {
+  useGetDecksQuery,
+  useLazyGetDecksQuery,
+  useCreateDeckMutation,
+  useGetCardsOfDeckQuery,
+} = decksApi

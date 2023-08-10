@@ -7,11 +7,11 @@ import {
 } from 'react-router-dom'
 
 import { Layout } from '@/components/Layout'
+import { CardsPage } from '@/pages/CardsPage/CardsPage.tsx'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
 import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
 import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage.tsx'
-import { CardsPage } from '@/pages/PackPage/CardsPage.tsx'
 import { ProfilePage } from '@/pages/ProfilePage/ProfilePage.tsx'
 import { RegistrationPage } from '@/pages/RegistrationPage/RegistrationPage.tsx'
 
@@ -43,7 +43,7 @@ const privateRoutes: RouteObject[] = [
     element: <ProfilePage />,
   },
   {
-    path: '/pack',
+    path: '/cards',
     element: <CardsPage />,
   },
 ]
