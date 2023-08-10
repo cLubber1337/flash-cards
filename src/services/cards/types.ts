@@ -1,6 +1,11 @@
-import { DecksState, PaginationType } from '@/services/decks/types.ts'
+import { PaginationType, SortByType } from '@/services/decks/types.ts'
 
-export interface CardsState extends DecksState {}
+export interface CardsState {
+  itemsPerPage: number
+  currentPage: number
+  searchByName: string
+  sortBy: SortByType | ''
+}
 
 export interface CardsResponse {
   pagination: PaginationType

@@ -34,6 +34,7 @@ export type SortByType = {
   direction: 'asc' | 'desc'
 }
 export interface DecksState {
+  deckId: string
   itemsPerPage: number
   currentPage: number
   searchByName: string

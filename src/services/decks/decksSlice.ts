@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DecksState } from './types.ts'
 
 const initialState: DecksState = {
+  deckId: '',
   itemsPerPage: 8,
   currentPage: 1,
   searchByName: '',
@@ -24,6 +25,9 @@ export const decksSlice = createSlice({
     },
     setSortBy: (state, action: PayloadAction<DecksState['sortBy']>) => {
       state.sortBy = action.payload
+    },
+    setDeckId: (state, action: PayloadAction<string>) => {
+      state.deckId = action.payload
     },
   },
 })

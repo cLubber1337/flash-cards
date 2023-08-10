@@ -13,6 +13,7 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useGetCardsOfDeckQuery } from '@/services/decks'
+import { selectDeckId } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
@@ -25,7 +26,7 @@ export const CardsPage = ({}: PackPageProps) => {
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
-  const deckId = 'clkdo2w5x0025wc2rkavirgzk'
+  const deckId = useAppSelector(selectDeckId)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
   const { data } = useGetCardsOfDeckQuery({
@@ -75,6 +76,8 @@ export const CardsPage = ({}: PackPageProps) => {
         totalPages={data?.pagination.totalPages}
         siblingsCount={1}
         itemsPerPage={itemsPerPage}
+        setCurrentPage={page => dispatch(cardsActions.setCurrentPage(page))}
+        setItemsPerPage={itemsPerPage => dispatch(cardsActions.setItemsPerPage(itemsPerPage))}
       />
     </div>
   )

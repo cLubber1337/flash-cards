@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { THeader } from '../THeader/THeader.tsx'
 import { TRow } from '../TRow/TRow.tsx'
 
@@ -10,7 +12,9 @@ import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as PlayIcon } from '@/assets/svg/play.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
+import { decksActions } from '@/services/decks/decksSlice.ts'
 import { Deck, SortByType } from '@/services/decks/types.ts'
+import { useAppDispatch } from '@/services/store.ts'
 import { decksHeaderColumns } from '@/utils/constants'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
 
@@ -20,6 +24,12 @@ interface TableProps {
 }
 
 export const TableDecks = memo(({ data, sortBy }: TableProps) => {
+  const dispatch = useAppDispatch()
+
+  const handleLinkClick = (id: string) => {
+    dispatch(decksActions.setDeckId(id))
+  }
+
   return (
     <table className={s.table}>
       <THeader sortBy={sortBy} columns={decksHeaderColumns} />
@@ -27,14 +37,16 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
         {data?.map(({ id, cover, name, cardsCount, updated, author }) => {
           return (
             <TRow key={id}>
-              <TCell className={s.deckName}>
-                <div className={s.deckImg}>
-                  <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
-                </div>
-                <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
-                  {name}
-                </Typography>
-              </TCell>
+              <Link to={'/cards'} onClick={() => handleLinkClick(id)}>
+                <TCell className={s.deckName}>
+                  <div className={s.deckImg}>
+                    <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
+                  </div>
+                  <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
+                    {name}
+                  </Typography>
+                </TCell>
+              </Link>
               <TCell>
                 <Typography variant={TypographyVariant.Body2}>{cardsCount}</Typography>
               </TCell>

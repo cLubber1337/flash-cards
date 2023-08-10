@@ -50,7 +50,7 @@ type GetDecksArgs = {
 }
 
 type GetCardsOfDeckArgs = {
-  id: string
+  id?: string
   answer?: string
   question?: string
   orderBy?: string
@@ -58,9 +58,4 @@ type GetCardsOfDeckArgs = {
   itemsPerPage?: number
 }
 
-export const {
-  useGetDecksQuery,
-  useLazyGetDecksQuery,
-  useCreateDeckMutation,
-  useGetCardsOfDeckQuery,
-} = decksApi
+export const { useGetDecksQuery, useGetCardsOfDeckQuery } = decksApi

@@ -5,8 +5,6 @@ import s from './Pagination.module.scss'
 import { ReactComponent as ArrowLeftIcon } from '@/assets/svg/arrowLeft.svg'
 import { ReactComponent as ArrowRightIcon } from '@/assets/svg/arrowRight.svg'
 import { Select, Typography, TypographyVariant } from '@/components/ui'
-import { decksActions } from '@/services/decks/decksSlice.ts'
-import { useAppDispatch } from '@/services/store.ts'
 import { paginationRange } from '@/utils/Pagination'
 
 interface PaginationProps {
@@ -14,24 +12,31 @@ interface PaginationProps {
   totalPages?: number
   siblingsCount: number
   itemsPerPage: number
+  setCurrentPage: (value: number) => void
+  setItemsPerPage: (value: number) => void
 }
 
 export const Pagination = memo(
-  ({ currentPage, totalPages, siblingsCount, itemsPerPage }: PaginationProps) => {
-    const dispatch = useAppDispatch()
-
+  ({
+    currentPage,
+    totalPages,
+    siblingsCount,
+    itemsPerPage,
+    setCurrentPage,
+    setItemsPerPage,
+  }: PaginationProps) => {
     let pages = paginationRange(totalPages!, currentPage, siblingsCount)
 
     const onClickArrowLeft = () => {
-      currentPage > 1 && dispatch(decksActions.setCurrentPage(currentPage - 1))
+      currentPage > 1 && setCurrentPage(currentPage - 1)
     }
     const onClickArrowRight = () => {
-      currentPage < totalPages! && dispatch(decksActions.setCurrentPage(currentPage + 1))
+      currentPage < totalPages! && setCurrentPage(currentPage + 1)
     }
 
     const onClickPage = (page: number | string) => {
       if (typeof page === 'number') {
-        dispatch(decksActions.setCurrentPage(page))
+        setCurrentPage(page)
       }
     }
 
@@ -77,7 +82,7 @@ export const Pagination = memo(
               { id: 3, title: '8' },
             ]}
             currentItem={itemsPerPage}
-            onClickItem={title => dispatch(decksActions.setItemsPerPage(title))}
+            onClickItem={title => setItemsPerPage(title)}
             fullWidth
             pagination
           />

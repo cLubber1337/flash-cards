@@ -95,6 +95,8 @@ export const DecksPage = () => {
         totalPages={data?.pagination.totalPages}
         siblingsCount={1}
         itemsPerPage={itemsPerPage}
+        setCurrentPage={page => dispatch(decksActions.setCurrentPage(page))}
+        setItemsPerPage={itemsPerPage => dispatch(decksActions.setItemsPerPage(itemsPerPage))}
       />
     </div>
   )
