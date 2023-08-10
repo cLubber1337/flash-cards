@@ -1,11 +1,11 @@
 import { SortByType } from '@/services/decks/types.ts'
 
-export type Column = {
+export type DecksHeaderColumnsType = {
   key: SortByType['key']
-  title: string
+  title: 'Name' | 'Cards' | 'Last Updated' | 'Created by'
 }
 
-export const columns: Column[] = [
+export const decksHeaderColumns: DecksHeaderColumnsType[] = [
   {
     key: 'name',
     title: 'Name',

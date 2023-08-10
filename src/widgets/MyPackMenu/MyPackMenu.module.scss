@@ -1,3 +1,20 @@
+.popover {
+  position: relative;
+  display: inline;
+}
+
+.action {
+  all: unset;
+  display: flex;
+}
+
+.content {
+  content: '';
+  position: absolute;
+  top: 36px;
+  right: -8px;
+}
+
 .myPackMenu {
   position: relative;
 

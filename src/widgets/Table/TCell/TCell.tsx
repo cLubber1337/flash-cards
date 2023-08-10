@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import s from './TableCell.module.scss'
+import s from './TCell.module.scss'
 
 interface TableCellProps {
   children: ReactNode
@@ -8,7 +8,7 @@ interface TableCellProps {
   onClick?: () => void
 }
 
-export const TableCell = ({ children, className, onClick }: TableCellProps) => {
+export const TCell = ({ children, className, onClick }: TableCellProps) => {
   return (
     <td onClick={onClick} className={`${s.tableCell} ${className}`}>
       {children}

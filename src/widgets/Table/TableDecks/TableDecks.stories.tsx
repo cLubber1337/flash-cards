@@ -1,10 +1,10 @@
 import type { StoryObj } from '@storybook/react'
 
-import { Table } from './Table.tsx'
+import { TableDecks } from './TableDecks.tsx'
 
 const meta = {
   title: 'Widgets/Table',
-  component: Table,
+  component: TableDecks,
   tags: ['autodocs'],
   argTypes: {},
 }

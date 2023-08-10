@@ -23,7 +23,7 @@ import {
 } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewPack } from '@/widgets/AddNewPack'
-import { Table } from '@/widgets/Table'
+import { TableDecks } from '@/widgets/Table'
 
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
@@ -88,7 +88,7 @@ export const DecksPage = () => {
         </Button>
       </div>
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
-      <Table data={data?.items} sortBy={sortBy} />
+      <TableDecks data={data?.items} sortBy={sortBy} />
       {/*-------------------------------------PAGINATION------------------------------------------*/}
       <Pagination
         currentPage={currentPage}

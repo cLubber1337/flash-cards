@@ -1,1 +1,1 @@
-export { columns } from './columns.ts'
+export { decksHeaderColumns } from './decksHeaderColumns.ts'

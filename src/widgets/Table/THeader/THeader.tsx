@@ -1,6 +1,8 @@
 import { memo } from 'react'
 
-import s from './TableHeader.module.scss'
+import { TCell } from '../TCell/TCell.tsx'
+
+import s from './THeader.module.scss'
 
 import { ReactComponent as ArrowDownIcon } from '@/assets/svg/arrowDown.svg'
 import { ReactComponent as ArrowUpIcon } from '@/assets/svg/arrowUp.svg'
@@ -8,14 +10,16 @@ import { Typography, TypographyVariant } from '@/components/ui'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import { SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
-import { columns } from '@/utils/constants'
-import { TableCell } from '@/widgets/Table/TableCell/TableCell.tsx'
+import { CardsHeaderColumnsType } from '@/utils/constants/cardsHeaderColumns.ts'
+import { DecksHeaderColumnsType } from '@/utils/constants/decksHeaderColumns.ts'
 
 interface TableHeaderProps {
   sortBy?: SortByType | ''
+  columns: DecksHeaderColumnsType[] | CardsHeaderColumnsType[]
+  className?: string
 }
 
-export const TableHeader = memo(({ sortBy }: TableHeaderProps) => {
+export const THeader = memo(({ sortBy, columns, className = '' }: TableHeaderProps) => {
   const dispatch = useAppDispatch()
   const handleSort = (key: SortByType['key']) => () => {
     if (sortBy && sortBy?.direction === 'desc') {
@@ -32,16 +36,16 @@ export const TableHeader = memo(({ sortBy }: TableHeaderProps) => {
 
   return (
     <thead>
-      <tr className={s.row}>
+      <tr className={`${s.row} ${className}`}>
         {columns.map(({ title, key }) => (
-          <TableCell key={key} className={s.cell} onClick={handleSort(key)}>
+          <TCell key={key} className={s.cell} onClick={handleSort(key)}>
             <Typography tag="span" variant={TypographyVariant.Subtitle2}>
               {title}
             </Typography>
             {sortBy && sortBy.key === key && (
               <>{sortBy.direction === 'asc' ? <ArrowUpIcon /> : <ArrowDownIcon />}</>
             )}
-          </TableCell>
+          </TCell>
         ))}
       </tr>
     </thead>

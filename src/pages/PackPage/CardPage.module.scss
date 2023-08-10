@@ -1,0 +1,34 @@
+.packPage {
+  margin-top: 24px;
+}
+
+.linkBack {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 33px;
+}
+
+.title {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.deckImg {
+  width: 170px;
+  height: 107px;
+  margin-bottom: 25px;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.search {
+  margin-bottom: 24px;
+}
