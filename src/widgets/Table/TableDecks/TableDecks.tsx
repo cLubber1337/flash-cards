@@ -26,8 +26,7 @@ interface TableProps {
 export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const dispatch = useAppDispatch()
 
-  const handleLinkClick = (id: string, cover: string | null) => {
-    dispatch(decksActions.setDeckId(id))
+  const handleLinkClick = (cover: string | null) => {
     dispatch(decksActions.setDeckCover(cover))
   }
 
@@ -45,13 +44,13 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
               <TCell>
                 <Link
                   className={s.deckName}
-                  to={'/cards'}
-                  onClick={() => handleLinkClick(id, cover)}
+                  to={`/cards/${id}`}
+                  onClick={() => handleLinkClick(cover)}
                 >
                   <div className={s.deckImg}>
                     <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
                   </div>
-                  <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
+                  <Typography variant={TypographyVariant.Body2} className={s.title}>
                     {name}
                   </Typography>
                 </Link>

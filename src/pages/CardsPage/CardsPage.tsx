@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
+
+import { Link, useParams } from 'react-router-dom'
 
 import s from './CardsPage.module.scss'
 
@@ -13,7 +15,7 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useGetCardsOfDeckQuery } from '@/services/decks'
-import { selectDeckCover, selectDeckId } from '@/services/decks/selectors.ts'
+import { selectDeckCover } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
@@ -26,9 +28,9 @@ export const CardsPage = ({}: PackPageProps) => {
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
-  const deckId = useAppSelector(selectDeckId)
   const cover = useAppSelector(selectDeckCover)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
+  const { deckId } = useParams()
 
   const { data } = useGetCardsOfDeckQuery({
     id: deckId,
@@ -38,6 +40,20 @@ export const CardsPage = ({}: PackPageProps) => {
     question: searchByName,
   })
 
+  const handleSetCurrentPage = useCallback(
+    (page: number) => {
+      dispatch(cardsActions.setCurrentPage(page))
+    },
+    [dispatch, cardsActions]
+  )
+
+  const handleSetItemsPerPage = useCallback(
+    (itemsPerPage: number) => {
+      dispatch(cardsActions.setItemsPerPage(itemsPerPage))
+    },
+    [dispatch, cardsActions]
+  )
+
   return (
     <div className={s.packPage}>
       <Link to={'/'} className={s.linkBack}>
@@ -46,7 +62,7 @@ export const CardsPage = ({}: PackPageProps) => {
       </Link>
       <div className={s.header}>
         <div className={s.title}>
-          <Typography variant={TypographyVariant.Large}>My Pack</Typography>
+          <Typography variant={TypographyVariant.Large}>{} Pack</Typography>
           <MyPackMenu />
         </div>
         <Button onClick={() => null}>Learn to Pack</Button>
@@ -77,8 +93,8 @@ export const CardsPage = ({}: PackPageProps) => {
         totalPages={data?.pagination.totalPages}
         siblingsCount={1}
         itemsPerPage={itemsPerPage}
-        setCurrentPage={page => dispatch(cardsActions.setCurrentPage(page))}
-        setItemsPerPage={itemsPerPage => dispatch(cardsActions.setItemsPerPage(itemsPerPage))}
+        setCurrentPage={handleSetCurrentPage}
+        setItemsPerPage={handleSetItemsPerPage}
       />
     </div>
   )

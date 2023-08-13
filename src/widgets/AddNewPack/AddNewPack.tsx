@@ -20,7 +20,7 @@ interface AddNewPackProps {
 
 export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} lazy>
       <div className={s.addNewPack}>
         <CardHeader title="Add New Pack" onClose={onClose} />
         <Card className={s.content}>

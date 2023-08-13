@@ -1,6 +1,13 @@
+import {
+  CreateDeckArgs,
+  CreateDeckResponse,
+  DecksResponse,
+  GetCardsOfDeckArgs,
+  GetDecksArgs,
+} from './types.ts'
+
 import { baseApi } from '@/services/baseApi.ts'
 import { CardsResponse } from '@/services/cards'
-import { DecksResponse } from '@/services/decks/types.ts'
 
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -14,7 +21,7 @@ const decksApi = baseApi.injectEndpoints({
       },
       providesTags: ['Decks'],
     }),
-    createDeck: builder.mutation<any, any>({
+    createDeck: builder.mutation<CreateDeckResponse, CreateDeckArgs>({
       query: ({ name }) => {
         return {
           url: 'v1/decks',
@@ -34,28 +41,9 @@ const decksApi = baseApi.injectEndpoints({
           params: params,
         }
       },
-      providesTags: ['Decks'],
+      providesTags: ['Cards'],
     }),
   }),
 })
-
-type GetDecksArgs = {
-  minCardsCount?: number
-  maxCardsCount?: number
-  name?: string
-  authorId?: string
-  orderBy?: string
-  currentPage?: number
-  itemsPerPage?: number
-}
-
-type GetCardsOfDeckArgs = {
-  id?: string
-  answer?: string
-  question?: string
-  orderBy?: string
-  currentPage?: number
-  itemsPerPage?: number
-}
 
 export const { useGetDecksQuery, useGetCardsOfDeckQuery } = decksApi

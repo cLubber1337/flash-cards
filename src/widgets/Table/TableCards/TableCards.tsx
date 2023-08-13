@@ -1,10 +1,11 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 
 import s from './TableCards.module.scss'
 
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
+import { Grade } from '@/components/ui/Grade/Grade.tsx'
 import { Card, cardsActions } from '@/services/cards'
 import { SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
@@ -20,7 +21,14 @@ interface TableCardsProps {
 
 export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
   const dispatch = useAppDispatch()
-  const myCards = false
+  const myCards = true
+
+  const handleSortBy = useCallback(
+    (sortBy: SortByType | '') => {
+      dispatch(cardsActions.setSortBy(sortBy))
+    },
+    [dispatch]
+  )
 
   return (
     <table className={s.table}>
@@ -28,7 +36,7 @@ export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
         sortBy={sortBy}
         columns={cardsHeaderColumns}
         className={myCards ? s.myRow : s.friendsRow}
-        setSortBy={sortBy => dispatch(cardsActions.setSortBy(sortBy))}
+        setSortBy={handleSortBy}
       />
 
       <tbody>
@@ -49,9 +57,7 @@ export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
                 </Typography>
               </TCell>
               <TCell>
-                <Typography tag="span" variant={TypographyVariant.Body2}>
-                  {grade}
-                </Typography>
+                <Grade grade={grade} />
               </TCell>
               {myCards && (
                 <TCell>

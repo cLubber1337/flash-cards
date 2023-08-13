@@ -14,6 +14,7 @@ import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
 import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage.tsx'
 import { ProfilePage } from '@/pages/ProfilePage/ProfilePage.tsx'
 import { RegistrationPage } from '@/pages/RegistrationPage/RegistrationPage.tsx'
+import { useMeQuery } from '@/services/auth/authApi.ts'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -43,13 +44,16 @@ const privateRoutes: RouteObject[] = [
     element: <ProfilePage />,
   },
   {
-    path: '/cards',
+    path: '/cards/:deckId',
     element: <CardsPage />,
   },
 ]
 
 function PrivateRoutes() {
-  const isAuthenticated = true
+  const { data, isLoading } = useMeQuery()
+
+  if (isLoading) return <div>Loading...</div>
+  const isAuthenticated = !!data
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
 }

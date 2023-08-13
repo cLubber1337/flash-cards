@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { ReactComponent as TrashIcon } from '../../assets/svg/trash.svg'
 
@@ -51,6 +51,20 @@ export const DecksPage = () => {
     dispatch(decksActions.setCurrentPage(1))
     setSliderValue([0, 20])
   }
+
+  const setCurrentPageHandler = useCallback(
+    (page: number) => {
+      dispatch(decksActions.setCurrentPage(page))
+    },
+    [dispatch, decksActions]
+  )
+
+  const setItemsPerPageHandler = useCallback(
+    (itemsPerPage: number) => {
+      dispatch(decksActions.setItemsPerPage(itemsPerPage))
+    },
+    [dispatch, decksActions]
+  )
 
   return (
     <div className={s.decksPage}>
@@ -105,8 +119,8 @@ export const DecksPage = () => {
         totalPages={data?.pagination.totalPages}
         siblingsCount={1}
         itemsPerPage={itemsPerPage}
-        setCurrentPage={page => dispatch(decksActions.setCurrentPage(page))}
-        setItemsPerPage={itemsPerPage => dispatch(decksActions.setItemsPerPage(itemsPerPage))}
+        setCurrentPage={setCurrentPageHandler}
+        setItemsPerPage={setItemsPerPageHandler}
       />
     </div>
   )

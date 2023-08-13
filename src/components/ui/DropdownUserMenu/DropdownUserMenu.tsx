@@ -16,9 +16,10 @@ interface DropdownUserMenuProps {
     email: string
   }
   children?: ReactNode
+  logout: () => void
 }
 
-export const DropdownUserMenu = ({ userData }: DropdownUserMenuProps) => {
+export const DropdownUserMenu = ({ userData, logout }: DropdownUserMenuProps) => {
   return (
     <Popover className={s.popover}>
       <Popover.Button className={s.action}>
@@ -55,7 +56,7 @@ export const DropdownUserMenu = ({ userData }: DropdownUserMenuProps) => {
               <Typography variant={TypographyVariant.Caption}>My Profile</Typography>
             </Button>
             <div className={s.hr} />
-            <Button variant="link" className={s.btn}>
+            <Button variant="link" className={s.btn} onClick={() => logout()}>
               <LogoutIcon />
               <Typography variant={TypographyVariant.Caption}>Sign Out</Typography>
             </Button>

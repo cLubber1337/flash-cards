@@ -61,7 +61,7 @@ export const LoginForm = ({ onSubmit }: Props) => {
         <Typography variant={TypographyVariant.Body2} className={s.subtitle}>
           Don&apos;t have an account?
         </Typography>
-        <Link to="/login" className={s.link}>
+        <Link to="/register" className={s.link}>
           Sign Up
         </Link>
       </div>

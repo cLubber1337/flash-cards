@@ -13,7 +13,13 @@ export interface Author {
   id: string
   name: string
 }
-export interface Deck {
+export type Deck = CreateDeckResponse & {
+  isDeleted?: boolean
+  isBlocked?: boolean
+}
+
+export type CreateDeckResponse = {
+  author: Author
   id: string
   userId: string
   name: string
@@ -21,12 +27,33 @@ export interface Deck {
   shots: number
   cover: string | null
   rating: number
-  isDeleted?: any
-  isBlocked?: any
   created: string
   updated: string
   cardsCount: number
-  author: Author
+}
+export type CreateDeckArgs = {
+  name: string
+  isPrivate?: boolean
+  cover?: string
+}
+
+export type GetDecksArgs = {
+  minCardsCount?: number
+  maxCardsCount?: number
+  name?: string
+  authorId?: string
+  orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
+}
+
+export type GetCardsOfDeckArgs = {
+  id?: string
+  answer?: string
+  question?: string
+  orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
 }
 
 export type SortByType = {
@@ -35,7 +62,6 @@ export type SortByType = {
 }
 export interface DecksState {
   deckCover: string | null
-  deckId: string
   itemsPerPage: number
   currentPage: number
   searchByName: string

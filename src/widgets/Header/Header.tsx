@@ -5,14 +5,12 @@ import s from './Header.module.scss'
 import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
 import { DropdownUserMenu } from '@/components/ui'
 import { Button } from '@/components/ui/Button'
-
-const userData = {
-  name: 'John DoeDoe',
-  email: 'JohnDoe666@ya.com',
-}
+import { useLogoutMutation, useMeQuery } from '@/services/auth/authApi.ts'
 
 export const Header = () => {
-  const isAuth = true
+  const { data } = useMeQuery()
+
+  const [logout] = useLogoutMutation()
 
   return (
     <header className={s.header}>
@@ -20,8 +18,8 @@ export const Header = () => {
         <Link to="/">
           <Logo />
         </Link>
-        {isAuth ? (
-          <DropdownUserMenu userData={userData} />
+        {data ? (
+          <DropdownUserMenu userData={data} logout={logout} />
         ) : (
           <Button as={Link} to="/login">
             Sign In
