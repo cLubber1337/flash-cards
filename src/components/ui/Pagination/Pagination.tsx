@@ -1,11 +1,12 @@
 import { memo } from 'react'
 
+import { paginationRange } from '../../../utils/pagination'
+
 import s from './Pagination.module.scss'
 
 import { ReactComponent as ArrowLeftIcon } from '@/assets/svg/arrowLeft.svg'
 import { ReactComponent as ArrowRightIcon } from '@/assets/svg/arrowRight.svg'
 import { Select, Typography, TypographyVariant } from '@/components/ui'
-import { paginationRange } from '@/utils/Pagination'
 
 interface PaginationProps {
   currentPage: number

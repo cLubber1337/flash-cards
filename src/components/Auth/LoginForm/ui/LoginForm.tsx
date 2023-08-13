@@ -9,11 +9,11 @@ import { loginFormSchema, LoginFormValues } from '@/components/Auth/LoginForm'
 import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
 import { ControlledCheckbox } from '@/components/ui/Controlled/ControlledCheckbox'
 
-interface Props {
+interface LoginFormProps {
   onSubmit?: SubmitHandler<LoginFormValues>
 }
 
-export const LoginForm = ({ onSubmit }: Props) => {
+export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const {
     register,
     handleSubmit,

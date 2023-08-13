@@ -12,7 +12,7 @@ import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
 import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
 import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage.tsx'
-import { ProfilePage } from '@/pages/ProfilePage/ProfilePage.tsx'
+import { ProfilePage } from '@/pages/ProfilePage/ui/ProfilePage.tsx'
 import { RegistrationPage } from '@/pages/RegistrationPage/RegistrationPage.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 

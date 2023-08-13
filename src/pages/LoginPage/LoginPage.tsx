@@ -2,7 +2,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 
 import s from './LoginPage.module.scss'
 
-import { LoginForm } from '@/components/Auth/LoginForm'
+import { LoginForm, LoginFormValues } from '@/components/Auth/LoginForm'
 import { useLoginMutation, useMeQuery } from '@/services/auth/authApi.ts'
 
 interface LoginPageProps {}
@@ -15,7 +15,7 @@ export const LoginPage = ({}: LoginPageProps) => {
   if (isLoading) return <div>Loading...</div>
   if (data) return <Navigate to="/" />
 
-  const handleSignIn = (data: any) => {
+  const handleSignIn = (data: LoginFormValues) => {
     signIn(data)
       .unwrap()
       .then(() => {

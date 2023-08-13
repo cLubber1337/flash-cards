@@ -1,9 +1,11 @@
+import { AuthRegisterResponse, LoginArgs, LoginResponse, RegisterArgs } from './types.ts'
+
 import { baseApi } from '@/services/baseApi.ts'
 
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      me: builder.query<any, void>({
+      me: builder.query<AuthRegisterResponse, void>({
         query: () => {
           return {
             url: 'v1/auth/me',
@@ -25,7 +27,7 @@ const authApi = baseApi.injectEndpoints({
         },
         invalidatesTags: ['Me'],
       }),
-      register: builder.mutation<RegisterResponse, RegisterArgs>({
+      register: builder.mutation<AuthRegisterResponse, RegisterArgs>({
         query: args => {
           return {
             url: 'v1/auth/sign-up',
@@ -41,51 +43,10 @@ const authApi = baseApi.injectEndpoints({
             method: 'POST',
           }
         },
-        async onQueryStarted(_, { dispatch, queryFulfilled }) {
-          const patchResult = dispatch(
-            authApi.util.updateQueryData('me', undefined, () => {
-              return null
-            })
-          )
-
-          try {
-            await queryFulfilled
-          } catch {
-            patchResult.undo()
-          }
-        },
         invalidatesTags: ['Me'],
       }),
     }
   },
 })
-
-export type LoginResponse = {
-  accessToken: string
-}
-export type LoginArgs = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
-
-export type RegisterArgs = {
-  html?: string
-  name?: string
-  password: string
-  email: string
-  subject?: string
-  sendConfirmationEmail?: boolean
-}
-
-export type RegisterResponse = {
-  avatar: string
-  id: string
-  email: string
-  isEmailVerified: boolean
-  name: string
-  created: string
-  updated: string
-}
 
 export const { useLoginMutation, useMeQuery, useRegisterMutation, useLogoutMutation } = authApi

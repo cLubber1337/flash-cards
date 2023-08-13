@@ -8,9 +8,11 @@ import { Button } from '@/components/ui/Button'
 import { useLogoutMutation, useMeQuery } from '@/services/auth/authApi.ts'
 
 export const Header = () => {
-  const { data } = useMeQuery()
+  const { data, isLoading } = useMeQuery()
 
   const [logout] = useLogoutMutation()
+
+  if (isLoading) return null
 
   return (
     <header className={s.header}>

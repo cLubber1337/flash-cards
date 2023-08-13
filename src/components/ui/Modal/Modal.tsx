@@ -2,9 +2,9 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import { Dialog } from '@headlessui/react'
 
-import s from './Modal.module.scss'
+import { Portal } from '../../../utils/portal'
 
-import { Portal } from '@/utils/Portal'
+import s from './Modal.module.scss'
 
 interface ModalProps {
   children?: ReactNode
