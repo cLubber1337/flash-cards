@@ -7,6 +7,8 @@ import {
   useState,
 } from 'react'
 
+import clsx from 'clsx'
+
 import s from './TextField.module.scss'
 
 import { ReactComponent as EyeDisabledIcon } from '@/components/ui/TextField/assets/eye-disabled.svg'
@@ -56,18 +58,17 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       onChangeValue?.(e.target.value)
     }
 
+    const classes = {
+      textField: clsx(s.textField, className, { [s.fullWidth]: fullWidth }),
+      search: clsx(s.input, s.search, { [s.error]: errorMessage, [s.disabled]: disabled }),
+      input: clsx(s.input, errorMessage && s.error, disabled && s.disabled),
+      label: clsx(s.label, disabled && s.disabled),
+    }
+
     return (
-      <div
-        className={
-          fullWidth ? `${s.textField} ${s.fullWidth} ${className}` : `${s.textField} ${className}`
-        }
-      >
+      <div className={classes.textField}>
         {label && (
-          <Typography
-            tag="span"
-            variant={TypographyVariant.Body2}
-            className={disabled ? `${s.title} ${s.disabled}` : s.title}
-          >
+          <Typography tag="span" variant={TypographyVariant.Body2} className={classes.label}>
             {label}
           </Typography>
         )}
@@ -79,13 +80,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
               ref={ref || inputRef}
               value={customValue}
               onChange={onChangeHandler}
-              className={
-                errorMessage
-                  ? `${s.input} ${s.search} ${s.error}`
-                  : disabled
-                  ? `${s.input} ${s.search} ${s.disabled}`
-                  : `${s.input} ${s.search}`
-              }
+              className={classes.search}
               type={type}
               disabled={disabled}
               {...rest}
@@ -96,13 +91,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
               value={customValue}
               onChange={onChangeHandler}
               style={type === 'password' ? { paddingRight: '36px' } : undefined}
-              className={
-                errorMessage
-                  ? `${s.input} ${s.error}`
-                  : disabled
-                  ? `${s.input} ${s.disabled}`
-                  : s.input
-              }
+              className={classes.input}
               type={inputType}
               disabled={disabled}
               {...rest}

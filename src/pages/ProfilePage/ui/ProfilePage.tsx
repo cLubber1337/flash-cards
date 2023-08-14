@@ -18,15 +18,21 @@ interface ProfilePageProps {}
 export const ProfilePage = ({}: ProfilePageProps) => {
   const [editMode, setEditMode] = useState(false)
   const { data } = useMeQuery()
-  const [changeName] = useChangeUserNameMutation()
+  const [changeName, { isLoading }] = useChangeUserNameMutation()
 
   const handleEditName = () => {
     setEditMode(!editMode)
   }
 
-  const handleSaveChanges = (data: EditNameFormValues) => {
-    changeName(data)
-    setEditMode(false)
+  const handleSaveChanges = ({ name }: EditNameFormValues) => {
+    if (data?.name === name) {
+      setEditMode(!editMode)
+
+      return
+    }
+    changeName({ name })
+      .unwrap()
+      .then(() => setEditMode(!editMode))
   }
 
   return (
@@ -45,7 +51,7 @@ export const ProfilePage = ({}: ProfilePageProps) => {
         </div>
 
         {editMode ? (
-          <EditNameForm onSubmit={handleSaveChanges} value={data?.name} />
+          <EditNameForm onSubmit={handleSaveChanges} value={data?.name} disabled={isLoading} />
         ) : (
           <>
             <div className={s.name}>

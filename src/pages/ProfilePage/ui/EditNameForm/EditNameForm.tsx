@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -11,9 +13,11 @@ import { Button, TextField } from '@/components/ui'
 interface EditNameFormProps {
   onSubmit: SubmitHandler<EditNameFormValues>
   value?: string
+  disabled?: boolean
 }
 
-export const EditNameForm = ({ onSubmit, value }: EditNameFormProps) => {
+export const EditNameForm = ({ onSubmit, value, disabled }: EditNameFormProps) => {
+  const [currentValue, setCurrentValue] = useState(value)
   const {
     register,
     handleSubmit,
@@ -25,14 +29,17 @@ export const EditNameForm = ({ onSubmit, value }: EditNameFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={s.editNameForm}>
       <TextField
-        customValue={value}
+        customValue={currentValue}
+        onChangeValue={setCurrentValue}
         className={s.textField}
         label="Nickname"
         fullWidth
         {...register('name')}
         errorMessage={errors.name?.message}
       />
-      <Button type="submit">Save Changes</Button>
+      <Button type="submit" disabled={disabled}>
+        Save Changes
+      </Button>
     </form>
   )
 }
