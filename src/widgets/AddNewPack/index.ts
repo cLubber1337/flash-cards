@@ -1,1 +1,1 @@
-export * from './AddNewPack.tsx'
+export * from './ui/AddNewPack.tsx'

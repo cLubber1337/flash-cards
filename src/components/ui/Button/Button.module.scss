@@ -40,6 +40,10 @@
   }
 }
 
+.button {
+  display: flex;
+}
+
 .primary {
   @include button;
 

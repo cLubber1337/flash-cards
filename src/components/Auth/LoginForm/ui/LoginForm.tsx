@@ -51,11 +51,9 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
         <Link to="#" className={s.forgotPasswordLink}>
           <Typography variant={TypographyVariant.Body2}>Forgot Password?</Typography>
         </Link>
-        <div className={s.submitBtn}>
-          <Button type="submit" fullWidth>
-            Sign in
-          </Button>
-        </div>
+        <Button type="submit" fullWidth className={s.submitBtn}>
+          Sign in
+        </Button>
       </form>
       <div className={s.registerLink}>
         <Typography variant={TypographyVariant.Body2} className={s.subtitle}>

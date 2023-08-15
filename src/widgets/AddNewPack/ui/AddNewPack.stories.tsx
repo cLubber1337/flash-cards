@@ -1,6 +1,6 @@
 import type { StoryObj } from '@storybook/react'
 
-import { AddNewPack } from './AddNewPack.tsx'
+import { AddNewPack } from '@/widgets/AddNewPack'
 
 const meta = {
   title: 'Widgets/AddNewPack',

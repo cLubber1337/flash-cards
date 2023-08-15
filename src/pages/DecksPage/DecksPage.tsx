@@ -66,6 +66,10 @@ export const DecksPage = () => {
     [dispatch, decksActions]
   )
 
+  const handleAddNewPack = useCallback(() => {
+    setIsOpen(true)
+  }, [setIsOpen])
+
   return (
     <div className={s.decksPage}>
       <div className={s.header}>
@@ -74,7 +78,7 @@ export const DecksPage = () => {
             Packs list
           </Typography>
         </div>
-        <Button className={s.AddNewPackBtn} onClick={() => setIsOpen(true)}>
+        <Button className={s.AddNewPackBtn} onClick={handleAddNewPack}>
           Add New Pack
         </Button>
         <AddNewPack isOpen={isOpen} onClose={setIsOpen} />
