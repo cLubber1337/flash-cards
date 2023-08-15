@@ -5,7 +5,7 @@ import { baseApi } from '@/services/baseApi.ts'
 const authApi = baseApi.injectEndpoints({
   endpoints: builder => {
     return {
-      me: builder.query<AuthRegisterResponse, void>({
+      me: builder.query<AuthRegisterResponse | null, void>({
         query: () => {
           return {
             url: 'v1/auth/me',
@@ -43,6 +43,20 @@ const authApi = baseApi.injectEndpoints({
             method: 'POST',
           }
         },
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          const patchResult = dispatch(
+            authApi.util.updateQueryData('me', undefined, () => {
+              return null
+            })
+          )
+
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
+
         invalidatesTags: ['Me'],
       }),
     }

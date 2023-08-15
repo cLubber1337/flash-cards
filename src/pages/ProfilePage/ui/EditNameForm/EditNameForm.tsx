@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -8,7 +6,8 @@ import { editNameFormSchema } from '../../model/validation/editNameFormSchema.ts
 
 import s from './EditNameForm.module.scss'
 
-import { Button, TextField } from '@/components/ui'
+import { Button } from '@/components/ui'
+import { ControlledTextField } from '@/components/ui/Controlled/ControlledTextField/ControlledTextField.tsx'
 
 interface EditNameFormProps {
   onSubmit: SubmitHandler<EditNameFormValues>
@@ -17,25 +16,23 @@ interface EditNameFormProps {
 }
 
 export const EditNameForm = ({ onSubmit, value, disabled }: EditNameFormProps) => {
-  const [currentValue, setCurrentValue] = useState(value)
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<EditNameFormValues>({
+  const { handleSubmit, control } = useForm<EditNameFormValues>({
+    mode: 'onSubmit',
     resolver: zodResolver(editNameFormSchema),
+    defaultValues: {
+      name: value,
+    },
   })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={s.editNameForm}>
-      <TextField
-        customValue={currentValue}
-        onChangeValue={setCurrentValue}
-        className={s.textField}
+      <ControlledTextField
+        control={control}
+        name="name"
+        autoFocus
         label="Nickname"
         fullWidth
-        {...register('name')}
-        errorMessage={errors.name?.message}
+        className={s.textField}
       />
       <Button type="submit" disabled={disabled}>
         Save Changes

@@ -20,7 +20,9 @@ export const Avatar = ({ src, alt, avatarFallback, size = 36, cursor = 'auto' }:
   return (
     <avatar.Root style={style} className={s.avatarRoot}>
       <avatar.Image className={s.avatarImage} src={src} alt={alt} />
-      <avatar.Fallback className={s.avatarFallback}>{avatarFallback}</avatar.Fallback>
+      <avatar.Fallback className={s.avatarFallback} style={{ fontSize: size / 2 }}>
+        {avatarFallback}
+      </avatar.Fallback>
     </avatar.Root>
   )
 }

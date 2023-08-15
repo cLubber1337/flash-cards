@@ -5,14 +5,10 @@ import s from './Header.module.scss'
 import { ReactComponent as Logo } from '@/assets/svg/Logo.svg'
 import { DropdownUserMenu } from '@/components/ui'
 import { Button } from '@/components/ui/Button'
-import { useLogoutMutation, useMeQuery } from '@/services/auth/authApi.ts'
+import { useMeQuery } from '@/services/auth/authApi.ts'
 
 export const Header = () => {
-  const { data, isLoading } = useMeQuery()
-
-  const [logout] = useLogoutMutation()
-
-  if (isLoading) return null
+  const { data } = useMeQuery()
 
   return (
     <header className={s.header}>
@@ -21,7 +17,7 @@ export const Header = () => {
           <Logo />
         </Link>
         {data ? (
-          <DropdownUserMenu userData={data} logout={logout} />
+          <DropdownUserMenu userData={data} />
         ) : (
           <Button as={Link} to="/login">
             Sign In

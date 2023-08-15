@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -6,21 +5,23 @@ import { Link } from 'react-router-dom'
 import s from './LoginForm.module.scss'
 
 import { loginFormSchema, LoginFormValues } from '@/components/Auth/LoginForm'
-import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { Button, Card, Typography, TypographyVariant } from '@/components/ui'
 import { ControlledCheckbox } from '@/components/ui/Controlled/ControlledCheckbox'
+import { ControlledTextField } from '@/components/ui/Controlled/ControlledTextField/ControlledTextField.tsx'
 
 interface LoginFormProps {
   onSubmit?: SubmitHandler<LoginFormValues>
 }
 
 export const LoginForm = ({ onSubmit }: LoginFormProps) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
+  const { handleSubmit, control } = useForm<LoginFormValues>({
+    mode: 'onSubmit',
     resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
   })
 
   return (
@@ -29,19 +30,18 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
         Sign In
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
-        <DevTool control={control} />
-        <TextField
-          {...register('email')}
+        <ControlledTextField
+          control={control}
+          name="email"
           label="Email"
-          errorMessage={errors.email?.message}
           className={s.email}
           fullWidth
         />
-        <TextField
-          {...register('password')}
+        <ControlledTextField
+          control={control}
+          name="password"
           type="password"
           label="Password"
-          errorMessage={errors.password?.message}
           className={s.password}
           fullWidth
         />

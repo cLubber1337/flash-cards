@@ -12,9 +12,6 @@ export const LoginPage = ({}: LoginPageProps) => {
   const [signIn] = useLoginMutation()
   const navigate = useNavigate()
 
-  if (isLoading) return <div>Loading...</div>
-  if (data) return <Navigate to="/" />
-
   const handleSignIn = (data: LoginFormValues) => {
     signIn(data)
       .unwrap()
@@ -22,6 +19,9 @@ export const LoginPage = ({}: LoginPageProps) => {
         navigate('/')
       })
   }
+
+  if (isLoading) return <div>Loading...</div>
+  if (data) return <Navigate to="/" />
 
   return (
     <div className={s.loginPage}>

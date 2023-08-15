@@ -17,18 +17,21 @@ import { ReactComponent as EyeIcon } from '@/components/ui/TextField/assets/eye.
 import { ReactComponent as XIcon } from '@/components/ui/TextField/assets/xMark.svg'
 import { Typography, TypographyVariant } from '@/components/ui/Typography'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'disabled'>
+
+export type TextFieldProps = {
   type?: HTMLInputTypeAttribute
   label?: string
   errorMessage?: string
   fullWidth?: boolean
   search?: boolean
-  disabled?: boolean
-  onChangeValue?: (value: string) => void
-  customValue?: string
   className?: string
-}
-export const TextField = forwardRef<HTMLInputElement, InputProps>(
+  disabled?: boolean
+  value?: string
+  name?: string
+  onChange?: (e: string) => void
+} & HTMLInputProps
+export const TextField = forwardRef<Omit<HTMLInputElement, 'onChange'>, TextFieldProps>(
   (
     {
       type = 'text',
@@ -37,9 +40,10 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       fullWidth,
       disabled,
       search,
-      onChangeValue,
-      customValue,
       className = '',
+      onChange,
+      name,
+      value,
       ...rest
     },
     ref
@@ -48,14 +52,14 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
 
     const inputRef = useRef<HTMLInputElement>(null)
     const handlerClearInput = () => {
-      onChangeValue?.('')
+      onChange?.('')
       inputRef.current!.focus()
     }
     const handlerShowPassword = () => {
       setInputType(prevType => (prevType === 'password' ? 'text' : 'password'))
     }
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      onChangeValue?.(e.target.value)
+      onChange?.(e.target.value)
     }
 
     const classes = {
@@ -73,12 +77,13 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
           </Typography>
         )}
         <div className={s.inputContainer}>
-          {customValue && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
+          {value && search && <XIcon className={s.xIcon} onClick={handlerClearInput} />}
 
           {search ? (
             <input
+              name={name}
               ref={ref || inputRef}
-              value={customValue}
+              value={value}
               onChange={onChangeHandler}
               className={classes.search}
               type={type}
@@ -88,7 +93,8 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
           ) : (
             <input
               ref={ref || inputRef}
-              value={customValue}
+              name={name}
+              value={value}
               onChange={onChangeHandler}
               style={type === 'password' ? { paddingRight: '36px' } : undefined}
               className={classes.input}

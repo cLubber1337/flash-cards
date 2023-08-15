@@ -45,7 +45,7 @@ export const DecksPage = () => {
     maxCardsCount: sliderValue[1],
   })
 
-  const handleClearFilter = () => {
+  const handleClearFilters = () => {
     dispatch(decksActions.setSearchByName(''))
     dispatch(decksActions.setSortBy(''))
     dispatch(decksActions.setCurrentPage(1))
@@ -85,8 +85,8 @@ export const DecksPage = () => {
             placeholder="Search by name"
             search
             fullWidth
-            customValue={searchByName}
-            onChangeValue={e => dispatch(decksActions.setSearchByName(e))}
+            value={searchByName}
+            onChange={e => dispatch(decksActions.setSearchByName(e))}
           />
         </div>
         <div className={s.tabSwitcher}>
@@ -103,7 +103,7 @@ export const DecksPage = () => {
             onValueChange={setSliderValue}
           />
         </div>
-        <Button variant="secondary" className={s.clearBtn} onClick={handleClearFilter}>
+        <Button variant="secondary" className={s.clearBtn} onClick={handleClearFilters}>
           <TrashIcon />
           Clear Filter
         </Button>
