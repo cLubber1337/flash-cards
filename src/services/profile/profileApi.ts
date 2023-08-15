@@ -14,8 +14,19 @@ const profileApi = baseApi.injectEndpoints({
         },
         invalidatesTags: ['Me'],
       }),
+      updatePhoto: builder.mutation<AuthRegisterResponse, FormData>({
+        query: avatar => {
+          return {
+            url: 'v1/auth/me',
+            method: 'PATCH',
+            body: avatar,
+            formData: true,
+          }
+        },
+        invalidatesTags: ['Me'],
+      }),
     }
   },
 })
 
-export const { useChangeUserNameMutation } = profileApi
+export const { useChangeUserNameMutation, useUpdatePhotoMutation } = profileApi

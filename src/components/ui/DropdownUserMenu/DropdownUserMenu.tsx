@@ -1,5 +1,3 @@
-import { ReactNode } from 'react'
-
 import { Popover } from '@headlessui/react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -9,24 +7,23 @@ import { ReactComponent as BeakTopIcon } from '@/assets/svg/beakTop.svg'
 import { ReactComponent as LogoutIcon } from '@/assets/svg/logoutIcon.svg'
 import { ReactComponent as PersonIcon } from '@/assets/svg/person.svg'
 import { Avatar, Button, Typography, TypographyVariant } from '@/components/ui'
+import { AuthRegisterResponse } from '@/services/auth'
 import { useLogoutMutation } from '@/services/auth/authApi.ts'
 import { getInitials } from '@/utils/helpers'
 
 interface DropdownUserMenuProps {
-  userData: {
-    name: string
-    email: string
-  }
-  children?: ReactNode
+  userData: AuthRegisterResponse
 }
 
 export const DropdownUserMenu = ({ userData }: DropdownUserMenuProps) => {
   const navigate = useNavigate()
   const [logout] = useLogoutMutation()
 
-  const handleLogout = async () => {
-    await logout()
-    navigate('/login')
+  const handleLogout = () => {
+    logout()
+      .unwrap()
+      .then(() => navigate('/'))
+      .catch(err => console.error(err))
   }
 
   return (
@@ -36,7 +33,11 @@ export const DropdownUserMenu = ({ userData }: DropdownUserMenuProps) => {
           <Typography variant={TypographyVariant.Subtitle1} className={s.username}>
             {userData.name}
           </Typography>
-          <Avatar avatarFallback={getInitials(userData?.name)} cursor="pointer" />
+          {userData.avatar ? (
+            <Avatar src={userData.avatar} cursor="pointer" />
+          ) : (
+            <Avatar avatarFallback={getInitials(userData?.name)} cursor="pointer" />
+          )}
         </div>
       </Popover.Button>
 
@@ -45,7 +46,11 @@ export const DropdownUserMenu = ({ userData }: DropdownUserMenuProps) => {
           <div className={s.userMenu}>
             <BeakTopIcon className={s.beakTopIcon} />
             <div className={s.info}>
-              <Avatar avatarFallback={getInitials(userData?.name)} cursor="auto" />
+              {userData.avatar ? (
+                <Avatar src={userData.avatar} cursor="auto" />
+              ) : (
+                <Avatar avatarFallback={getInitials(userData?.name)} cursor="auto" />
+              )}
               <div className={s.name}>
                 <Typography variant={TypographyVariant.Subtitle2}>{userData?.name}</Typography>
                 <Typography variant={TypographyVariant.Caption} className={s.email}>
