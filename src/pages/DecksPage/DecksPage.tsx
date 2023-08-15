@@ -13,6 +13,7 @@ import {
   Typography,
   TypographyVariant,
 } from '@/components/ui'
+import { useMeQuery } from '@/services/auth/authApi.ts'
 import { useGetDecksQuery } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import {
@@ -22,6 +23,7 @@ import {
   selectSortBy,
 } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { decksPageTabOptions, DecksPageTabValues } from '@/utils/constants'
 import { AddNewPack } from '@/widgets/AddNewPack'
 import { TableDecks } from '@/widgets/Table'
 
@@ -33,24 +35,21 @@ export const DecksPage = () => {
   const sortBy = useAppSelector(selectSortBy)
   const [isOpen, setIsOpen] = useState(false)
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 20])
+  const [authorId, setAuthorId] = useState('')
+
+  const { data: authMeData } = useMeQuery()
 
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
-  const { data } = useGetDecksQuery({
-    itemsPerPage: itemsPerPage,
+  const { data, isLoading: isLoadingDecks } = useGetDecksQuery({
+    itemsPerPage,
     name: searchByName,
-    currentPage: currentPage,
-    orderBy: orderBy,
+    currentPage,
+    orderBy,
     minCardsCount: sliderValue[0],
     maxCardsCount: sliderValue[1],
+    authorId,
   })
-
-  const handleClearFilters = () => {
-    dispatch(decksActions.setSearchByName(''))
-    dispatch(decksActions.setSortBy(''))
-    dispatch(decksActions.setCurrentPage(1))
-    setSliderValue([0, 20])
-  }
 
   const setCurrentPageHandler = useCallback(
     (page: number) => {
@@ -66,9 +65,27 @@ export const DecksPage = () => {
     [dispatch, decksActions]
   )
 
-  const handleAddNewPack = useCallback(() => {
+  const openModalAddNewPack = useCallback(() => {
     setIsOpen(true)
   }, [setIsOpen])
+
+  const filterDecksByAuthorId = useCallback(
+    (tabValue: string) => {
+      if (tabValue === DecksPageTabValues.My) {
+        setAuthorId(authMeData?.id || '')
+      } else {
+        setAuthorId('')
+      }
+    },
+    [setAuthorId, authMeData]
+  )
+
+  const handleClearFilters = () => {
+    dispatch(decksActions.setSearchByName(''))
+    dispatch(decksActions.setSortBy(''))
+    dispatch(decksActions.setCurrentPage(1))
+    setSliderValue([0, 20])
+  }
 
   return (
     <div className={s.decksPage}>
@@ -78,7 +95,7 @@ export const DecksPage = () => {
             Packs list
           </Typography>
         </div>
-        <Button className={s.AddNewPackBtn} onClick={handleAddNewPack}>
+        <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
           Add New Pack
         </Button>
         <AddNewPack isOpen={isOpen} onClose={setIsOpen} />
@@ -95,7 +112,12 @@ export const DecksPage = () => {
         </div>
         <div className={s.tabSwitcher}>
           <Typography variant={TypographyVariant.Body2}>Show packs cards</Typography>
-          <TabSwitcher tabs={['My Cards', 'All Cards']} onClick={() => null} />
+          <TabSwitcher
+            tabs={decksPageTabOptions}
+            onClick={filterDecksByAuthorId}
+            disabled={isLoadingDecks}
+            defaultValue={DecksPageTabValues.All}
+          />
         </div>
         <div className={s.slider}>
           <Typography variant={TypographyVariant.Body2}>Number of cards</Typography>

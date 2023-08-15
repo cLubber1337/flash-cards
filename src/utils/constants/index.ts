@@ -1,1 +1,3 @@
-export { decksHeaderColumns } from './decksHeaderColumns.ts'
+export * from './decksHeaderColumns.ts'
+export * from './cardsHeaderColumns.ts'
+export * from './decksPageTabOptions.ts'
