@@ -64,8 +64,8 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
       .then(() => {
         handleClose()
       })
-      .then(() => {
-        console.log('Не удаётся создать новую колоду')
+      .catch(error => {
+        console.log(error)
       })
   }
 

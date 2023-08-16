@@ -12,6 +12,7 @@ import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as PlayIcon } from '@/assets/svg/play.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
+import { useDeleteDeckMutation } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import { Deck, SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
@@ -25,9 +26,13 @@ interface TableProps {
 
 export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const dispatch = useAppDispatch()
+  const [deleteDeck] = useDeleteDeckMutation()
 
   const handleLinkClick = (cover: string | null) => {
     dispatch(decksActions.setDeckCover(cover))
+  }
+  const handleDeleteDeck = (id: string) => {
+    deleteDeck({ id })
   }
 
   return (
@@ -72,7 +77,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
               <TCell>
                 <PlayIcon onClick={() => null} />
                 <EditIcon onClick={() => null} />
-                <TrashIcon onClick={() => null} />
+                <TrashIcon onClick={() => handleDeleteDeck(id)} />
               </TCell>
             </TRow>
           )

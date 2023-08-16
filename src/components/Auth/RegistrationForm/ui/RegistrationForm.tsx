@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import s from './RegistrationForm.module.scss'
 
 import { registrationFormSchema, RegistrationFormValues } from '@/components/Auth/RegistrationForm'
-import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { Button, Card, ControlledTextField, Typography, TypographyVariant } from '@/components/ui'
 
 interface SignUpFormProps {
   onSubmit?: SubmitHandler<RegistrationFormValues>
@@ -14,12 +14,16 @@ interface SignUpFormProps {
 
 export const RegistrationForm = ({ onSubmit }: SignUpFormProps) => {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   })
 
   return (
@@ -31,34 +35,35 @@ export const RegistrationForm = ({ onSubmit }: SignUpFormProps) => {
       </div>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
         <DevTool control={control} />
-        <TextField
-          {...register('email')}
+        <ControlledTextField
+          control={control}
+          name="email"
           label="Email"
           errorMessage={errors.email?.message}
           className={s.textField}
           fullWidth
         />
-        <TextField
-          {...register('password')}
+        <ControlledTextField
+          control={control}
+          name="password"
           type="password"
           label="Password"
           errorMessage={errors.confirmPassword && errors.confirmPassword.message}
           className={s.textField}
           fullWidth
         />
-        <TextField
-          {...register('confirmPassword')}
+        <ControlledTextField
+          control={control}
+          name="confirmPassword"
           type="password"
           label="Confirm Password"
           errorMessage={errors.confirmPassword && errors.confirmPassword.message}
           className={s.textField}
           fullWidth
         />
-        <div className={s.submitBtn}>
-          <Button type="submit" fullWidth>
-            Sign Up
-          </Button>
-        </div>
+        <Button type="submit" fullWidth className={s.submitBtn}>
+          Sign Up
+        </Button>
       </form>
       <div className={s.signInLink}>
         <Typography variant={TypographyVariant.Body2} className={s.subtitle}>

@@ -20,17 +20,21 @@ export type Deck = CreateDeckResponse & {
 
 export type CreateDeckResponse = {
   author: Author
+} & UpdateDeckResponse
+
+export type UpdateDeckResponse = {
   id: string
   userId: string
   name: string
   isPrivate: boolean
   shots: number
-  cover: string | null
+  cover: string
   rating: number
   created: string
   updated: string
   cardsCount: number
 }
+
 export type CreateDeckArgs = {
   name: string
   isPrivate?: boolean

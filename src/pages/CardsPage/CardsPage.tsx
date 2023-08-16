@@ -76,8 +76,8 @@ export const CardsPage = ({}: PackPageProps) => {
       <div className={s.search}>
         <TextField
           placeholder="Search..."
-          onChangeValue={e => dispatch(cardsActions.setSearchByName(e))}
-          customValue={searchByName}
+          onChange={e => dispatch(cardsActions.setSearchByName(e))}
+          value={searchByName}
           search
           fullWidth
         />

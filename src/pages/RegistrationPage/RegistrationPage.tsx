@@ -8,10 +8,10 @@ import { useRegisterMutation } from '@/services/auth/authApi.ts'
 interface RegistrationPageProps {}
 
 export const RegistrationPage = ({}: RegistrationPageProps) => {
-  const [register] = useRegisterMutation()
+  const [signUp] = useRegisterMutation()
   const navigate = useNavigate()
   const handleOnSubmit = (data: RegistrationFormValues) => {
-    register({ email: data.email, password: data.password })
+    signUp({ email: data.email, password: data.password })
       .unwrap()
       .then(() => {
         navigate('/login')
