@@ -7,6 +7,7 @@ import s from './CardsPage.module.scss'
 import deckImg from '@/assets/img/deckImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { useMeQuery } from '@/services/auth/authApi.ts'
 import { cardsActions } from '@/services/cards'
 import {
   selectCardsCurrentPage,
@@ -15,7 +16,7 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useGetCardsOfDeckQuery } from '@/services/decks'
-import { selectDeckCover } from '@/services/decks/selectors.ts'
+import { selectAuthorId, selectDeckCover } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
@@ -29,9 +30,10 @@ export const CardsPage = ({}: PackPageProps) => {
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
   const cover = useAppSelector(selectDeckCover)
+  const authorId = useAppSelector(selectAuthorId)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { deckId } = useParams()
-
+  const { data: authMeData } = useMeQuery()
   const { data } = useGetCardsOfDeckQuery({
     id: deckId,
     orderBy: orderBy,
@@ -39,6 +41,8 @@ export const CardsPage = ({}: PackPageProps) => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
+
+  const isMyPack = authMeData?.id === authorId
 
   const handleSetCurrentPage = useCallback(
     (page: number) => {
@@ -62,10 +66,16 @@ export const CardsPage = ({}: PackPageProps) => {
       </Link>
       <div className={s.header}>
         <div className={s.title}>
-          <Typography variant={TypographyVariant.Large}>{} Pack</Typography>
-          <MyPackMenu />
+          <Typography variant={TypographyVariant.Large}>
+            {isMyPack ? 'My Pack' : "Friend's Pack"}
+          </Typography>
+          {isMyPack && <MyPackMenu />}
         </div>
-        <Button onClick={() => null}>Learn to Pack</Button>
+        {isMyPack ? (
+          <Button onClick={() => null}>Add New Card</Button>
+        ) : (
+          <Button onClick={() => null}>Learn to Pack</Button>
+        )}
       </div>
       <div className={s.deckImg}>
         <img src={cover ? cover : deckImg} alt="deck" className={s.img} />

@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -12,6 +12,7 @@ import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as PlayIcon } from '@/assets/svg/play.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
+import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { useDeleteDeckMutation } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import { Deck, SortByType } from '@/services/decks/types.ts'
@@ -26,17 +27,42 @@ interface TableProps {
 
 export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const dispatch = useAppDispatch()
-  const [deleteDeck] = useDeleteDeckMutation()
+  const [deleteDeck, { isLoading: isLoadingDelete }] = useDeleteDeckMutation()
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
+  const [idDeck, setIdDeck] = useState('')
+  const [nameDeck, setNameDeck] = useState('')
 
-  const handleLinkClick = (cover: string | null) => {
+  const handleLinkClick = (cover: string | null, id: string) => {
     dispatch(decksActions.setDeckCover(cover))
+    dispatch(decksActions.setAuthorId(id))
   }
   const handleDeleteDeck = (id: string) => {
     deleteDeck({ id })
+      .unwrap()
+      .then(() => {
+        setIsOpenConfirmModal(false)
+      })
+  }
+  const handleClickDeleteDeck = (id: string, name: string) => {
+    setIsOpenConfirmModal(true)
+    setIdDeck(id)
+    setNameDeck(name)
   }
 
   return (
     <table className={s.table}>
+      <ConfirmModal
+        title="Delete Pack"
+        isOpen={isOpenConfirmModal}
+        setIsOpen={setIsOpenConfirmModal}
+        onAction={() => handleDeleteDeck(idDeck)}
+        isLoading={isLoadingDelete}
+      >
+        <p>
+          Do you really want to remove <span className={s.nameDeck}>{nameDeck}</span>?
+        </p>
+        <p>All cards will be deleted. </p>
+      </ConfirmModal>
       <THeader
         sortBy={sortBy}
         columns={decksHeaderColumns}
@@ -50,7 +76,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
                 <Link
                   className={s.deckName}
                   to={`/cards/${id}`}
-                  onClick={() => handleLinkClick(cover)}
+                  onClick={() => handleLinkClick(cover, author.id)}
                 >
                   <div className={s.deckImg}>
                     <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
@@ -77,7 +103,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
               <TCell>
                 <PlayIcon onClick={() => null} />
                 <EditIcon onClick={() => null} />
-                <TrashIcon onClick={() => handleDeleteDeck(id)} />
+                <TrashIcon onClick={() => handleClickDeleteDeck(id, name)} />
               </TCell>
             </TRow>
           )

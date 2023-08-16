@@ -3,11 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DecksState } from './types.ts'
 
 const initialState: DecksState = {
-  deckCover: null,
+  deckCover: localStorage.getItem('deckCover') || null,
   itemsPerPage: 8,
   currentPage: 1,
   searchByName: '',
   sortBy: '',
+  authorId: localStorage.getItem('authorId') || null,
 }
 
 export const decksSlice = createSlice({
@@ -27,7 +28,12 @@ export const decksSlice = createSlice({
       state.sortBy = action.payload
     },
     setDeckCover: (state, action: PayloadAction<string | null>) => {
-      state.deckCover = action.payload
+      localStorage.setItem('deckCover', action.payload || '')
+      state.deckCover = localStorage.getItem('deckCover')
+    },
+    setAuthorId: (state, action: PayloadAction<string>) => {
+      localStorage.setItem('authorId', action.payload)
+      state.authorId = localStorage.getItem('authorId')
     },
   },
 })

@@ -38,6 +38,8 @@ const authApi = baseApi.injectEndpoints({
       }),
       logout: builder.mutation<void, void>({
         query: () => {
+          localStorage.clear()
+
           return {
             url: 'v1/auth/logout',
             method: 'POST',
