@@ -1,12 +1,11 @@
 import { memo } from 'react'
 
-import { paginationRange } from '../../../utils/pagination'
-
 import s from './Pagination.module.scss'
 
 import { ReactComponent as ArrowLeftIcon } from '@/assets/svg/arrowLeft.svg'
 import { ReactComponent as ArrowRightIcon } from '@/assets/svg/arrowRight.svg'
 import { Select, Typography, TypographyVariant } from '@/components/ui'
+import { paginationRange } from '@/utils/pagination'
 
 interface PaginationProps {
   currentPage: number
@@ -36,6 +35,7 @@ export const Pagination = memo(
     }
 
     const onClickPage = (page: number | string) => {
+      // решение проблемы с точками
       if (typeof page === 'number') {
         setCurrentPage(page)
       }
@@ -74,6 +74,7 @@ export const Pagination = memo(
         </ul>
 
         {/*---------------------------------------Items per page----------------------------------------*/}
+
         <Typography variant={TypographyVariant.Body2}>show </Typography>
         <div className={s.select}>
           <Select
@@ -83,7 +84,7 @@ export const Pagination = memo(
               { id: 3, title: '8' },
             ]}
             currentItem={itemsPerPage}
-            onClickItem={title => setItemsPerPage(title)}
+            onClickItem={setItemsPerPage}
             fullWidth
             pagination
           />

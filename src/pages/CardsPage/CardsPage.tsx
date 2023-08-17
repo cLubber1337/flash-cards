@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ import {
 import { useGetCardsOfDeckQuery } from '@/services/decks'
 import { selectAuthorId, selectDeckCover } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { AddNewCard } from '@/widgets/AddNewCard/AddNewCard.tsx'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
 
@@ -25,6 +26,7 @@ interface PackPageProps {}
 
 export const CardsPage = ({}: PackPageProps) => {
   const dispatch = useAppDispatch()
+  const { deckId } = useParams()
   const itemsPerPage = useAppSelector(selectCardsItemsPerPage)
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
@@ -32,7 +34,6 @@ export const CardsPage = ({}: PackPageProps) => {
   const cover = useAppSelector(selectDeckCover)
   const authorId = useAppSelector(selectAuthorId)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
-  const { deckId } = useParams()
   const { data: authMeData } = useMeQuery()
   const { data } = useGetCardsOfDeckQuery({
     id: deckId,
@@ -41,8 +42,8 @@ export const CardsPage = ({}: PackPageProps) => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
-
   const isMyPack = authMeData?.id === authorId
+  const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
 
   const handleSetCurrentPage = useCallback(
     (page: number) => {
@@ -60,6 +61,7 @@ export const CardsPage = ({}: PackPageProps) => {
 
   return (
     <div className={s.packPage}>
+      <AddNewCard isOpen={isOpenAddNewCard} onClose={setIsOpenAddNewCard} />
       <Link to={'/'} className={s.linkBack}>
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
@@ -72,7 +74,7 @@ export const CardsPage = ({}: PackPageProps) => {
           {isMyPack && <MyPackMenu />}
         </div>
         {isMyPack ? (
-          <Button onClick={() => null}>Add New Card</Button>
+          <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
         ) : (
           <Button onClick={() => null}>Learn to Pack</Button>
         )}

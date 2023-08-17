@@ -30,13 +30,8 @@
   border: 1px solid var(--color-dark-300);
   border-radius: 2px;
 
-  &:-webkit-autofill {
-    background-color: transparent !important;
-    box-shadow: 0 0 0 1000px transparent inset;
-  }
-
   &:hover {
-    background: var(--color-dark-700);
+    background-color: var(--color-dark-700);
   }
 
   &:focus {
