@@ -3,13 +3,13 @@ import s from './CardFooter.module.scss'
 import { Button, Card } from '@/components/ui'
 
 type CardFooterProps = {
-  onAction: () => void
+  onAction?: () => void
   titleOnAction?: string
   isLoading?: boolean
 } & (
   | {
       twoButtons: true
-      onAction: () => void
+      onAction?: () => void
       onDismiss: (isOpen: boolean) => void
       titleOnDismiss?: string
     }

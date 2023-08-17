@@ -8,7 +8,7 @@ import {
   createNewPasswordFormSchema,
   CreateNewPasswordFormValues,
 } from '@/components/Auth/CreateNewPasswordForm'
-import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { Button, Card, ControlledTextField, Typography, TypographyVariant } from '@/components/ui'
 
 interface CreateNewPasswordFormProps {
   onSubmit?: SubmitHandler<CreateNewPasswordFormValues>
@@ -16,7 +16,6 @@ interface CreateNewPasswordFormProps {
 
 export const CreateNewPasswordForm = ({ onSubmit }: CreateNewPasswordFormProps) => {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -31,8 +30,9 @@ export const CreateNewPasswordForm = ({ onSubmit }: CreateNewPasswordFormProps) 
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
         <DevTool control={control} />
-        <TextField
-          {...register('password')}
+        <ControlledTextField
+          control={control}
+          name="password"
           type="password"
           label="Password"
           errorMessage={errors.password?.message}

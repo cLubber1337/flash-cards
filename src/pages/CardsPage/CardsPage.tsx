@@ -18,7 +18,7 @@ import {
 import { useGetCardsOfDeckQuery } from '@/services/decks'
 import { selectAuthorId, selectDeckCover } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
-import { AddNewCard } from '@/widgets/AddNewCard/AddNewCard.tsx'
+import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
 
@@ -97,7 +97,7 @@ export const CardsPage = ({}: PackPageProps) => {
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      <TableCards sortBy={sortBy} data={data?.items} />
+      <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
       <Pagination

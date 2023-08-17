@@ -17,11 +17,11 @@ import { TRow } from '@/widgets/Table/TRow/TRow.tsx'
 interface TableCardsProps {
   data?: Card[]
   sortBy: SortByType | ''
+  isMyPack: boolean
 }
 
-export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
+export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => {
   const dispatch = useAppDispatch()
-  const myCards = true
 
   const handleSortBy = useCallback(
     (sortBy: SortByType | '') => {
@@ -35,20 +35,30 @@ export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
       <THeader
         sortBy={sortBy}
         columns={cardsHeaderColumns}
-        className={myCards ? s.myRow : s.friendsRow}
+        className={isMyPack ? s.myRow : s.friendsRow}
         setSortBy={handleSortBy}
       />
 
       <tbody>
-        {data?.map(({ id, answer, question, updated, grade }) => {
+        {data?.map(({ id, answer, question, updated, grade, answerImg, questionImg }) => {
           return (
-            <TRow key={id} className={myCards ? s.myRow : s.friendsRow}>
+            <TRow key={id} className={isMyPack ? s.myRow : s.friendsRow}>
               <TCell className={s.col_1}>
+                {questionImg && (
+                  <div className={s.cardImg}>
+                    <img src={questionImg} alt="question" className={s.img} />
+                  </div>
+                )}
                 <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
                   {question}
                 </Typography>
               </TCell>
               <TCell className={s.col_1}>
+                {answerImg && (
+                  <div className={s.cardImg}>
+                    <img src={answerImg} alt="question" className={s.img} />
+                  </div>
+                )}
                 <Typography variant={TypographyVariant.Body2}>{answer}</Typography>
               </TCell>
               <TCell>
@@ -59,7 +69,7 @@ export const TableCards = memo(({ data, sortBy }: TableCardsProps) => {
               <TCell>
                 <Grade grade={grade} />
               </TCell>
-              {myCards && (
+              {isMyPack && (
                 <TCell>
                   <EditIcon onClick={() => null} />
                   <TrashIcon onClick={() => null} />

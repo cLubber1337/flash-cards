@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 
+import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
@@ -93,6 +94,7 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
             />
           </label>
           <form onSubmit={handleSubmit(onSubmitCreateDeck)}>
+            <DevTool control={control} />
             <ControlledTextField
               disabled={isLoading}
               className={s.textField}

@@ -5,7 +5,6 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   padding: 24px;
 }
 
@@ -18,11 +17,22 @@
 .textWithPicture {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .select {
-  margin-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin-bottom: 8px;
+}
+
+.mt_26 {
+  margin-top: 26px;
+}
+
+.textField {
+  height: 86px;
 }
 
 .cover {
