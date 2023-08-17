@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,22 +24,17 @@ import {
   TypographyVariant,
 } from '@/components/ui'
 import { useCreateCardMutation } from '@/services/cards/cardsApi.ts'
+import { QuestionFormat, questionFormatOptions } from '@/utils/constants'
 
 interface AddNewCardProps {
   isOpen: boolean
   onClose: (isOpen: boolean) => void
 }
-const selectOptions = [
-  { id: 1, title: 'Text with picture' },
-  { id: 2, title: 'Text only' },
-]
 
 export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
   const [textOnly, setTextOnly] = useState(false)
-  const [loadedAnswerImg, setLoadedAnswerImg] = useState<File | null>(null)
-  const [loadedQuestionImg, setLoadedQuestionImg] = useState<File | null>(null)
   const { deckId } = useParams()
-  const { handleSubmit, control, reset, watch } = useForm<AddNewCardValues>({
+  const { handleSubmit, control, reset, watch, register } = useForm<AddNewCardValues>({
     mode: 'onSubmit',
     resolver: zodResolver(addNewCardSchema),
     defaultValues: {
@@ -49,17 +44,14 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
       questionImg: '',
     },
   })
-
   const [createCard] = useCreateCardMutation()
-  const handleChangeAnswerCover = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0]
 
-    setLoadedAnswerImg(file)
-  }
+  const answerImage = watch('answerImg')[0] ? URL.createObjectURL(watch('answerImg')[0]) : answerImg
+  const questionImage = watch('questionImg')[0]
+    ? URL.createObjectURL(watch('questionImg')[0])
+    : questionImg
 
   const handleClose = () => {
-    setLoadedQuestionImg(null)
-    setLoadedAnswerImg(null)
     onClose(false)
     reset()
   }
@@ -68,9 +60,9 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
     const formData = new FormData()
 
     formData.append('answer', data.answer)
-    loadedAnswerImg && formData.append('answerImg', loadedAnswerImg!)
+    data.answerImg[0] && formData.append('answerImg', data.answerImg[0])
     formData.append('question', data.question)
-    loadedQuestionImg && formData.append('questionImg', loadedQuestionImg!)
+    data.questionImg[0] && formData.append('questionImg', data.questionImg[0])
 
     createCard({ id: deckId!, formData })
       .unwrap()
@@ -79,14 +71,8 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
       })
   }
 
-  const handleChangeQuestionCover = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0]
-
-    setLoadedQuestionImg(file)
-  }
-
-  const chooseQuestionFormat = (title: string) => {
-    if (title === 'Text with picture') {
+  const chooseQuestionFormat = (questionFormat: string) => {
+    if (questionFormat === QuestionFormat.TextWithPicture) {
       setTextOnly(false)
     } else {
       setTextOnly(true)
@@ -100,7 +86,7 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
         <Card className={s.content}>
           <Select
             className={s.select}
-            items={selectOptions}
+            items={questionFormatOptions}
             fullWidth
             label="Choose a question format"
             onClickItem={chooseQuestionFormat}
@@ -121,11 +107,7 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
               {!textOnly && (
                 <div>
                   <div className={s.cover}>
-                    <img
-                      className={s.img}
-                      src={loadedQuestionImg ? URL.createObjectURL(loadedQuestionImg) : questionImg}
-                      alt="question"
-                    />
+                    <img className={s.img} src={questionImage} alt="question" />
                   </div>
 
                   <label htmlFor="change-cover-question">
@@ -136,7 +118,7 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
                       id="change-cover-question"
                       type="file"
                       accept="image/*"
-                      onChange={handleChangeQuestionCover}
+                      {...register('questionImg')}
                       style={{ display: 'none' }}
                     />
                   </label>
@@ -163,11 +145,7 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
               {!textOnly && (
                 <div>
                   <div className={s.cover}>
-                    <img
-                      className={s.img}
-                      src={loadedAnswerImg ? URL.createObjectURL(loadedAnswerImg) : answerImg}
-                      alt="answer"
-                    />
+                    <img className={s.img} src={answerImage} alt="answer" />
                   </div>
 
                   <label htmlFor="change-cover-answer">
@@ -178,7 +156,7 @@ export const AddNewCard = ({ isOpen, onClose }: AddNewCardProps) => {
                       id="change-cover-answer"
                       type="file"
                       accept="image/*"
-                      onChange={handleChangeAnswerCover}
+                      {...register('answerImg')}
                       style={{ display: 'none' }}
                     />
                   </label>
