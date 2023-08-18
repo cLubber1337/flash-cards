@@ -1,12 +1,13 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import s from './TableCards.module.scss'
 
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
+import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Grade } from '@/components/ui/Grade/Grade.tsx'
-import { Card, cardsActions } from '@/services/cards'
+import { Card, cardsActions, useDeleteCardMutation } from '@/services/cards'
 import { SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
 import { cardsHeaderColumns } from '@/utils/constants/cardsHeaderColumns.ts'
@@ -21,6 +22,10 @@ interface TableCardsProps {
 }
 
 export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => {
+  const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false)
+  const [deleteCard, { isLoading: isLoadingDelete }] = useDeleteCardMutation()
+  const [idCard, setIdCard] = useState('')
+  const [cardName, setCardName] = useState('')
   const dispatch = useAppDispatch()
 
   const handleSortBy = useCallback(
@@ -29,6 +34,21 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
     },
     [dispatch]
   )
+
+  const handleClickDeleteCard = useCallback(
+    (id: string, cardName: string) => {
+      setIdCard(id)
+      setIsOpenConfirmDelete(true)
+      setCardName(cardName)
+    },
+    [setIdCard, setIsOpenConfirmDelete]
+  )
+
+  const handleDeleteCard = () => {
+    deleteCard({ id: idCard })
+      .unwrap()
+      .then(() => setIsOpenConfirmDelete(false))
+  }
 
   return (
     <table className={s.table}>
@@ -40,6 +60,15 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
       />
 
       <tbody>
+        <ConfirmModal
+          title="Delete Card"
+          isOpen={isOpenConfirmDelete}
+          setIsOpen={setIsOpenConfirmDelete}
+          onAction={() => handleDeleteCard()}
+          isLoading={isLoadingDelete}
+        >
+          <p>Do you really want to remove {cardName}?</p>
+        </ConfirmModal>
         {data?.map(({ id, answer, question, updated, grade, answerImg, questionImg }) => {
           return (
             <TRow key={id} className={isMyPack ? s.myRow : s.friendsRow}>
@@ -72,7 +101,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
               {isMyPack && (
                 <TCell>
                   <EditIcon onClick={() => null} />
-                  <TrashIcon onClick={() => null} />
+                  <TrashIcon onClick={() => handleClickDeleteCard(id, answer)} />
                 </TCell>
               )}
             </TRow>

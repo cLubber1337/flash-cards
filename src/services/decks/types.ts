@@ -71,4 +71,5 @@ export interface DecksState {
   currentPage: number
   searchByName: string
   sortBy: SortByType | ''
+  numberOfCards: [number, number]
 }

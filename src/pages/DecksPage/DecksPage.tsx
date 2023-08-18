@@ -19,6 +19,7 @@ import { decksActions } from '@/services/decks/decksSlice.ts'
 import {
   selectCurrentPage,
   selectItemsPerPage,
+  selectNumberOfCards,
   selectSearchByName,
   selectSortBy,
 } from '@/services/decks/selectors.ts'
@@ -33,8 +34,8 @@ export const DecksPage = () => {
   const currentPage = useAppSelector(selectCurrentPage)
   const searchByName = useAppSelector(selectSearchByName)
   const sortBy = useAppSelector(selectSortBy)
+  const numberOfCards = useAppSelector(selectNumberOfCards)
   const [isOpen, setIsOpen] = useState(false)
-  const [sliderValue, setSliderValue] = useState<[number, number]>([0, 20])
   const [authorId, setAuthorId] = useState('')
 
   const { data: authMeData } = useMeQuery()
@@ -46,8 +47,8 @@ export const DecksPage = () => {
     name: searchByName,
     currentPage: authorId ? 1 : currentPage,
     orderBy,
-    minCardsCount: sliderValue[0],
-    maxCardsCount: sliderValue[1],
+    minCardsCount: numberOfCards[0],
+    maxCardsCount: numberOfCards[1],
     authorId,
   })
 
@@ -84,7 +85,7 @@ export const DecksPage = () => {
     dispatch(decksActions.setSearchByName(''))
     dispatch(decksActions.setSortBy(''))
     dispatch(decksActions.setCurrentPage(1))
-    setSliderValue([0, 20])
+    dispatch(decksActions.setNumberOfCards([0, 20]))
   }
 
   return (
@@ -108,6 +109,7 @@ export const DecksPage = () => {
             fullWidth
             value={searchByName}
             onChange={e => dispatch(decksActions.setSearchByName(e))}
+            disabled={isLoadingDecks}
           />
         </div>
         <div className={s.tabSwitcher}>
@@ -122,14 +124,19 @@ export const DecksPage = () => {
         <div className={s.slider}>
           <Typography variant={TypographyVariant.Body2}>Number of cards</Typography>
           <Slider
-            defaultValue={sliderValue}
+            defaultValue={numberOfCards}
             min={0}
             max={20}
             step={1}
-            onValueChange={setSliderValue}
+            onValueChange={v => dispatch(decksActions.setNumberOfCards(v))}
           />
         </div>
-        <Button variant="secondary" className={s.clearBtn} onClick={handleClearFilters}>
+        <Button
+          variant="secondary"
+          className={s.clearBtn}
+          onClick={handleClearFilters}
+          disabled={isLoadingDecks}
+        >
           <TrashIcon />
           Clear Filter
         </Button>

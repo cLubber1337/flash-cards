@@ -6,3 +6,5 @@ export const selectSortBy = (state: RootState) => state.decks.sortBy
 export const selectDeckCover = (state: RootState) => state.decks.deckCover
 
 export const selectAuthorId = (state: RootState) => state.decks.authorId
+
+export const selectNumberOfCards = (state: RootState) => state.decks.numberOfCards

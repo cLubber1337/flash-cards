@@ -13,9 +13,10 @@ interface EditNameFormProps {
   onSubmit: SubmitHandler<EditNameFormValues>
   value?: string
   disabled?: boolean
+  setEditMode: (editMode: boolean) => void
 }
 
-export const EditNameForm = ({ onSubmit, value, disabled }: EditNameFormProps) => {
+export const EditNameForm = ({ onSubmit, value, disabled, setEditMode }: EditNameFormProps) => {
   const { handleSubmit, control } = useForm<EditNameFormValues>({
     mode: 'onSubmit',
     resolver: zodResolver(editNameFormSchema),
@@ -34,8 +35,11 @@ export const EditNameForm = ({ onSubmit, value, disabled }: EditNameFormProps) =
         fullWidth
         className={s.textField}
       />
-      <Button type="submit" disabled={disabled}>
+      <Button type="submit" disabled={disabled} fullWidth>
         Save Changes
+      </Button>
+      <Button variant="secondary" disabled={disabled} onClick={() => setEditMode(false)} fullWidth>
+        Cancel
       </Button>
     </form>
   )

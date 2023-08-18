@@ -35,7 +35,6 @@ export const Pagination = memo(
     }
 
     const onClickPage = (page: number | string) => {
-      // решение проблемы с точками
       if (typeof page === 'number') {
         setCurrentPage(page)
       }

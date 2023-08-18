@@ -35,6 +35,7 @@ export const CardsPage = ({}: PackPageProps) => {
   const authorId = useAppSelector(selectAuthorId)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { data: authMeData } = useMeQuery()
+
   const { data } = useGetCardsOfDeckQuery({
     id: deckId,
     orderBy: orderBy,

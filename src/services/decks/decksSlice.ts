@@ -9,6 +9,7 @@ const initialState: DecksState = {
   searchByName: '',
   sortBy: '',
   authorId: localStorage.getItem('authorId') || null,
+  numberOfCards: [0, 20],
 }
 
 export const decksSlice = createSlice({
@@ -34,6 +35,9 @@ export const decksSlice = createSlice({
     setAuthorId: (state, action: PayloadAction<string>) => {
       localStorage.setItem('authorId', action.payload)
       state.authorId = localStorage.getItem('authorId')
+    },
+    setNumberOfCards: (state, action: PayloadAction<[number, number]>) => {
+      state.numberOfCards = action.payload
     },
   },
 })

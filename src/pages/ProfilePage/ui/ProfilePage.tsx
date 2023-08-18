@@ -9,6 +9,7 @@ import s from './ProfilePage.module.scss'
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
 import { ReactComponent as EditAvatarIcon } from '@/assets/svg/EditBtn.svg'
 import { ReactComponent as LogOutIcon } from '@/assets/svg/logoutIcon.svg'
+import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Avatar, Button, Card, Typography, TypographyVariant } from '@/components/ui'
 import { EditNameForm } from '@/pages/ProfilePage/ui/EditNameForm/EditNameForm.tsx'
 import { useLogoutMutation, useMeQuery } from '@/services/auth/authApi.ts'
@@ -54,8 +55,16 @@ export const ProfilePage = ({}: ProfilePageProps) => {
     updatePhoto(formData)
   }
 
+  const handleGoBack = () => {
+    navigate(-1)
+  }
+
   return (
     <div className={s.profilePage}>
+      <div className={s.linkBack} onClick={handleGoBack}>
+        <BackIcon />
+        <Typography variant={TypographyVariant.Body2}>Back</Typography>
+      </div>
       <Card className={s.info}>
         <Typography tag="h1" variant={TypographyVariant.Large}>
           Personal Information
@@ -81,7 +90,12 @@ export const ProfilePage = ({}: ProfilePageProps) => {
         </div>
 
         {editMode ? (
-          <EditNameForm onSubmit={handleSaveChanges} value={data?.name} disabled={isLoading} />
+          <EditNameForm
+            onSubmit={handleSaveChanges}
+            value={data?.name}
+            disabled={isLoading}
+            setEditMode={setEditMode}
+          />
         ) : (
           <>
             <div className={s.name}>
@@ -91,7 +105,7 @@ export const ProfilePage = ({}: ProfilePageProps) => {
             <Typography variant={TypographyVariant.Body2} className={s.email}>
               {data?.email}
             </Typography>
-            <Button variant="secondary" onClick={handleLogout}>
+            <Button variant="secondary" onClick={handleLogout} fullWidth>
               <LogOutIcon />
               Logout
             </Button>
