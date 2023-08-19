@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import s from './CardsPage.module.scss'
 
@@ -27,6 +27,7 @@ interface PackPageProps {}
 export const CardsPage = ({}: PackPageProps) => {
   const dispatch = useAppDispatch()
   const { deckId } = useParams()
+  const navigate = useNavigate()
   const itemsPerPage = useAppSelector(selectCardsItemsPerPage)
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
@@ -43,8 +44,13 @@ export const CardsPage = ({}: PackPageProps) => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
+
   const isMyPack = authMeData?.id === authorId
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
+
+  const handleLearnPack = () => {
+    navigate(`/decks/${deckId}/learn`)
+  }
 
   const handleSetCurrentPage = useCallback(
     (page: number) => {
@@ -72,12 +78,12 @@ export const CardsPage = ({}: PackPageProps) => {
           <Typography variant={TypographyVariant.Large}>
             {isMyPack ? 'My Pack' : "Friend's Pack"}
           </Typography>
-          {isMyPack && <MyPackMenu />}
+          {isMyPack && <MyPackMenu onClickLearnPack={handleLearnPack} />}
         </div>
         {isMyPack ? (
           <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
         ) : (
-          <Button onClick={() => null}>Learn to Pack</Button>
+          <Button onClick={handleLearnPack}>Learn to Pack</Button>
         )}
       </div>
       <div className={s.deckImg}>

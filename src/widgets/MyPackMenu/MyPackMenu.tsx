@@ -9,9 +9,11 @@ import { ReactComponent as PlayIcon } from '@/assets/svg/play.svg'
 import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Button, Typography, TypographyVariant } from '@/components/ui'
 
-interface MyPackMenuProps {}
+interface MyPackMenuProps {
+  onClickLearnPack: () => void
+}
 
-export const MyPackMenu = ({}: MyPackMenuProps) => {
+export const MyPackMenu = ({ onClickLearnPack }: MyPackMenuProps) => {
   return (
     <Popover className={s.popover}>
       <Popover.Button className={s.action}>
@@ -20,7 +22,7 @@ export const MyPackMenu = ({}: MyPackMenuProps) => {
       <Popover.Panel className={s.content}>
         <div className={s.myPackMenu}>
           <BeakTopIcon className={s.beakTopIcon} />
-          <Button className={s.btn} variant="link" onClick={() => null}>
+          <Button className={s.btn} variant="link" onClick={() => onClickLearnPack()}>
             <PlayIcon />
             <Typography variant={TypographyVariant.Caption}>Play</Typography>
           </Button>

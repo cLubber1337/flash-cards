@@ -1,26 +1,47 @@
 import { useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { Question } from '../ui/Question/Question.tsx'
 
 import s from './LearnPackPage.module.scss'
 
-import imgAnswer from '@/assets/img/answerImage.jpg'
-import img from '@/assets/img/questionImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Card, Typography, TypographyVariant } from '@/components/ui'
 import { Answer } from '@/pages/LearnPackPage/ui/Answer/Answer.tsx'
+import {
+  useGetRandomCardQuery,
+  useLazyGetRandomCardQuery,
+  useRateCardMutation,
+} from '@/services/cards'
 
 interface LearnPackPageProps {}
 
 export const LearnPackPage = ({}: LearnPackPageProps) => {
-  const [answer, setAnswer] = useState(false)
-  const handleShowAnswer = () => {
-    setAnswer(true)
+  const { deckId } = useParams()
+  const [showAnswer, setShowAnswer] = useState(false)
+  const [grade, setGrade] = useState(0)
+  const [getRandomCard, isLoading] = useLazyGetRandomCardQuery()
+
+  const [rateCard] = useRateCardMutation()
+  const { data: randomCardData } = useGetRandomCardQuery({
+    id: deckId!,
+  })
+
+  const rateAnswer = (grade: number) => {
+    setGrade(grade)
   }
+
   const handleShowNextQuestion = () => {
-    setAnswer(false)
+    rateCard({ deckId: deckId!, grade, cardId: randomCardData?.id! })
+      .unwrap()
+      .then(() => {
+        getRandomCard({ id: deckId! })
+          .unwrap()
+          .then(() => setShowAnswer(false))
+          .catch(() => alert("Can't get random card"))
+      })
+      .catch(() => alert("Can't rate this card"))
   }
 
   return (
@@ -33,15 +54,20 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
         <Typography tag="h1" variant={TypographyVariant.Large} className={s.title}>
           Learn &rdquo;--DECK NAME--&ldquo;
         </Typography>
-        <Question question={'What is React?'} shots={9} questionImg={img} />
-        {answer && (
+        <Question
+          question={randomCardData?.question}
+          shots={randomCardData?.shots}
+          questionImg={randomCardData?.questionImg}
+        />
+        {showAnswer && (
           <Answer
-            answer={'React is a JavaScript library for building user interfaces.'}
-            answerImg={imgAnswer}
+            answer={randomCardData?.answer}
+            answerImg={randomCardData?.answerImg}
+            onClickItem={rateAnswer}
           />
         )}
-        {!answer ? (
-          <Button fullWidth onClick={() => handleShowAnswer()}>
+        {!showAnswer ? (
+          <Button fullWidth onClick={() => setShowAnswer(true)}>
             Show Answer
           </Button>
         ) : (

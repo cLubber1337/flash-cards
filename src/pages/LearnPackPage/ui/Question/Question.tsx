@@ -3,8 +3,8 @@ import s from './Question.module.scss'
 import { Typography, TypographyVariant } from '@/components/ui'
 
 interface QuestionProps {
-  question: string
-  shots: number
+  question?: string
+  shots?: number
   questionImg?: string
 }
 
@@ -17,9 +17,11 @@ export const Question = ({ question, shots, questionImg }: QuestionProps) => {
           {question}
         </Typography>
       </Typography>
-      <div className={s.cover}>
-        <img src={questionImg} alt="question" className={s.img} />
-      </div>
+      {questionImg && (
+        <div className={s.cover}>
+          <img src={questionImg} alt="question" className={s.img} />
+        </div>
+      )}
       <Typography variant={TypographyVariant.Body2} className={s.shots}>
         Количество попыток ответов на вопрос: {shots}
       </Typography>

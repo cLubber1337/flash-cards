@@ -12,9 +12,18 @@ interface RadioGroupProps {
   items: { id: number; title: string }[]
   className?: string
   label?: string
+  onChangeValue?: (value: string) => void
+  onClickItem?: (grade: number) => void
 }
 
-export const RadioGroup = ({ disabled, items, className, label }: RadioGroupProps) => {
+export const RadioGroup = ({
+  disabled,
+  items,
+  className,
+  label,
+  onChangeValue,
+  onClickItem,
+}: RadioGroupProps) => {
   return (
     <form>
       {label && (
@@ -27,19 +36,21 @@ export const RadioGroup = ({ disabled, items, className, label }: RadioGroupProp
         defaultValue="default"
         aria-label="View density"
         disabled={disabled}
+        onValueChange={value => onChangeValue?.(value)}
       >
         {items.map(({ id, title }) => (
           <div key={id} className={s.item}>
             <radioGroup.Item
-              className={disabled ? `${s.radio} ${s.disabled}` : `${s.radio}`}
+              className={clsx(s.radio, disabled && s.disabled)}
               value={title}
               id={title}
+              onClick={() => onClickItem?.(id)}
             >
               <radioGroup.Indicator className={`${s.indicator}`}>
                 {disabled ? <RadioCheckedDisabledIcon /> : <RadioCheckedIcon />}
               </radioGroup.Indicator>
             </radioGroup.Item>
-            <label htmlFor={title} className={disabled ? `${s.title} ${s.disabled}` : s.title}>
+            <label htmlFor={title} className={clsx(s.title, disabled && s.disabled)}>
               <Typography variant={TypographyVariant.Body2}>{title}</Typography>
             </label>
           </div>
