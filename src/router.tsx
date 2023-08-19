@@ -10,6 +10,7 @@ import { Layout } from '@/components/Layout'
 import { CardsPage } from '@/pages/CardsPage/CardsPage.tsx'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
+import { LearnPackPage } from '@/pages/LearnPackPage/ui/LearnPackPage.tsx'
 import { LoginPage } from '@/pages/LoginPage/LoginPage.tsx'
 import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage.tsx'
 import { ProfilePage } from '@/pages/ProfilePage/ui/ProfilePage.tsx'
@@ -46,6 +47,10 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/cards/:deckId',
     element: <CardsPage />,
+  },
+  {
+    path: '/learn',
+    element: <LearnPackPage />,
   },
 ]
 

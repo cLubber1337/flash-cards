@@ -7,11 +7,11 @@ export const addNewCardSchema = z.object({
   question: z
     .string()
     .min(3, 'Question should be at least 3 characters long')
-    .max(20, 'Question should be at most 20 characters long'),
+    .max(35, 'Question should be at most 20 characters long'),
   answer: z
     .string()
     .min(3, 'Answer should be at least 3 characters long')
-    .max(20, 'Answer should be at most 20 characters long'),
+    .max(35, 'Answer should be at most 20 characters long'),
   answerImg: z.any(),
   // .refine(files => files?.length == 1, 'Image is required.')
   // .refine(files => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)

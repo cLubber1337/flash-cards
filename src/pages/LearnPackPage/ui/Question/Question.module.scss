@@ -1,0 +1,21 @@
+.question {
+  width: 100%;
+}
+
+.cover {
+  width: 100%;
+  height: 120px;
+  margin: 12px 0;
+  border-radius: 4px;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shots {
+  margin-bottom: 17px;
+  color: var(--color-dark-100);
+}
