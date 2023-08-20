@@ -114,7 +114,9 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
               <Button variant="secondary" onClick={handleClose} disabled={isLoading}>
                 Cancel
               </Button>
-              <Button type="submit">Add New Pack</Button>
+              <Button disabled={isLoading} type="submit">
+                Add New Pack
+              </Button>
             </div>
           </form>
         </Card>

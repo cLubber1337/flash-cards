@@ -11,10 +11,12 @@ import { ControlledTextField } from '@/components/ui/Controlled/ControlledTextFi
 
 interface LoginFormProps {
   onSubmit?: SubmitHandler<LoginFormValues>
+  disabled?: boolean
+  loginError?: string | null
 }
 
-export const LoginForm = ({ onSubmit }: LoginFormProps) => {
-  const { handleSubmit, control } = useForm<LoginFormValues>({
+export const LoginForm = ({ onSubmit, disabled, loginError }: LoginFormProps) => {
+  const { handleSubmit, control, setError } = useForm<LoginFormValues>({
     mode: 'onSubmit',
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -23,6 +25,11 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
       rememberMe: false,
     },
   })
+
+  if (loginError) {
+    setError('email', { message: loginError })
+    setError('password', { message: loginError })
+  }
 
   return (
     <Card className={s.loginForm}>
@@ -48,10 +55,10 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
         <div className={s.checkbox}>
           <ControlledCheckbox label={'Remember me'} control={control} name={'rememberMe'} />
         </div>
-        <Link to="#" className={s.forgotPasswordLink}>
+        <Link to="/recover-password" className={s.forgotPasswordLink}>
           <Typography variant={TypographyVariant.Body2}>Forgot Password?</Typography>
         </Link>
-        <Button type="submit" fullWidth className={s.submitBtn}>
+        <Button type="submit" fullWidth className={s.submitBtn} disabled={disabled}>
           Sign in
         </Button>
       </form>

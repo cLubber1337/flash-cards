@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 
 import { Layout } from '@/components/Layout'
+import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { CardsPage } from '@/pages/CardsPage/CardsPage.tsx'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
@@ -28,6 +29,10 @@ const publicRoutes: RouteObject[] = [
   },
   {
     path: '/recover',
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: '/recover-password',
     element: <ForgotPasswordPage />,
   },
 ].map(route => ({
@@ -57,7 +62,7 @@ const privateRoutes: RouteObject[] = [
 function PrivateRoutes() {
   const { data, isLoading } = useMeQuery()
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loader />
   const isAuthenticated = !!data
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />

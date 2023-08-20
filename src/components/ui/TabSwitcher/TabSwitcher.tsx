@@ -1,4 +1,5 @@
 import * as Tabs from '@radix-ui/react-tabs'
+import clsx from 'clsx'
 
 import s from './TabSwitcher.module.scss'
 
@@ -25,7 +26,7 @@ export const TabSwitcher = ({
       <Tabs.List className={s.list} aria-label={ariaLabel}>
         {tabs.map(({ label, value }: DecksPageTabOptions) => (
           <Tabs.Trigger
-            className={disabled ? `${s.trigger} ${s.disabled}` : s.trigger}
+            className={clsx(s.trigger, disabled && s.disabled)}
             disabled={disabled}
             key={value}
             value={value}

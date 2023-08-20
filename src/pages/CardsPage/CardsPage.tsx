@@ -8,6 +8,7 @@ import s from './CardsPage.module.scss'
 import deckImg from '@/assets/img/deckImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { cardsActions } from '@/services/cards'
@@ -17,7 +18,7 @@ import {
   selectCardsSearchByName,
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
-import { useGetCardsOfDeckQuery } from '@/services/decks'
+import { useDeleteDeckMutation, useGetCardsOfDeckQuery } from '@/services/decks'
 import { selectAuthorId, selectDeckCover, selectDeckName } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
@@ -44,9 +45,11 @@ export const CardsPage = () => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
+  const [deleteDeck, { isLoading: isLoadingDeleteDeck }] = useDeleteDeckMutation()
 
   const isMyPack = authMeData?.id === authorId
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
 
   const handleLearnPack = () => {
     if (data?.items.length) {
@@ -69,10 +72,28 @@ export const CardsPage = () => {
     },
     [dispatch, cardsActions]
   )
+  const handleDeleteDeck = async () => {
+    await deleteDeck({ id: deckId! })
+  }
+  const handleClickToDeleteDeck = () => {
+    setIsOpenConfirmModal(true)
+  }
 
   return (
     <div className={s.packPage}>
       <AddNewCard isOpen={isOpenAddNewCard} onClose={setIsOpenAddNewCard} />
+      <ConfirmModal
+        title="Delete Pack"
+        isOpen={isOpenConfirmModal}
+        setIsOpen={setIsOpenConfirmModal}
+        onAction={handleDeleteDeck}
+        isLoading={isLoadingDeleteDeck}
+      >
+        <p>
+          Do you really want to remove <span className={s.nameDeck}>{deckName}</span>?
+        </p>
+        <p>All cards will be deleted. </p>
+      </ConfirmModal>
       <Link to={'/'} className={s.linkBack}>
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
@@ -82,7 +103,12 @@ export const CardsPage = () => {
           <Typography variant={TypographyVariant.Large}>
             {isMyPack ? 'My Pack' : `${deckName}'s Pack`}
           </Typography>
-          {isMyPack && <MyPackMenu onClickLearnPack={handleLearnPack} />}
+          {isMyPack && (
+            <MyPackMenu
+              onClickLearnPack={handleLearnPack}
+              onClickDelete={handleClickToDeleteDeck}
+            />
+          )}
         </div>
         {isMyPack ? (
           <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>

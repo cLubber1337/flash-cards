@@ -80,6 +80,14 @@ export const DecksPage = () => {
     [setAuthorId, authMeData]
   )
 
+  const handleSliderChange = useCallback(
+    (value: [number, number]) => {
+      dispatch(decksActions.setNumberOfCards(value))
+      dispatch(decksActions.setCurrentPage(1))
+    },
+    [dispatch, decksActions]
+  )
+
   const handleClearFilters = () => {
     dispatch(decksActions.setSearchByName(''))
     dispatch(decksActions.setSortBy(''))
@@ -127,7 +135,7 @@ export const DecksPage = () => {
             min={0}
             max={20}
             step={1}
-            onValueChange={v => dispatch(decksActions.setNumberOfCards(v))}
+            onValueChange={v => handleSliderChange(v)}
           />
         </div>
         <Button

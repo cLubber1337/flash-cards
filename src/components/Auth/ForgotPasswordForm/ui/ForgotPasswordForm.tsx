@@ -9,7 +9,7 @@ import {
   forgotPasswordFormSchema,
   ForgotPasswordFormValues,
 } from '@/components/Auth/ForgotPasswordForm'
-import { Button, Card, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { Button, Card, ControlledTextField, Typography, TypographyVariant } from '@/components/ui'
 
 interface ForgotPasswordFormProps {
   onSubmit?: SubmitHandler<ForgotPasswordFormValues>
@@ -17,7 +17,6 @@ interface ForgotPasswordFormProps {
 
 export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -32,8 +31,9 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
         <DevTool control={control} />
-        <TextField
-          {...register('email')}
+        <ControlledTextField
+          control={control}
+          name="email"
           label="Email"
           errorMessage={errors.email?.message}
           className={s.textField}
@@ -42,11 +42,10 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
         <Typography variant={TypographyVariant.Body2} className={s.subtitle}>
           Enter your email address and we will send you further instructions
         </Typography>
-        <div className={s.submitBtn}>
-          <Button type="submit" fullWidth>
-            Send Instructions
-          </Button>
-        </div>
+
+        <Button type="submit" fullWidth>
+          Send Instructions
+        </Button>
       </form>
       <div className={s.signInLink}>
         <Typography variant={TypographyVariant.Body2} className={s.subtitle_2}>

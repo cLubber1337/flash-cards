@@ -11,7 +11,7 @@ interface QuestionProps {
 export const Question = ({ question, shots, questionImg }: QuestionProps) => {
   return (
     <div className={s.question}>
-      <Typography tag="h2" variant={TypographyVariant.Body1}>
+      <Typography variant={TypographyVariant.Body1} className={s.title}>
         Question:{' '}
         <Typography tag="span" variant={TypographyVariant.Body2}>
           {question}

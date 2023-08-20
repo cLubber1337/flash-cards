@@ -41,9 +41,13 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
     dispatch(decksActions.setAuthorId(id))
     dispatch(decksActions.setDeckName(nameDeck))
   }
-  const handleDeleteDeck = (id: string) => {
-    deleteDeck({ id })
-      .unwrap()
+  const handleDeleteDeck = async (id: string) => {
+    toast
+      .promise(deleteDeck({ id }).unwrap(), {
+        pending: 'Deleting...',
+        success: 'The deck was successfully deleted',
+        error: 'The deck was not deleted',
+      })
       .then(() => {
         setIsOpenConfirmModal(false)
       })
@@ -58,7 +62,9 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
       navigate(`/decks/${deckId}/learn`)
       dispatch(decksActions.setDeckName(nameDeck))
     } else {
-      toast.warning('Sorry, the deck is still empty. Please choose a deck with available cards.')
+      toast.warning('Sorry, the deck is still empty. Please choose a deck with available cards.', {
+        autoClose: 5000,
+      })
     }
   }
 

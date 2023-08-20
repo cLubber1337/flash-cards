@@ -12,7 +12,7 @@ interface AnswerProps {
 export const Answer = ({ answer, answerImg, onClickItem }: AnswerProps) => {
   return (
     <div className={s.answer}>
-      <Typography tag="h2" variant={TypographyVariant.Body1}>
+      <Typography tag="h2" variant={TypographyVariant.Body1} className={s.title}>
         Answer:{' '}
         <Typography tag="span" variant={TypographyVariant.Body2}>
           {answer}

@@ -1,16 +1,12 @@
-.loader_1 {
-  position: relative;
-}
-
 .loader {
   position: absolute;
-  inset: 0;
-
-  display: inline-block;
+  z-index: var(--z-index-loader);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   width: 80px;
   height: 80px;
-  margin: 0 auto;
 }
 
 .loader div {

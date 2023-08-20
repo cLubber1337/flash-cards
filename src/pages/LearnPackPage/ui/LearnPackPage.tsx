@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { Answer } from '../ui/Answer/Answer.tsx'
 import { Question } from '../ui/Question/Question.tsx'
@@ -20,8 +21,9 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
   const [showAnswer, setShowAnswer] = useState(false)
   const [grade, setGrade] = useState(0)
   const deckName = useAppSelector(selectDeckName)
+  const navigate = useNavigate()
 
-  const [rateCard] = useRateCardMutation()
+  const [rateCard, { isLoading: isLoadingRateCard }] = useRateCardMutation()
   const { data: randomCardData } = useGetRandomCardQuery({
     id: deckId!,
   })
@@ -31,12 +33,17 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
   }
 
   const handleShowNextQuestion = () => {
+    if (grade === 0) {
+      toast.warning('Please rate the current answer to proceed to the next card.')
+
+      return
+    }
     rateCard({ deckId: deckId!, grade, cardId: randomCardData?.id! })
       .unwrap()
       .then(() => {
         setShowAnswer(false)
       })
-      .catch(() => alert("Can't rate this card"))
+      .catch(() => toast.warning('An error occurred on the server.'))
       .finally(() => {
         setGrade(0)
       })
@@ -44,10 +51,10 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
 
   return (
     <div className={s.learnPackPage}>
-      <Link to={'/'} className={s.linkBack}>
+      <div onClick={() => navigate(-1)} className={s.linkBack}>
         <BackIcon />
-        <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
-      </Link>
+        <Typography variant={TypographyVariant.Body2}>Back</Typography>
+      </div>
       <Card className={s.content}>
         <Typography tag="h1" variant={TypographyVariant.Large} className={s.title}>
           Learn &rdquo;{deckName}&ldquo;
@@ -69,7 +76,7 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
             Show Answer
           </Button>
         ) : (
-          <Button fullWidth onClick={() => handleShowNextQuestion()}>
+          <Button fullWidth onClick={() => handleShowNextQuestion()} disabled={isLoadingRateCard}>
             Next Question
           </Button>
         )}

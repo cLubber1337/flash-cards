@@ -1,7 +1,5 @@
 import { memo, useCallback, useState } from 'react'
 
-import { useParams } from 'react-router-dom'
-
 import s from './TableCards.module.scss'
 
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
@@ -51,9 +49,6 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
     deleteCard({ id: idCard })
       .unwrap()
       .then(() => setIsOpenConfirmDelete(false))
-  }
-  const handleDeletePack = (deckId: string) => {
-    deleteDeck({ id })
   }
 
   return (
