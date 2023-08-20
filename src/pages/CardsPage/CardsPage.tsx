@@ -1,12 +1,14 @@
 import { useCallback, useState } from 'react'
 
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import s from './CardsPage.module.scss'
 
 import deckImg from '@/assets/img/deckImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/components/ui'
+import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { cardsActions } from '@/services/cards'
 import {
@@ -16,15 +18,13 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useGetCardsOfDeckQuery } from '@/services/decks'
-import { selectAuthorId, selectDeckCover } from '@/services/decks/selectors.ts'
+import { selectAuthorId, selectDeckCover, selectDeckName } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
 
-interface PackPageProps {}
-
-export const CardsPage = ({}: PackPageProps) => {
+export const CardsPage = () => {
   const dispatch = useAppDispatch()
   const { deckId } = useParams()
   const navigate = useNavigate()
@@ -34,10 +34,10 @@ export const CardsPage = ({}: PackPageProps) => {
   const sortBy = useAppSelector(selectCardsSortBy)
   const cover = useAppSelector(selectDeckCover)
   const authorId = useAppSelector(selectAuthorId)
+  const deckName = useAppSelector(selectDeckName) ? useAppSelector(selectDeckName) : 'Friend'
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { data: authMeData } = useMeQuery()
-
-  const { data } = useGetCardsOfDeckQuery({
+  const { data, isLoading: isLoadingCards } = useGetCardsOfDeckQuery({
     id: deckId,
     orderBy: orderBy,
     currentPage: currentPage,
@@ -49,7 +49,11 @@ export const CardsPage = ({}: PackPageProps) => {
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
 
   const handleLearnPack = () => {
-    navigate(`/decks/${deckId}/learn`)
+    if (data?.items.length) {
+      navigate(`/decks/${deckId}/learn`)
+    } else {
+      toast.warning('Sorry, the pack is still empty')
+    }
   }
 
   const handleSetCurrentPage = useCallback(
@@ -76,14 +80,19 @@ export const CardsPage = ({}: PackPageProps) => {
       <div className={s.header}>
         <div className={s.title}>
           <Typography variant={TypographyVariant.Large}>
-            {isMyPack ? 'My Pack' : "Friend's Pack"}
+            {isMyPack ? 'My Pack' : `${deckName}'s Pack`}
           </Typography>
           {isMyPack && <MyPackMenu onClickLearnPack={handleLearnPack} />}
         </div>
         {isMyPack ? (
           <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
         ) : (
-          <Button onClick={handleLearnPack}>Learn to Pack</Button>
+          <Button
+            style={{ display: data?.items.length ? 'block' : 'none' }}
+            onClick={handleLearnPack}
+          >
+            Learn to Pack
+          </Button>
         )}
       </div>
       <div className={s.deckImg}>
@@ -92,29 +101,41 @@ export const CardsPage = ({}: PackPageProps) => {
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}
 
-      <div className={s.search}>
-        <TextField
-          placeholder="Search..."
-          onChange={e => dispatch(cardsActions.setSearchByName(e))}
-          value={searchByName}
-          search
-          fullWidth
-        />
-      </div>
+      {!!data?.items.length && (
+        <div className={s.search}>
+          <TextField
+            placeholder="Search..."
+            onChange={e => dispatch(cardsActions.setSearchByName(e))}
+            value={searchByName}
+            search
+            fullWidth
+          />
+        </div>
+      )}
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
+      {isLoadingCards ? (
+        <Loader />
+      ) : data?.items.length ? (
+        <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
+      ) : (
+        <Typography tag="h2" variant={TypographyVariant.Large} className={s.emptyPack}>
+          Pack is empty
+        </Typography>
+      )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={data?.pagination.totalPages}
-        siblingsCount={1}
-        itemsPerPage={itemsPerPage}
-        setCurrentPage={handleSetCurrentPage}
-        setItemsPerPage={handleSetItemsPerPage}
-      />
+      {!!data?.items.length && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={data?.pagination.totalPages}
+          siblingsCount={1}
+          itemsPerPage={itemsPerPage}
+          setCurrentPage={handleSetCurrentPage}
+          setItemsPerPage={handleSetItemsPerPage}
+        />
+      )}
     </div>
   )
 }

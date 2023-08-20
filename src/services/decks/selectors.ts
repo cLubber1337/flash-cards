@@ -8,3 +8,5 @@ export const selectDeckCover = (state: RootState) => state.decks.deckCover
 export const selectAuthorId = (state: RootState) => state.decks.authorId
 
 export const selectNumberOfCards = (state: RootState) => state.decks.numberOfCards
+
+export const selectDeckName = (state: RootState) => state.decks.deckName

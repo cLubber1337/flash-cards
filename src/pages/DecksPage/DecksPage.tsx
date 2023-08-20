@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react'
 
-import { ReactComponent as TrashIcon } from '../../assets/svg/trash.svg'
-
 import s from './DecksPage.module.scss'
 
+import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import {
   Button,
   Pagination,

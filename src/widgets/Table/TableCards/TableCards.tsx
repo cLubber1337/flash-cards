@@ -1,5 +1,7 @@
 import { memo, useCallback, useState } from 'react'
 
+import { useParams } from 'react-router-dom'
+
 import s from './TableCards.module.scss'
 
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
@@ -23,7 +25,8 @@ interface TableCardsProps {
 
 export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => {
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false)
-  const [deleteCard, { isLoading: isLoadingDelete }] = useDeleteCardMutation()
+  const [deleteCard, { isLoading: isLoadingDeleteCard }] = useDeleteCardMutation()
+
   const [idCard, setIdCard] = useState('')
   const [cardName, setCardName] = useState('')
   const dispatch = useAppDispatch()
@@ -49,6 +52,9 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
       .unwrap()
       .then(() => setIsOpenConfirmDelete(false))
   }
+  const handleDeletePack = (deckId: string) => {
+    deleteDeck({ id })
+  }
 
   return (
     <table className={s.table}>
@@ -65,7 +71,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
           isOpen={isOpenConfirmDelete}
           setIsOpen={setIsOpenConfirmDelete}
           onAction={() => handleDeleteCard()}
-          isLoading={isLoadingDelete}
+          isLoading={isLoadingDeleteCard}
         >
           <p>Do you really want to remove {cardName}?</p>
         </ConfirmModal>
