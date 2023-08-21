@@ -1,5 +1,7 @@
 import { memo, useCallback, useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import s from './TableCards.module.scss'
 
 import { ReactComponent as EditIcon } from '@/assets/svg/edit.svg'
@@ -25,7 +27,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false)
   const [deleteCard, { isLoading: isLoadingDeleteCard }] = useDeleteCardMutation()
 
-  const [idCard, setIdCard] = useState('')
+  const [cardId, setCardId] = useState('')
   const [cardName, setCardName] = useState('')
   const dispatch = useAppDispatch()
 
@@ -38,17 +40,27 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
 
   const handleClickDeleteCard = useCallback(
     (id: string, cardName: string) => {
-      setIdCard(id)
+      setCardId(id)
       setIsOpenConfirmDelete(true)
       setCardName(cardName)
     },
-    [setIdCard, setIsOpenConfirmDelete]
+    [setCardId, setIsOpenConfirmDelete]
   )
 
   const handleDeleteCard = () => {
-    deleteCard({ id: idCard })
-      .unwrap()
-      .then(() => setIsOpenConfirmDelete(false))
+    toast
+      .promise(deleteCard({ id: cardId! }).unwrap(), {
+        pending: 'Deleting...',
+        success: `The ${cardName} was successfully deleted`,
+        error: `The ${cardName} was not deleted`,
+      })
+      .then(() => {
+        localStorage.clear()
+        setIsOpenConfirmDelete(false)
+      })
+      .catch(e => {
+        toast.error(e.data.message)
+      })
   }
 
   return (

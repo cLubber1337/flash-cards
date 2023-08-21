@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import s from './CardsPage.module.scss'
@@ -38,7 +38,12 @@ export const CardsPage = () => {
   const deckName = useAppSelector(selectDeckName) ? useAppSelector(selectDeckName) : 'Friend'
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { data: authMeData } = useMeQuery()
-  const { data, isLoading: isLoadingCards } = useGetCardsOfDeckQuery({
+  const {
+    data,
+    isLoading: isLoadingCards,
+    error,
+    isError,
+  } = useGetCardsOfDeckQuery({
     id: deckId,
     orderBy: orderBy,
     currentPage: currentPage,
@@ -72,11 +77,30 @@ export const CardsPage = () => {
     },
     [dispatch, cardsActions]
   )
-  const handleDeleteDeck = async () => {
-    await deleteDeck({ id: deckId! })
+  const handleDeleteDeck = () => {
+    toast
+      .promise(deleteDeck({ id: deckId! }).unwrap(), {
+        pending: 'Deleting...',
+        success: `The ${deckName} was successfully deleted`,
+        error: `The ${deckName} was not deleted`,
+      })
+      .then(() => {
+        localStorage.clear()
+        setIsOpenConfirmModal(false)
+        navigate('/')
+      })
+      .catch(e => {
+        toast.error(e.data.message)
+      })
   }
   const handleClickToDeleteDeck = () => {
     setIsOpenConfirmModal(true)
+  }
+
+  if (isError && 'status' in error && error?.status === 404) {
+    toast.error('This page does not exist')
+
+    return <Navigate to={'/'} />
   }
 
   return (

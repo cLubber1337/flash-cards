@@ -33,7 +33,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const [deleteDeck, { isLoading: isLoadingDelete }] = useDeleteDeckMutation()
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
   const [deckId, setDeckId] = useState('')
-  const [nameDeck, setNameDeck] = useState('')
+  const [deckName, setDeckName] = useState('')
   const { data: authMeData } = useMeQuery()
 
   const handleLinkClick = (cover: string | null, id: string, nameDeck: string) => {
@@ -45,17 +45,18 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
     toast
       .promise(deleteDeck({ id }).unwrap(), {
         pending: 'Deleting...',
-        success: 'The deck was successfully deleted',
-        error: 'The deck was not deleted',
+        success: `The ${deckName} was successfully deleted`,
+        error: `The ${deckName} was not deleted`,
       })
       .then(() => {
+        localStorage.clear()
         setIsOpenConfirmModal(false)
       })
   }
   const handleClickDeleteDeck = (id: string, nameDeck: string) => {
     setIsOpenConfirmModal(true)
     setDeckId(id)
-    setNameDeck(nameDeck)
+    setDeckName(nameDeck)
   }
   const handlePlay = (deckId: string, nameDeck: string, cardsCount: number) => {
     if (cardsCount) {
@@ -78,7 +79,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
         isLoading={isLoadingDelete}
       >
         <p>
-          Do you really want to remove <span className={s.nameDeck}>{nameDeck}</span>?
+          Do you really want to remove <span className={s.nameDeck}>{deckName}</span>?
         </p>
         <p>All cards will be deleted. </p>
       </ConfirmModal>
