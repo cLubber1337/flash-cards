@@ -6,8 +6,7 @@ import { editNameFormSchema } from '../../model/validation/editNameFormSchema.ts
 
 import s from './EditNameForm.module.scss'
 
-import { Button } from '@/components/ui'
-import { ControlledTextField } from '@/components/ui/Controlled/ControlledTextField/ControlledTextField.tsx'
+import { Button, ControlledTextField } from '@/components/ui'
 
 interface EditNameFormProps {
   onSubmit: SubmitHandler<EditNameFormValues>

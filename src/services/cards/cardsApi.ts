@@ -12,7 +12,16 @@ const cardsApi = baseApi.injectEndpoints({
           body: args.formData,
         }
       },
-      invalidatesTags: ['Cards'],
+      invalidatesTags: ['Cards', 'Card'],
+    }),
+    getCard: builder.query<CardResponse, { id: string }>({
+      query: ({ id }) => {
+        return {
+          url: `v1/cards/${id}`,
+          method: 'GET',
+        }
+      },
+      providesTags: ['Card'],
     }),
     deleteCard: builder.mutation<void, { id: string }>({
       query: ({ id }) => {
@@ -21,7 +30,7 @@ const cardsApi = baseApi.injectEndpoints({
           method: 'DELETE',
         }
       },
-      invalidatesTags: ['Cards'],
+      invalidatesTags: ['Cards', 'Card'],
     }),
     updateCard: builder.mutation<CardResponse, { id: string; formData: FormData }>({
       query: args => {
@@ -31,7 +40,7 @@ const cardsApi = baseApi.injectEndpoints({
           body: args.formData,
         }
       },
-      invalidatesTags: ['Cards'],
+      invalidatesTags: ['Cards', 'Card'],
     }),
     getRandomCard: builder.query<CardResponse, { id: string; previousCardId?: string }>({
       query: ({ id, previousCardId }) => {
@@ -67,4 +76,5 @@ export const {
   useGetRandomCardQuery,
   useRateCardMutation,
   useUpdateCardMutation,
+  useGetCardQuery,
 } = cardsApi

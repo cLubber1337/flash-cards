@@ -9,10 +9,11 @@ import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Grade } from '@/components/ui/Grade/Grade.tsx'
-import { Card, cardsActions, useDeleteCardMutation } from '@/services/cards'
+import { Card, cardsActions, useDeleteCardMutation, useGetCardQuery } from '@/services/cards'
 import { SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
 import { cardsHeaderColumns } from '@/utils/constants/cardsHeaderColumns.ts'
+import { AddNewCard } from '@/widgets/AddNewCard'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
 import { THeader } from '@/widgets/Table/THeader/THeader.tsx'
 import { TRow } from '@/widgets/Table/TRow/TRow.tsx'
@@ -25,10 +26,18 @@ interface TableCardsProps {
 
 export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => {
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false)
+  const [isOpenUpdateCardModal, setIsOpenUpdateCardModal] = useState(false)
+  const [editModeCard, setEditModeCard] = useState(false)
   const [deleteCard, { isLoading: isLoadingDeleteCard }] = useDeleteCardMutation()
-
   const [cardId, setCardId] = useState('')
-  const [cardName, setCardName] = useState('')
+  const { data: card } = useGetCardQuery(
+    {
+      id: cardId,
+    },
+    { skip: cardId === '' }
+  )
+
+  const [cardQuestion, setCardQuestion] = useState('')
   const dispatch = useAppDispatch()
 
   const handleSortBy = useCallback(
@@ -42,7 +51,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
     (id: string, cardName: string) => {
       setCardId(id)
       setIsOpenConfirmDelete(true)
-      setCardName(cardName)
+      setCardQuestion(cardName)
     },
     [setCardId, setIsOpenConfirmDelete]
   )
@@ -51,8 +60,8 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
     toast
       .promise(deleteCard({ id: cardId! }).unwrap(), {
         pending: 'Deleting...',
-        success: `The ${cardName} was successfully deleted`,
-        error: `The ${cardName} was not deleted`,
+        success: `The ${cardQuestion} was successfully deleted`,
+        error: `The ${cardQuestion} was not deleted`,
       })
       .then(() => {
         localStorage.clear()
@@ -61,6 +70,12 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
       .catch(e => {
         toast.error(e.data.message)
       })
+  }
+
+  const handleClickToUpdateCard = (id: string) => {
+    setCardId(id)
+    setEditModeCard(true)
+    setIsOpenUpdateCardModal(true)
   }
 
   return (
@@ -80,8 +95,15 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
           onAction={() => handleDeleteCard()}
           isLoading={isLoadingDeleteCard}
         >
-          <p>Do you really want to remove {cardName}?</p>
+          <p>Do you really want to remove {cardQuestion}?</p>
         </ConfirmModal>
+        <AddNewCard
+          isOpen={isOpenUpdateCardModal}
+          onClose={setIsOpenUpdateCardModal}
+          editMode={editModeCard}
+          cardId={cardId}
+          answer={card?.answer}
+        />
         {data?.map(({ id, answer, question, updated, grade, answerImg, questionImg }) => {
           return (
             <TRow key={id} className={isMyPack ? s.myRow : s.friendsRow}>
@@ -113,7 +135,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
               </TCell>
               {isMyPack && (
                 <TCell>
-                  <EditIcon onClick={() => null} />
+                  <EditIcon onClick={() => handleClickToUpdateCard(id)} />
                   <TrashIcon onClick={() => handleClickDeleteCard(id, answer)} />
                 </TCell>
               )}
