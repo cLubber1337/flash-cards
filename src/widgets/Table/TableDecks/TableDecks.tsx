@@ -63,9 +63,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
       navigate(`/decks/${deckId}/learn`)
       dispatch(decksActions.setDeckName(nameDeck))
     } else {
-      toast.warning('Sorry, the deck is still empty. Please choose a deck with available cards.', {
-        autoClose: 5000,
-      })
+      toast.warning('Sorry, the deck is still empty. Please choose a deck with available cards.')
     }
   }
 

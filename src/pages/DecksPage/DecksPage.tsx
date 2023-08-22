@@ -12,6 +12,7 @@ import {
   Typography,
   TypographyVariant,
 } from '@/components/ui'
+import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { useGetDecksQuery } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
@@ -34,7 +35,7 @@ export const DecksPage = () => {
   const searchByName = useAppSelector(selectSearchByName)
   const sortBy = useAppSelector(selectSortBy)
   const numberOfCards = useAppSelector(selectNumberOfCards)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenAddNewDeck, setIsOpenAddNewDeck] = useState(false)
   const [authorId, setAuthorId] = useState('')
 
   const { data: authMeData } = useMeQuery()
@@ -66,8 +67,8 @@ export const DecksPage = () => {
   )
 
   const openModalAddNewPack = useCallback(() => {
-    setIsOpen(true)
-  }, [setIsOpen])
+    setIsOpenAddNewDeck(prevState => !prevState)
+  }, [setIsOpenAddNewDeck])
 
   const filterDecksByAuthorId = useCallback(
     (tabValue: string) => {
@@ -106,7 +107,7 @@ export const DecksPage = () => {
         <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
           Add New Pack
         </Button>
-        <AddNewPack isOpen={isOpen} onClose={setIsOpen} />
+        <AddNewPack isOpen={isOpenAddNewDeck} onClose={setIsOpenAddNewDeck} />
       </div>
       <div className={s.actions}>
         <div className={s.search}>
@@ -150,18 +151,20 @@ export const DecksPage = () => {
       </div>
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      <TableDecks data={data?.items} sortBy={sortBy} />
+      {data ? <TableDecks data={data.items} sortBy={sortBy} /> : <Loader />}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={data?.pagination.totalPages}
-        siblingsCount={1}
-        itemsPerPage={itemsPerPage}
-        setCurrentPage={setCurrentPageHandler}
-        setItemsPerPage={setItemsPerPageHandler}
-      />
+      {data && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={data?.pagination.totalPages}
+          siblingsCount={1}
+          itemsPerPage={itemsPerPage}
+          setCurrentPage={setCurrentPageHandler}
+          setItemsPerPage={setItemsPerPageHandler}
+        />
+      )}
     </div>
   )
 }

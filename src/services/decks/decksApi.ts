@@ -1,6 +1,6 @@
 import {
   CreateDeckArgs,
-  CreateDeckResponse,
+  DeckByIdResponse,
   DecksResponse,
   GetCardsOfDeckArgs,
   GetDecksArgs,
@@ -22,7 +22,16 @@ const decksApi = baseApi.injectEndpoints({
       },
       providesTags: ['Decks'],
     }),
-    createDeck: builder.mutation<CreateDeckResponse, CreateDeckArgs>({
+    getDeckById: builder.query<DeckByIdResponse, { id: string }>({
+      query: args => {
+        return {
+          url: `v1/decks/${args.id}`,
+          method: 'GET',
+        }
+      },
+      providesTags: ['Deck'],
+    }),
+    createDeck: builder.mutation<DeckByIdResponse, CreateDeckArgs>({
       query: formData => {
         return {
           url: 'v1/decks',
@@ -31,6 +40,16 @@ const decksApi = baseApi.injectEndpoints({
         }
       },
       invalidatesTags: ['Decks'],
+    }),
+    updateDeck: builder.mutation<DeckByIdResponse, { id: string; formData: CreateDeckArgs }>({
+      query: args => {
+        return {
+          url: `v1/decks/${args.id}`,
+          method: 'PATCH',
+          body: args.formData,
+        }
+      },
+      invalidatesTags: ['Decks', 'Deck'],
     }),
     deleteDeck: builder.mutation<UpdateDeckResponse, { id: string }>({
       query: ({ id }) => {
@@ -61,4 +80,7 @@ export const {
   useGetCardsOfDeckQuery,
   useCreateDeckMutation,
   useDeleteDeckMutation,
+  useGetDeckByIdQuery,
+  useLazyGetDeckByIdQuery,
+  useUpdateDeckMutation,
 } = decksApi

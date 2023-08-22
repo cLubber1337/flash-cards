@@ -64,7 +64,6 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
         error: `The ${cardQuestion} was not deleted`,
       })
       .then(() => {
-        localStorage.clear()
         setIsOpenConfirmDelete(false)
       })
       .catch(e => {
@@ -136,7 +135,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
               {isMyPack && (
                 <TCell>
                   <EditIcon onClick={() => handleClickToUpdateCard(id)} />
-                  <TrashIcon onClick={() => handleClickDeleteCard(id, answer)} />
+                  <TrashIcon onClick={() => handleClickDeleteCard(id, question)} />
                 </TCell>
               )}
             </TRow>

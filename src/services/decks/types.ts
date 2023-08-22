@@ -13,12 +13,12 @@ export interface Author {
   id: string
   name: string
 }
-export type Deck = CreateDeckResponse & {
+export type Deck = DeckByIdResponse & {
   isDeleted?: boolean
   isBlocked?: boolean
 }
 
-export type CreateDeckResponse = {
+export type DeckByIdResponse = {
   author: Author
 } & UpdateDeckResponse
 
@@ -73,4 +73,5 @@ export interface DecksState {
   searchByName: string
   sortBy: SortByType | ''
   numberOfCards: [number, number]
+  deckIdForEdit: string
 }

@@ -18,7 +18,11 @@ import {
   selectCardsSearchByName,
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
-import { useDeleteDeckMutation, useGetCardsOfDeckQuery } from '@/services/decks'
+import {
+  useDeleteDeckMutation,
+  useGetCardsOfDeckQuery,
+  useGetDeckByIdQuery,
+} from '@/services/decks'
 import { selectAuthorId, selectDeckCover, selectDeckName } from '@/services/decks/selectors.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
@@ -50,9 +54,13 @@ export const CardsPage = () => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
+
   const [deleteDeck, { isLoading: isLoadingDeleteDeck }] = useDeleteDeckMutation()
 
+  const { data: deckData } = useGetDeckByIdQuery({ id: deckId! })
+  const isEmptyPack = deckData?.cardsCount! > 0
   const isMyPack = authMeData?.id === authorId
+
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
 
@@ -81,8 +89,8 @@ export const CardsPage = () => {
     toast
       .promise(deleteDeck({ id: deckId! }).unwrap(), {
         pending: 'Deleting...',
-        success: `The ${deckName} was successfully deleted`,
-        error: `The ${deckName} was not deleted`,
+        success: `The ${deckData?.name} was successfully deleted`,
+        error: `The ${deckData?.name} was not deleted`,
       })
       .then(() => {
         localStorage.clear()
@@ -114,7 +122,7 @@ export const CardsPage = () => {
         isLoading={isLoadingDeleteDeck}
       >
         <p>
-          Do you really want to remove <span className={s.nameDeck}>{deckName}</span>?
+          Do you really want to remove <span className={s.nameDeck}>{deckData?.name}</span>?
         </p>
         <p>All cards will be deleted. </p>
       </ConfirmModal>
@@ -125,7 +133,7 @@ export const CardsPage = () => {
       <div className={s.header}>
         <div className={s.title}>
           <Typography variant={TypographyVariant.Large}>
-            {isMyPack ? 'My Pack' : `${deckName}'s Pack`}
+            {isMyPack ? `My "${deckName}" Pack` : `${deckName}'s Pack`}
           </Typography>
           {isMyPack && (
             <MyPackMenu
@@ -151,7 +159,7 @@ export const CardsPage = () => {
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}
 
-      {!!data?.items.length && (
+      {isEmptyPack && (
         <div className={s.search}>
           <TextField
             placeholder="Search..."
@@ -167,7 +175,7 @@ export const CardsPage = () => {
 
       {isLoadingCards ? (
         <Loader />
-      ) : data?.items.length ? (
+      ) : isEmptyPack ? (
         <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
       ) : (
         <Typography tag="h2" variant={TypographyVariant.Large} className={s.emptyPack}>
@@ -176,7 +184,7 @@ export const CardsPage = () => {
       )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      {!!data?.items.length && (
+      {isEmptyPack && (
         <Pagination
           currentPage={currentPage}
           totalPages={data?.pagination.totalPages}

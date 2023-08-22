@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { EditNameFormValues } from '../model/types/EditNameFormValues.ts'
 
@@ -36,23 +37,39 @@ export const ProfilePage = ({}: ProfilePageProps) => {
 
       return
     }
-    changeName({ name })
-      .unwrap()
-      .then(() => setEditMode(!editMode))
+    toast
+      .promise(changeName({ name }).unwrap(), {
+        pending: 'Saving...',
+        success: `The name was successfully changed`,
+        error: `The name was not changed`,
+      })
+      .then(() => setEditMode(prev => !prev))
+      .catch(e => {
+        toast.error(e.data.message)
+      })
   }
 
   const handleLogout = () => {
     logout()
       .unwrap()
       .then(() => navigate('/login'))
-      .catch(err => console.error(err))
+      .catch(err => toast.error(err.data.message))
   }
   const handleEditAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
     const formData = new FormData()
     const file = e.target.files![0]
 
     formData.append('avatar', file)
-    updatePhoto(formData)
+
+    toast
+      .promise(updatePhoto(formData).unwrap(), {
+        pending: 'Saving...',
+        success: `The avatar was successfully changed`,
+        error: `The avatar was not changed`,
+      })
+      .catch(e => {
+        toast.error(e.data.message)
+      })
   }
 
   const handleGoBack = () => {

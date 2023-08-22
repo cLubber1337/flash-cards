@@ -41,7 +41,6 @@ export const AddNewCard = memo(
     const [textOnly, setTextOnly] = useState(false)
     const { deckId } = useParams()
 
-    console.log(answer)
     const [createCard, { isLoading: isLoadingCreateCard }] = useCreateCardMutation()
     const [updateCard, { isLoading: isLoadingUpdateCard }] = useUpdateCardMutation()
 

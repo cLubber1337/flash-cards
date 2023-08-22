@@ -11,6 +11,7 @@ const initialState: DecksState = {
   authorId: localStorage.getItem('authorId') || null,
   deckName: localStorage.getItem('deckName') || null,
   numberOfCards: [0, 20],
+  deckIdForEdit: '',
 }
 
 export const decksSlice = createSlice({
@@ -43,6 +44,9 @@ export const decksSlice = createSlice({
     setDeckName: (state, action: PayloadAction<string>) => {
       localStorage.setItem('deckName', action.payload)
       state.deckName = localStorage.getItem('deckName')
+    },
+    setDeckIdForEdit: (state, action: PayloadAction<string>) => {
+      state.deckIdForEdit = action.payload
     },
   },
 })

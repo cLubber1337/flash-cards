@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { AddNewPackValues } from '../model/types/types.ts'
 import { addNewPackSchema } from '../model/validation/addNewPackSchema.ts'
@@ -27,9 +28,10 @@ import { CreateDeckArgs } from '@/services/decks/types.ts'
 interface AddNewPackProps {
   isOpen: boolean
   onClose: (isOpen: boolean) => void
+  editMode?: boolean
 }
 
-export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
+export const AddNewPack = ({ isOpen, onClose, editMode }: AddNewPackProps) => {
   const [cover, setCover] = useState<File | null>(null)
   const [createDeck, { isLoading }] = useCreateDeckMutation()
 
@@ -66,14 +68,14 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
         handleClose()
       })
       .catch(error => {
-        console.log(error)
+        toast.error(error.data.message)
       })
   }
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} lazy>
       <div className={s.addNewPack}>
-        <CardHeader title="Add New Pack" onClose={handleClose} />
+        <CardHeader title={editMode ? 'Edit Pack' : 'Add New Pack'} onClose={handleClose} />
         <Card className={s.content}>
           <div className={s.cover}>
             <img className={s.img} src={cover ? URL.createObjectURL(cover) : deckImg} alt="cover" />
@@ -115,7 +117,7 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
                 Cancel
               </Button>
               <Button disabled={isLoading} type="submit">
-                Add New Pack
+                {editMode ? 'Save changes' : 'Add new pack'}
               </Button>
             </div>
           </form>
