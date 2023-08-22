@@ -15,11 +15,13 @@ import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
-import { useDeleteDeckMutation } from '@/services/decks'
+import { useDeleteDeckMutation, useUpdateDeckMutation } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
-import { Deck, SortByType } from '@/services/decks/types.ts'
+import { CreateDeckArgs, Deck, SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
 import { decksHeaderColumns } from '@/utils/constants'
+import { AddNewPackValues } from '@/widgets/AddNewPack/model/types/types.ts'
+import { EditPack } from '@/widgets/EditPack/EditPack.tsx'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
 
 interface TableProps {
@@ -32,9 +34,13 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const navigate = useNavigate()
   const [deleteDeck, { isLoading: isLoadingDelete }] = useDeleteDeckMutation()
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
+  const [isOpenEditDeck, setIsOpenEditDeck] = useState(false)
   const [deckId, setDeckId] = useState('')
+  const [deckCoverImg, setDeckCoverImg] = useState('')
   const [deckName, setDeckName] = useState('')
+  const [isPrivate, setIsPrivate] = useState(false)
   const { data: authMeData } = useMeQuery()
+  const [updateDeck] = useUpdateDeckMutation()
 
   const handleLinkClick = (cover: string | null, id: string, nameDeck: string) => {
     dispatch(decksActions.setDeckCover(cover))
@@ -67,8 +73,48 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
     }
   }
 
+  const handleClickToEditDeck = (id: string, name: string, isPrivate: boolean, cover: string) => {
+    setDeckId(id)
+    setDeckCoverImg(cover)
+    setDeckName(name)
+    setIsPrivate(isPrivate)
+    setIsOpenEditDeck(prev => !prev)
+  }
+
+  const onSubmitEditDeck = ({ name, isPrivate, cover }: AddNewPackValues) => {
+    const formData = new FormData()
+
+    formData.append('name', name)
+    formData.append('isPrivate', String(isPrivate))
+    cover[0] && formData.append('cover', cover[0])
+
+    toast
+      .promise(
+        updateDeck({ id: deckId, formData: formData as unknown as CreateDeckArgs }).unwrap(),
+        {
+          pending: 'Updating...',
+          success: `The ${deckName} was successfully updated`,
+          error: `The ${deckName} was not updated`,
+        }
+      )
+      .then(() => {
+        setIsOpenEditDeck(prev => !prev)
+      })
+      .catch(e => toast.error(e.data.message))
+  }
+
   return (
     <table className={s.table}>
+      {isOpenEditDeck && (
+        <EditPack
+          isOpen={isOpenEditDeck}
+          onClose={setIsOpenEditDeck}
+          onSubmit={onSubmitEditDeck}
+          deckName={deckName}
+          isPrivate={isPrivate}
+          deckCoverImg={deckCoverImg}
+        />
+      )}
       <ConfirmModal
         title="Delete Pack"
         isOpen={isOpenConfirmModal}
@@ -87,7 +133,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
         setSortBy={sortBy => dispatch(decksActions.setSortBy(sortBy))}
       />
       <tbody>
-        {data?.map(({ id, cover, name, cardsCount, updated, author }) => {
+        {data?.map(({ id, cover, name, cardsCount, updated, author, isPrivate }) => {
           return (
             <TRow key={id}>
               <TCell>
@@ -120,7 +166,9 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
               </TCell>
               <TCell>
                 <PlayIcon onClick={() => handlePlay(id, name, cardsCount)} />
-                {authMeData?.id === author.id && <EditIcon onClick={() => null} />}
+                {authMeData?.id === author.id && (
+                  <EditIcon onClick={() => handleClickToEditDeck(id, name, isPrivate, cover)} />
+                )}
                 {authMeData?.id === author.id && (
                   <TrashIcon onClick={() => handleClickDeleteDeck(id, name)} />
                 )}
