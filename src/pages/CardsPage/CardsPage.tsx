@@ -11,7 +11,7 @@ import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
-import { cardsActions, useGetCardsOfDeckQuery } from '@/services/cards'
+import { cardsActions, useCreateCardMutation, useGetCardsOfDeckQuery } from '@/services/cards'
 import {
   selectCardsCurrentPage,
   selectCardsItemsPerPage,
@@ -22,6 +22,7 @@ import { useDeleteDeckMutation, useGetDeckByIdQuery, useUpdateDeckMutation } fro
 import { selectAuthorId } from '@/services/decks/selectors.ts'
 import { CreateDeckArgs } from '@/services/decks/types.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
+import { AddNewCardValues } from '@/widgets/AddNewCard/model/types/types.ts'
 import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
 import { AddNewPackValues } from '@/widgets/AddNewPack/model/types/types.ts'
 import { EditPack } from '@/widgets/EditPack/EditPack.tsx'
@@ -54,6 +55,7 @@ export const CardsPage = () => {
   const [deleteDeck, { isLoading: isLoadingDeleteDeck }] = useDeleteDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
   const { data: deckData } = useGetDeckByIdQuery({ id: deckId! })
+  const [createCard] = useCreateCardMutation()
 
   const isEmptyPack = data?.items.length === 0
   const isMyPack = authMeData?.id === authorId
@@ -133,6 +135,22 @@ export const CardsPage = () => {
     return <Navigate to={'/'} />
   }
 
+  const onSubmitAddNewCard = (data: AddNewCardValues) => {
+    const form = new FormData()
+
+    form.append('answer', data.answer)
+    data.answerImg[0] && form.append('answerImg', data.answerImg[0])
+    form.append('question', data.question)
+    data.questionImg[0] && form.append('questionImg', data.questionImg[0])
+
+    createCard({ id: deckId!, formData: form })
+      .unwrap()
+      .then(() => {
+        setIsOpenAddNewCard(prev => !prev)
+      })
+      .catch(e => toast.error(e.data.message))
+  }
+
   return (
     <div className={s.packPage}>
       {deckData && (
@@ -145,7 +163,13 @@ export const CardsPage = () => {
           deckName={deckData.name}
         />
       )}
-      <AddNewCard isOpen={isOpenAddNewCard} onClose={setIsOpenAddNewCard} />
+      {isOpenAddNewCard && (
+        <AddNewCard
+          isOpen={isOpenAddNewCard}
+          onClose={setIsOpenAddNewCard}
+          onSubmit={onSubmitAddNewCard}
+        />
+      )}
       <ConfirmModal
         title="Delete Pack"
         isOpen={isOpenConfirmModal}

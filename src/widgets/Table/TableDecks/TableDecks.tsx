@@ -42,7 +42,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
   const { data: authMeData } = useMeQuery()
   const [updateDeck] = useUpdateDeckMutation()
 
-  const handleLinkClick = (cover: string | null, id: string, nameDeck: string) => {
+  const handleLinkToCardsClick = (cover: string | null, id: string, nameDeck: string) => {
     dispatch(decksActions.setDeckCover(cover))
     dispatch(decksActions.setAuthorId(id))
     dispatch(decksActions.setDeckName(nameDeck))
@@ -140,7 +140,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
                 <Link
                   className={s.deckName}
                   to={`/cards/${id}`}
-                  onClick={() => handleLinkClick(cover, author.id, name)}
+                  onClick={() => handleLinkToCardsClick(cover, author.id, name)}
                 >
                   <div className={s.deckImg}>
                     <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
