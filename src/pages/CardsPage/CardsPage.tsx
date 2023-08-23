@@ -11,21 +11,20 @@ import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
-import { cardsActions } from '@/services/cards'
+import { cardsActions, useGetCardsOfDeckQuery } from '@/services/cards'
 import {
   selectCardsCurrentPage,
   selectCardsItemsPerPage,
   selectCardsSearchByName,
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
-import {
-  useDeleteDeckMutation,
-  useGetCardsOfDeckQuery,
-  useGetDeckByIdQuery,
-} from '@/services/decks'
-import { selectAuthorId, selectDeckCover, selectDeckName } from '@/services/decks/selectors.ts'
+import { useDeleteDeckMutation, useGetDeckByIdQuery, useUpdateDeckMutation } from '@/services/decks'
+import { selectAuthorId } from '@/services/decks/selectors.ts'
+import { CreateDeckArgs } from '@/services/decks/types.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewCard } from '@/widgets/AddNewCard/ui/AddNewCard.tsx'
+import { AddNewPackValues } from '@/widgets/AddNewPack/model/types/types.ts'
+import { EditPack } from '@/widgets/EditPack/EditPack.tsx'
 import { MyPackMenu } from '@/widgets/MyPackMenu/MyPackMenu.tsx'
 import { TableCards } from '@/widgets/Table/TableCards/TableCards.tsx'
 
@@ -37,9 +36,7 @@ export const CardsPage = () => {
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
-  const cover = useAppSelector(selectDeckCover)
   const authorId = useAppSelector(selectAuthorId)
-  const deckName = useAppSelector(selectDeckName) ? useAppSelector(selectDeckName) : 'Friend'
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { data: authMeData } = useMeQuery()
   const {
@@ -54,23 +51,16 @@ export const CardsPage = () => {
     itemsPerPage: itemsPerPage,
     question: searchByName,
   })
-
   const [deleteDeck, { isLoading: isLoadingDeleteDeck }] = useDeleteDeckMutation()
-
+  const [updateDeck] = useUpdateDeckMutation()
   const { data: deckData } = useGetDeckByIdQuery({ id: deckId! })
-  const isEmptyPack = deckData?.cardsCount! > 0
+
+  const isEmptyPack = data?.items.length === 0
   const isMyPack = authMeData?.id === authorId
 
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
-
-  const handleLearnPack = () => {
-    if (data?.items.length) {
-      navigate(`/decks/${deckId}/learn`)
-    } else {
-      toast.warning('Sorry, the pack is still empty')
-    }
-  }
+  const [isOpenEditDeck, setIsOpenEditDeck] = useState(false)
 
   const handleSetCurrentPage = useCallback(
     (page: number) => {
@@ -104,6 +94,38 @@ export const CardsPage = () => {
   const handleClickToDeleteDeck = () => {
     setIsOpenConfirmModal(true)
   }
+  const handleClickToEditDeck = () => {
+    setIsOpenEditDeck(true)
+  }
+  const handleClickToLearnDeck = () => {
+    if (data?.items.length) {
+      navigate(`/decks/${deckId}/learn`)
+    } else {
+      toast.warning('Sorry, the pack is still empty')
+    }
+  }
+
+  const onSubmitEditDeck = ({ name, isPrivate, cover }: AddNewPackValues) => {
+    const formData = new FormData()
+
+    formData.append('name', name)
+    formData.append('isPrivate', String(isPrivate))
+    cover[0] && formData.append('cover', cover[0])
+
+    toast
+      .promise(
+        updateDeck({ id: deckId!, formData: formData as unknown as CreateDeckArgs }).unwrap(),
+        {
+          pending: 'Updating...',
+          success: `The ${deckData?.name} was successfully updated`,
+          error: `The ${deckData?.name} was not updated`,
+        }
+      )
+      .then(() => {
+        setIsOpenEditDeck(prev => !prev)
+      })
+      .catch(e => toast.error(e.data.message))
+  }
 
   if (isError && 'status' in error && error?.status === 404) {
     toast.error('This page does not exist')
@@ -113,6 +135,16 @@ export const CardsPage = () => {
 
   return (
     <div className={s.packPage}>
+      {deckData && (
+        <EditPack
+          isOpen={isOpenEditDeck}
+          onClose={setIsOpenEditDeck}
+          onSubmit={onSubmitEditDeck}
+          isPrivate={deckData.isPrivate}
+          deckCoverImg={deckData.cover}
+          deckName={deckData.name}
+        />
+      )}
       <AddNewCard isOpen={isOpenAddNewCard} onClose={setIsOpenAddNewCard} />
       <ConfirmModal
         title="Delete Pack"
@@ -130,36 +162,44 @@ export const CardsPage = () => {
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
       </Link>
-      <div className={s.header}>
-        <div className={s.title}>
-          <Typography variant={TypographyVariant.Large}>
-            {isMyPack ? `My "${deckName}" Pack` : `${deckName}'s Pack`}
-          </Typography>
-          {isMyPack && (
-            <MyPackMenu
-              onClickLearnPack={handleLearnPack}
-              onClickDelete={handleClickToDeleteDeck}
-            />
+
+      {deckData?.name && (
+        <div className={s.header}>
+          <div className={s.title}>
+            <Typography variant={TypographyVariant.Large}>
+              {isMyPack ? `My "${deckData?.name}" Pack` : `${deckData?.name}'s Pack`}
+            </Typography>
+
+            {isMyPack && (
+              <MyPackMenu
+                onClickLearnPack={handleClickToLearnDeck}
+                onClickDelete={handleClickToDeleteDeck}
+                onClickEdit={handleClickToEditDeck}
+              />
+            )}
+          </div>
+
+          {isMyPack ? (
+            <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
+          ) : (
+            <Button
+              style={{ display: data?.items.length ? 'block' : 'none' }}
+              onClick={handleClickToLearnDeck}
+            >
+              Learn to Pack
+            </Button>
           )}
         </div>
-        {isMyPack ? (
-          <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
-        ) : (
-          <Button
-            style={{ display: data?.items.length ? 'block' : 'none' }}
-            onClick={handleLearnPack}
-          >
-            Learn to Pack
-          </Button>
-        )}
-      </div>
-      <div className={s.deckImg}>
-        <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
-      </div>
+      )}
+      {deckData && (
+        <div className={s.deckImg}>
+          <img src={deckData?.cover ? deckData.cover : deckImg} alt="deck" className={s.img} />
+        </div>
+      )}
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}
 
-      {isEmptyPack && (
+      {!isEmptyPack && data && (
         <div className={s.search}>
           <TextField
             placeholder="Search..."
@@ -175,7 +215,7 @@ export const CardsPage = () => {
 
       {isLoadingCards ? (
         <Loader />
-      ) : isEmptyPack ? (
+      ) : !isEmptyPack ? (
         <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
       ) : (
         <Typography tag="h2" variant={TypographyVariant.Large} className={s.emptyPack}>
@@ -184,7 +224,7 @@ export const CardsPage = () => {
       )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      {isEmptyPack && (
+      {!isEmptyPack && data && (
         <Pagination
           currentPage={currentPage}
           totalPages={data?.pagination.totalPages}

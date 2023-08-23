@@ -10,6 +10,7 @@ import s from './LearnPackPage.module.scss'
 
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Card, Typography, TypographyVariant } from '@/components/ui'
+import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useGetRandomCardQuery, useRateCardMutation } from '@/services/cards'
 import { selectDeckName } from '@/services/decks/selectors.ts'
 import { useAppSelector } from '@/services/store.ts'
@@ -22,10 +23,12 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
   const [grade, setGrade] = useState(0)
   const deckName = useAppSelector(selectDeckName)
   const navigate = useNavigate()
+  const [previousCardId, setPreviousCardId] = useState('')
 
   const [rateCard, { isLoading: isLoadingRateCard }] = useRateCardMutation()
-  const { data: randomCardData } = useGetRandomCardQuery({
+  const { data: randomCardData, isLoading: isLoadingRandomCard } = useGetRandomCardQuery({
     id: deckId!,
+    previousCardId: previousCardId,
   })
 
   const rateAnswer = (grade: number) => {
@@ -41,6 +44,7 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
     rateCard({ deckId: deckId!, grade, cardId: randomCardData?.id! })
       .unwrap()
       .then(() => {
+        setPreviousCardId(randomCardData?.id!)
         setShowAnswer(false)
       })
       .catch(() => toast.warning('An error occurred on the server.'))
@@ -48,6 +52,8 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
         setGrade(0)
       })
   }
+
+  if (isLoadingRandomCard) return <Loader />
 
   return (
     <div className={s.learnPackPage}>

@@ -3,12 +3,9 @@ export const selectItemsPerPage = (state: RootState) => state.decks.itemsPerPage
 export const selectCurrentPage = (state: RootState) => state.decks.currentPage
 export const selectSearchByName = (state: RootState) => state.decks.searchByName
 export const selectSortBy = (state: RootState) => state.decks.sortBy
-export const selectDeckCover = (state: RootState) => state.decks.deckCover
 
 export const selectAuthorId = (state: RootState) => state.decks.authorId
 
 export const selectNumberOfCards = (state: RootState) => state.decks.numberOfCards
 
 export const selectDeckName = (state: RootState) => state.decks.deckName
-
-export const selectDeckIdForEdit = (state: RootState) => state.decks.deckIdForEdit

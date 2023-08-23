@@ -1,9 +1,23 @@
 import { baseApi } from '../baseApi.ts'
 
-import { CardResponse } from './types.ts'
+import { CardResponse, CardsResponse } from './types.ts'
+
+import { GetCardsOfDeckArgs } from '@/services/decks/types.ts'
 
 const cardsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
+    getCardsOfDeck: builder.query<CardsResponse, GetCardsOfDeckArgs>({
+      query: args => {
+        const { id, ...params } = args
+
+        return {
+          url: `v1/decks/${id}/cards`,
+          method: 'GET',
+          params: params,
+        }
+      },
+      providesTags: ['Cards'],
+    }),
     createCard: builder.mutation<CardResponse, { id: string; formData: FormData }>({
       query: args => {
         return {
@@ -12,7 +26,7 @@ const cardsApi = baseApi.injectEndpoints({
           body: args.formData,
         }
       },
-      invalidatesTags: ['Cards', 'Card'],
+      invalidatesTags: ['Cards'],
     }),
     getCard: builder.query<CardResponse, { id: string }>({
       query: ({ id }) => {
@@ -65,12 +79,13 @@ const cardsApi = baseApi.injectEndpoints({
           },
         }
       },
-      invalidatesTags: ['Learn'],
+      invalidatesTags: ['Learn', 'Cards'],
     }),
   }),
 })
 
 export const {
+  useGetCardsOfDeckQuery,
   useCreateCardMutation,
   useDeleteCardMutation,
   useGetRandomCardQuery,

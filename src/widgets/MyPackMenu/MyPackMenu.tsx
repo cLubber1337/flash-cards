@@ -12,9 +12,10 @@ import { Button, Typography, TypographyVariant } from '@/components/ui'
 interface MyPackMenuProps {
   onClickLearnPack: () => void
   onClickDelete: () => void
+  onClickEdit: () => void
 }
 
-export const MyPackMenu = ({ onClickLearnPack, onClickDelete }: MyPackMenuProps) => {
+export const MyPackMenu = ({ onClickLearnPack, onClickDelete, onClickEdit }: MyPackMenuProps) => {
   return (
     <Popover className={s.popover}>
       <Popover.Button className={s.action}>
@@ -28,7 +29,7 @@ export const MyPackMenu = ({ onClickLearnPack, onClickDelete }: MyPackMenuProps)
             <Typography variant={TypographyVariant.Caption}>Play</Typography>
           </Button>
           <div className={s.hr} />
-          <Button className={s.btn} variant="link" onClick={() => null}>
+          <Button className={s.btn} variant="link" onClick={() => onClickEdit()}>
             <EditIcon />
             <Typography variant={TypographyVariant.Caption}>Edit</Typography>
           </Button>
