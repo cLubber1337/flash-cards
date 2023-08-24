@@ -8,7 +8,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {},
   args: {
-    items: [
+    options: [
       { id: 1, title: 'Account' },
       { id: 2, title: 'Password' },
       { id: 3, title: 'Register' },

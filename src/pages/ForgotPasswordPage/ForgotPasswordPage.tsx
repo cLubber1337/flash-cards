@@ -1,3 +1,4 @@
+import { CheckEmail } from './CheckEmail/CheckEmail.tsx'
 import s from './ForgotPasswordPage.module.scss'
 
 import { ForgotPasswordForm } from '@/components/Auth/ForgotPasswordForm'
@@ -5,9 +6,11 @@ import { ForgotPasswordForm } from '@/components/Auth/ForgotPasswordForm'
 interface ForgotPasswordPageProps {}
 
 export const ForgotPasswordPage = ({}: ForgotPasswordPageProps) => {
+  const hasMailSent = true
+
   return (
     <div className={s.forgotPasswordPage}>
-      <ForgotPasswordForm />
+      {!hasMailSent ? <ForgotPasswordForm /> : <CheckEmail />}
     </div>
   )
 }

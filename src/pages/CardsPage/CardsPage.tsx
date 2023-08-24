@@ -170,18 +170,20 @@ export const CardsPage = () => {
           onSubmit={onSubmitAddNewCard}
         />
       )}
-      <ConfirmModal
-        title="Delete Pack"
-        isOpen={isOpenConfirmModal}
-        setIsOpen={setIsOpenConfirmModal}
-        onAction={handleDeleteDeck}
-        isLoading={isLoadingDeleteDeck}
-      >
-        <p>
-          Do you really want to remove <span className={s.nameDeck}>{deckData?.name}</span>?
-        </p>
-        <p>All cards will be deleted. </p>
-      </ConfirmModal>
+      {isOpenConfirmModal && (
+        <ConfirmModal
+          title="Delete Pack"
+          isOpen={isOpenConfirmModal}
+          setIsOpen={setIsOpenConfirmModal}
+          onAction={handleDeleteDeck}
+          isLoading={isLoadingDeleteDeck}
+        >
+          <p>
+            Do you really want to remove <span className={s.nameDeck}>{deckData?.name}</span>?
+          </p>
+          <p>All cards will be deleted. </p>
+        </ConfirmModal>
+      )}
       <Link to={'/'} className={s.linkBack}>
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
@@ -191,7 +193,7 @@ export const CardsPage = () => {
         <div className={s.header}>
           <div className={s.title}>
             <Typography variant={TypographyVariant.Large}>
-              {isMyPack ? `My "${deckData?.name}" Pack` : `${deckData?.name}'s Pack`}
+              {isMyPack ? `My "${deckData?.name}" Pack` : `"${deckData?.name}" Pack`}
             </Typography>
 
             {isMyPack && (
@@ -256,6 +258,10 @@ export const CardsPage = () => {
           itemsPerPage={itemsPerPage}
           setCurrentPage={handleSetCurrentPage}
           setItemsPerPage={handleSetItemsPerPage}
+          selectOptions={[
+            { id: 1, title: '3' },
+            { id: 2, title: '6' },
+          ]}
         />
       )}
     </div>

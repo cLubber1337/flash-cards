@@ -14,6 +14,7 @@ interface PaginationProps {
   itemsPerPage: number
   setCurrentPage: (value: number) => void
   setItemsPerPage: (value: number) => void
+  selectOptions: { id: number; title: string }[]
 }
 
 export const Pagination = memo(
@@ -24,6 +25,7 @@ export const Pagination = memo(
     itemsPerPage,
     setCurrentPage,
     setItemsPerPage,
+    selectOptions,
   }: PaginationProps) => {
     let pages = paginationRange(totalPages!, currentPage, siblingsCount)
 
@@ -77,11 +79,7 @@ export const Pagination = memo(
         <Typography variant={TypographyVariant.Body2}>show </Typography>
         <div className={s.select}>
           <Select
-            items={[
-              { id: 1, title: '3' },
-              { id: 2, title: '5' },
-              { id: 3, title: '8' },
-            ]}
+            options={selectOptions}
             currentItem={itemsPerPage}
             onClickItem={setItemsPerPage}
             fullWidth

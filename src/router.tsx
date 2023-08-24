@@ -9,6 +9,7 @@ import {
 import { Layout } from '@/components/Layout'
 import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { CardsPage } from '@/pages/CardsPage/CardsPage.tsx'
+import { CreateNewPassword } from '@/pages/CreateNewPassword/ui/CreateNewPassword.tsx'
 import { DecksPage } from '@/pages/DecksPage/DecksPage.tsx'
 import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage/ForgotPasswordPage.tsx'
 import { LearnPackPage } from '@/pages/LearnPackPage/ui/LearnPackPage.tsx'
@@ -34,6 +35,10 @@ const publicRoutes: RouteObject[] = [
   {
     path: '/recover-password',
     element: <ForgotPasswordPage />,
+  },
+  {
+    path: '/create-new-password',
+    element: <CreateNewPassword />,
   },
 ].map(route => ({
   ...route,

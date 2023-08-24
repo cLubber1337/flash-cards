@@ -12,7 +12,6 @@ import {
   Typography,
   TypographyVariant,
 } from '@/components/ui'
-import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { useGetDecksQuery } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
@@ -37,11 +36,9 @@ export const DecksPage = () => {
   const numberOfCards = useAppSelector(selectNumberOfCards)
   const [isOpenAddNewDeck, setIsOpenAddNewDeck] = useState(false)
   const [authorId, setAuthorId] = useState('')
-
-  const { data: authMeData } = useMeQuery()
-
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
+  const { data: authMeData } = useMeQuery()
   const { data, isLoading: isLoadingDecks } = useGetDecksQuery({
     itemsPerPage,
     name: searchByName,
@@ -89,6 +86,14 @@ export const DecksPage = () => {
     [dispatch, decksActions]
   )
 
+  const onChangeSearchByName = useCallback(
+    (value: string) => {
+      dispatch(decksActions.setSearchByName(value))
+      dispatch(decksActions.setCurrentPage(1))
+    },
+    [dispatch, decksActions]
+  )
+
   const handleClearFilters = () => {
     dispatch(decksActions.setSearchByName(''))
     dispatch(decksActions.setSortBy(''))
@@ -107,7 +112,7 @@ export const DecksPage = () => {
         <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
           Add New Pack
         </Button>
-        <AddNewPack isOpen={isOpenAddNewDeck} onClose={setIsOpenAddNewDeck} />
+        {isOpenAddNewDeck && <AddNewPack isOpen={isOpenAddNewDeck} onClose={setIsOpenAddNewDeck} />}
       </div>
       <div className={s.actions}>
         <div className={s.search}>
@@ -116,7 +121,7 @@ export const DecksPage = () => {
             search
             fullWidth
             value={searchByName}
-            onChange={e => dispatch(decksActions.setSearchByName(e))}
+            onChange={onChangeSearchByName}
             disabled={isLoadingDecks}
           />
         </div>
@@ -149,13 +154,22 @@ export const DecksPage = () => {
           Clear Filter
         </Button>
       </div>
+      {data && data.items.length === 0 && (
+        <div className={s.noDecks}>
+          <Typography className={s.noDecksTitle}>You haven&apos;t pack of cards</Typography>
+          <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
+            Add New Pack
+          </Button>
+        </div>
+      )}
+
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      {data ? <TableDecks data={data.items} sortBy={sortBy} /> : <Loader />}
+      {data && data.items.length > 0 && <TableDecks data={data.items} sortBy={sortBy} />}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
 
-      {data && (
+      {data && data.items.length > 0 && (
         <Pagination
           currentPage={currentPage}
           totalPages={data?.pagination.totalPages}
@@ -163,6 +177,11 @@ export const DecksPage = () => {
           itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPageHandler}
           setItemsPerPage={setItemsPerPageHandler}
+          selectOptions={[
+            { id: 1, title: '3' },
+            { id: 2, title: '5' },
+            { id: 3, title: '8' },
+          ]}
         />
       )}
     </div>

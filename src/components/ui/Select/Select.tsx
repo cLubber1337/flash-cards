@@ -11,7 +11,7 @@ import { ReactComponent as ArrowUpIcon } from '@/assets/svg/arrowUp.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 
 interface SelectProps {
-  items: { id: number; title: string }[]
+  options: { id: number; title: string }[]
   currentItem?: number
   fullWidth?: boolean
   disabled?: boolean
@@ -22,7 +22,7 @@ interface SelectProps {
 }
 
 export const Select = ({
-  items,
+  options,
   fullWidth,
   disabled,
   pagination,
@@ -31,7 +31,7 @@ export const Select = ({
   className,
   label,
 }: SelectProps) => {
-  const [title, setTitle] = useState(currentItem ? currentItem : items[0].title)
+  const [title, setTitle] = useState(currentItem ? currentItem : options[0].title)
 
   const handlerClickItem = (title: string) => {
     setTitle(title)
@@ -65,7 +65,7 @@ export const Select = ({
               {disabled && <ArrowDownDisabledIcon />}
             </Menu.Button>
             <Menu.Items className={classes.items}>
-              {items.map(item => (
+              {options.map(item => (
                 <Menu.Item key={item.id}>
                   {({ active }) => (
                     <span

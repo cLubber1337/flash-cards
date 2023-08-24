@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CardsState } from './types.ts'
 
 const initialState: CardsState = {
-  itemsPerPage: 8,
+  itemsPerPage: 6,
   currentPage: 1,
   searchByName: '',
   sortBy: '',

@@ -91,7 +91,7 @@ export const AddNewCard = memo(
           <Card className={s.content}>
             <Select
               className={s.select}
-              items={questionFormatOptions}
+              options={questionFormatOptions}
               fullWidth
               label="Choose a question format"
               onClickItem={chooseQuestionFormat}
