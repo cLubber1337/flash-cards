@@ -5,7 +5,7 @@ export const addNewPackSchema = z.object({
     .string()
     .trim()
     .min(3, 'Name should be at least 3 characters long')
-    .max(20, 'Name should be at most 20 characters long'),
+    .max(30, 'Name should be at most 30 characters long'),
   isPrivate: z.boolean().default(false),
   cover: z.any(),
 })

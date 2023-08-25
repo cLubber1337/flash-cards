@@ -67,7 +67,8 @@ export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
         handleClose()
       })
       .catch(error => {
-        toast.error(error.data.message)
+        // toast.error(error.errorMessages[0].message)
+        toast.error(error.data.errorMessages[0].message)
       })
   }
 

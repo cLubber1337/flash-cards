@@ -74,11 +74,20 @@ const authApi = baseApi.injectEndpoints({
             method: 'POST',
             body: {
               email,
-              html: '<h1>Hi, ##name##</h1><p>Click <a href="##token##">here</a> to recover your password</p>',
+              html:
+                '<h1>Hi, ##name##</h1>' +
+                '<p>Click <a href="https://flash-cards-pro.vercel.app/reset-password/##token##">here</a> to recover your password</p>',
               subject: 'Password recovery',
             },
           }
         },
+      }),
+      resetPassword: builder.mutation<any, { token: string; password: string }>({
+        query: ({ token, password }) => ({
+          url: `v1/auth/reset-password/${token}`,
+          method: 'POST',
+          body: { password },
+        }),
       }),
     }
   },
@@ -90,4 +99,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   usePasswordRecoveryMutation,
+  useResetPasswordMutation,
 } = authApi

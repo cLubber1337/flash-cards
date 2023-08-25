@@ -145,9 +145,9 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
                   <div className={s.deckImg}>
                     <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
                   </div>
-                  <Typography variant={TypographyVariant.Body2} className={s.title}>
-                    {name}
-                  </Typography>
+                  <div className={s.title}>
+                    <Typography variant={TypographyVariant.Body2}>{name}</Typography>
+                  </div>
                 </Link>
               </TCell>
 

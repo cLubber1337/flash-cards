@@ -41,6 +41,9 @@
 
 .forgotPassword a {
   display: inline-block;
+  font-size: 0.875rem;
+  line-height: 24px;
+  color: var(--color-light-100);
 }
 
 .registerLink {
