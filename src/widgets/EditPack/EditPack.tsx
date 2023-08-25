@@ -25,7 +25,7 @@ interface EditPackProps {
   onSubmit: SubmitHandler<AddNewPackValues>
   deckName?: string
   isPrivate: boolean
-  deckCoverImg?: string
+  deckCoverImg?: string | null
 }
 
 export const EditPack = ({
