@@ -20,10 +20,10 @@ export const RecoveryPasswordPage = () => {
   const onSubmit = ({ email }: ForgotPasswordFormValues) => {
     recoverPassword(email)
       .unwrap()
-      .then(res => {
-        toast.success(res.message)
+      .then(() => {
+        toast.success('Message sent')
         setEmail(email)
-        setHasEmailSent(prev => !prev)
+        setHasEmailSent(true)
       })
       .catch(e => {
         toast.error(e.data.message)

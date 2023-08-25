@@ -18,8 +18,8 @@ export const ResetPasswordPage = () => {
     if (token) {
       resetPassword({ token, password })
         .unwrap()
-        .then(res => {
-          toast.success(res.message)
+        .then(() => {
+          toast.success('Password changed')
           navigate('/login')
         })
         .catch(e => toast.error(e.data.message))
