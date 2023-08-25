@@ -21,7 +21,7 @@ export const WithTwoButtons: Story = {
   },
 }
 
-export const WithTOneButton: Story = {
+export const WithOneButton: Story = {
   args: {
     twoButtons: false,
     onAction: () => null,

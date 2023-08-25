@@ -33,9 +33,7 @@ export const Search = () => {
     setValue(newValue)
   }
 
-  return (
-    <TextField customValue={value} onChangeValue={handleChange} search placeholder="Search..." />
-  )
+  return <TextField value={value} onChange={handleChange} search placeholder="Search..." />
 }
 
 export const SearchDisabled: Story = {

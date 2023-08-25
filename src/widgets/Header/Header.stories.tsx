@@ -1,6 +1,9 @@
 import type { StoryObj } from '@storybook/react'
+import { Provider } from 'react-redux'
 
 import { Header } from './Header.tsx'
+
+import { store } from '@/services/store.ts'
 
 const meta = {
   title: 'Widgets/Header',
@@ -11,10 +14,10 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const HeaderWithAuth: Story = {
-  args: {
-    isAuth: true,
-  },
+export const Default: Story = {
+  render: () => (
+    <Provider store={store}>
+      <Header />
+    </Provider>
+  ),
 }
-
-export const HeaderWithoutAuth: Story = {}

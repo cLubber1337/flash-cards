@@ -42,11 +42,10 @@ export const CreateNewPasswordForm = ({ onSubmit }: CreateNewPasswordFormProps) 
         <Typography tag="p" variant={TypographyVariant.Body2} className={s.subtitle}>
           Create new password and we will send you further instructions to email
         </Typography>
-        <div className={s.submitBtn}>
-          <Button type="submit" fullWidth>
-            Create New Password
-          </Button>
-        </div>
+
+        <Button type="submit" fullWidth>
+          Create New Password
+        </Button>
       </form>
     </Card>
   )

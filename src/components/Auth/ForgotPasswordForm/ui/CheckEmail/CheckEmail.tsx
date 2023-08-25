@@ -19,7 +19,7 @@ export const CheckEmail = ({ email = 'example@mail.com' }: CheckEmailProps) => {
           We’ve sent an Email with instructions to {email}
         </Typography>
       </div>
-      <Button as={Link} to="/login">
+      <Button as={Link} to="/login" fullWidth>
         Back to Sign In
       </Button>
     </Card>

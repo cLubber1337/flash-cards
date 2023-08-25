@@ -35,9 +35,12 @@
   margin-top: 66px;
 }
 
-.forgotPasswordLink {
-  padding-top: 200px;
-  text-align: end;
+.forgotPassword {
+  text-align: right;
+}
+
+.forgotPassword a {
+  display: inline-block;
 }
 
 .registerLink {

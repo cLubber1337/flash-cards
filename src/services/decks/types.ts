@@ -14,8 +14,8 @@ export interface Author {
   name: string
 }
 export type Deck = DeckByIdResponse & {
-  isDeleted?: boolean
-  isBlocked?: boolean
+  isDeleted?: boolean | null
+  isBlocked?: boolean | null
 }
 
 export type DeckByIdResponse = {
@@ -28,7 +28,7 @@ export type UpdateDeckResponse = {
   name: string
   isPrivate: boolean
   shots: number
-  cover: string
+  cover: string | null
   rating: number
   created: string
   updated: string

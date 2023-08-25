@@ -28,10 +28,9 @@ import { CreateDeckArgs } from '@/services/decks/types.ts'
 interface AddNewPackProps {
   isOpen: boolean
   onClose: (isOpen: boolean) => void
-  editMode?: boolean
 }
 
-export const AddNewPack = ({ isOpen, onClose, editMode }: AddNewPackProps) => {
+export const AddNewPack = ({ isOpen, onClose }: AddNewPackProps) => {
   const [cover, setCover] = useState<File | null>(null)
   const [createDeck, { isLoading }] = useCreateDeckMutation()
 
@@ -75,7 +74,7 @@ export const AddNewPack = ({ isOpen, onClose, editMode }: AddNewPackProps) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} lazy>
       <div className={s.addNewPack}>
-        <CardHeader title={editMode ? 'Edit Pack' : 'Add New Pack'} onClose={handleClose} />
+        <CardHeader title="Add New Pack" onClose={handleClose} />
         <Card className={s.content}>
           <div className={s.cover}>
             <img className={s.img} src={cover ? URL.createObjectURL(cover) : deckImg} alt="cover" />
@@ -117,7 +116,7 @@ export const AddNewPack = ({ isOpen, onClose, editMode }: AddNewPackProps) => {
                 Cancel
               </Button>
               <Button disabled={isLoading} type="submit">
-                {editMode ? 'Save changes' : 'Add new pack'}
+                Add new pack
               </Button>
             </div>
           </form>

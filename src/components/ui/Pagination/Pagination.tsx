@@ -12,8 +12,8 @@ interface PaginationProps {
   totalPages?: number
   siblingsCount: number
   itemsPerPage: number
-  setCurrentPage: (value: number) => void
-  setItemsPerPage: (value: number) => void
+  setCurrentPage?: (value: number) => void
+  setItemsPerPage?: (value: number) => void
   selectOptions: { id: number; title: string }[]
 }
 
@@ -30,15 +30,15 @@ export const Pagination = memo(
     let pages = paginationRange(totalPages!, currentPage, siblingsCount)
 
     const onClickArrowLeft = () => {
-      currentPage > 1 && setCurrentPage(currentPage - 1)
+      currentPage > 1 && setCurrentPage?.(currentPage - 1)
     }
     const onClickArrowRight = () => {
-      currentPage < totalPages! && setCurrentPage(currentPage + 1)
+      currentPage < totalPages! && setCurrentPage?.(currentPage + 1)
     }
 
     const onClickPage = (page: number | string) => {
       if (typeof page === 'number') {
-        setCurrentPage(page)
+        setCurrentPage?.(page)
       }
     }
 

@@ -167,7 +167,7 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
               <TCell>
                 <PlayIcon onClick={() => handlePlay(id, name, cardsCount)} />
                 {authMeData?.id === author.id && (
-                  <EditIcon onClick={() => handleClickToEditDeck(id, name, isPrivate, cover)} />
+                  <EditIcon onClick={() => handleClickToEditDeck(id, name, isPrivate, cover!)} />
                 )}
                 {authMeData?.id === author.id && (
                   <TrashIcon onClick={() => handleClickDeleteDeck(id, name)} />

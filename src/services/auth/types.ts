@@ -25,3 +25,10 @@ export type RegisterArgs = {
   subject?: string
   sendConfirmationEmail?: boolean
 }
+
+export type RecoveryResponse = {
+  statusCode: number
+  message: string
+  timestamp: string
+  path: string
+}

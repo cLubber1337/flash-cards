@@ -1,4 +1,10 @@
-import { AuthRegisterResponse, LoginArgs, LoginResponse, RegisterArgs } from './types.ts'
+import {
+  AuthRegisterResponse,
+  LoginArgs,
+  LoginResponse,
+  RecoveryResponse,
+  RegisterArgs,
+} from './types.ts'
 
 import { baseApi } from '@/services/baseApi.ts'
 
@@ -61,8 +67,27 @@ const authApi = baseApi.injectEndpoints({
 
         invalidatesTags: ['Me'],
       }),
+      passwordRecovery: builder.mutation<RecoveryResponse, string>({
+        query: email => {
+          return {
+            url: 'v1/auth/recover-password',
+            method: 'POST',
+            body: {
+              email,
+              html: '<h1>Hi, ##name##</h1><p>Click <a href="##token##">here</a> to recover your password</p>',
+              subject: 'Password recovery',
+            },
+          }
+        },
+      }),
     }
   },
 })
 
-export const { useLoginMutation, useMeQuery, useRegisterMutation, useLogoutMutation } = authApi
+export const {
+  useLoginMutation,
+  useMeQuery,
+  useRegisterMutation,
+  useLogoutMutation,
+  usePasswordRecoveryMutation,
+} = authApi

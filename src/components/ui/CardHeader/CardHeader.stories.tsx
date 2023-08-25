@@ -13,9 +13,17 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+function handleIsOpen(isOpen: boolean): void {
+  if (isOpen) {
+    console.log('The component is open')
+  } else {
+    console.log('The component is closed')
+  }
+}
+
 export const Default: Story = {
   args: {
     title: 'Add New Pack',
-    onClick: () => null,
+    onClose: handleIsOpen,
   },
 }

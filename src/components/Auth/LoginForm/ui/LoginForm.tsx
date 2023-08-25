@@ -55,9 +55,9 @@ export const LoginForm = ({ onSubmit, disabled, loginError }: LoginFormProps) =>
         <div className={s.checkbox}>
           <ControlledCheckbox label={'Remember me'} control={control} name={'rememberMe'} />
         </div>
-        <Link to="/recover-password" className={s.forgotPasswordLink}>
-          <Typography variant={TypographyVariant.Body2}>Forgot Password?</Typography>
-        </Link>
+        <div className={s.forgotPassword}>
+          <Link to="/recover-password">Forgot Password?</Link>
+        </div>
         <Button type="submit" fullWidth className={s.submitBtn} disabled={disabled}>
           Sign in
         </Button>
