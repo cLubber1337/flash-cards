@@ -21,6 +21,7 @@ import {
   Typography,
   TypographyVariant,
 } from '@/components/ui'
+import { BlurhashImage } from '@/components/ui/Image/BlurhashImage.tsx'
 import { QuestionFormat, questionFormatOptions } from '@/utils/constants'
 
 interface AddNewCardProps {
@@ -110,7 +111,13 @@ export const AddNewCard = memo(
                 {!textOnly && (
                   <div>
                     <div className={s.cover}>
-                      <img className={s.img} src={questionImage} alt="question" />
+                      <BlurhashImage
+                        className={s.img}
+                        blurWidth={492}
+                        blurHeight={119}
+                        src={questionImage}
+                        alt="question"
+                      />
                     </div>
 
                     <label htmlFor="change-cover-question">
@@ -148,7 +155,13 @@ export const AddNewCard = memo(
                 {!textOnly && (
                   <div>
                     <div className={s.cover}>
-                      <img className={s.img} src={answerImage} alt="answer" />
+                      <BlurhashImage
+                        className={s.img}
+                        blurWidth={492}
+                        blurHeight={119}
+                        src={answerImage}
+                        alt="answer"
+                      />
                     </div>
 
                     <label htmlFor="change-cover-answer">

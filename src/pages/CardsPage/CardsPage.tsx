@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import Skeleton from 'react-loading-skeleton'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -9,6 +10,8 @@ import deckImg from '@/assets/img/deckImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
+import { BlurhashImage } from '@/components/ui/Image/BlurhashImage.tsx'
+import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { cardsActions, useCreateCardMutation, useGetCardsOfDeckQuery } from '@/services/cards'
 import {
@@ -184,16 +187,21 @@ export const CardsPage = () => {
           <p>All cards will be deleted. </p>
         </ConfirmModal>
       )}
-      <Link to={'/'} className={s.linkBack}>
+      <Link
+        to={'/'}
+        className={s.linkBack}
+        onClick={() => dispatch(cardsActions.setSearchByName(''))}
+      >
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back to Packs List</Typography>
       </Link>
 
-      {deckData?.name && (
-        <div className={s.header}>
+      <div className={s.header}>
+        {isLoadingCards && <Loader />}
+        {deckData ? (
           <div className={s.title}>
             <Typography variant={TypographyVariant.Large}>
-              {isMyPack ? `My "${deckData?.name}" Pack` : `"${deckData?.name}" Pack`}
+              {isMyPack ? `"${deckData?.name}"` : `"${deckData?.name}"`}
             </Typography>
 
             {isMyPack && (
@@ -204,32 +212,43 @@ export const CardsPage = () => {
               />
             )}
           </div>
+        ) : (
+          <Skeleton height={36} width={200} containerClassName="flex" />
+        )}
 
-          {isMyPack ? (
-            <Button
-              variant="tertiary"
-              onClick={() => setIsOpenAddNewCard(true)}
-              disabled={isLoadingCards}
-            >
-              Add New Card
-            </Button>
-          ) : (
-            <Button
-              style={{ display: data?.items.length ? 'block' : 'none' }}
-              onClick={handleClickToLearnDeck}
-              variant="tertiary"
-              disabled={isLoadingCards}
-            >
-              Learn to Pack
-            </Button>
-          )}
-        </div>
-      )}
-      {deckData && (
-        <div className={s.deckImg}>
-          <img src={deckData?.cover ? deckData.cover : deckImg} alt="deck" className={s.img} />
-        </div>
-      )}
+        {isMyPack ? (
+          <Button
+            variant="tertiary"
+            onClick={() => setIsOpenAddNewCard(true)}
+            disabled={isLoadingCards}
+          >
+            Add New Card
+          </Button>
+        ) : (
+          <Button
+            style={{ display: data?.items.length ? 'block' : 'none' }}
+            onClick={handleClickToLearnDeck}
+            variant="tertiary"
+            disabled={isLoadingCards}
+          >
+            Learn to Pack
+          </Button>
+        )}
+      </div>
+
+      <div className={s.deckImg}>
+        {!data ? (
+          <Skeleton height={107} className={s.img} containerClassName="flex" />
+        ) : (
+          <BlurhashImage
+            src={deckData?.cover ? deckData.cover : deckImg}
+            alt="deck"
+            className={s.img}
+            blurHeight={107}
+            blurWidth={170}
+          />
+        )}
+      </div>
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}
 
@@ -246,14 +265,16 @@ export const CardsPage = () => {
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      {!isEmptyPack ? (
+      {data && !isEmptyPack && (
         <TableCards
           sortBy={sortBy}
           data={data?.items}
           isMyPack={isMyPack}
           isFetching={isFetchingCards}
         />
-      ) : (
+      )}
+
+      {isEmptyPack && (
         <Typography tag="h2" className={s.emptyPack}>
           {searchByName ? 'No cards found' : 'Pack is empty'}
         </Typography>
@@ -263,7 +284,7 @@ export const CardsPage = () => {
       {!isEmptyPack && data && (
         <Pagination
           currentPage={currentPage}
-          totalPages={data?.pagination.totalPages}
+          totalPages={data.pagination.totalPages}
           siblingsCount={1}
           itemsPerPage={itemsPerPage}
           setCurrentPage={handleSetCurrentPage}

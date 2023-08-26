@@ -8,7 +8,7 @@ interface TableCellProps {
   onClick?: () => void
 }
 
-export const TCell = ({ children, className, onClick }: TableCellProps) => {
+export const TCell = ({ children, className = '', onClick }: TableCellProps) => {
   return (
     <td onClick={onClick} className={`${s.tableCell} ${className}`}>
       {children}

@@ -1,6 +1,7 @@
 import s from './Answer.module.scss'
 
 import { RadioGroup, Typography, TypographyVariant } from '@/components/ui'
+import { BlurhashImage } from '@/components/ui/Image/BlurhashImage.tsx'
 import { answersGrade } from '@/utils/constants'
 
 interface AnswerProps {
@@ -20,7 +21,13 @@ export const Answer = ({ answer, answerImg, onClickItem }: AnswerProps) => {
       </Typography>
       {answerImg && (
         <div className={s.cover}>
-          <img src={answerImg} alt="question" className={s.img} />
+          <BlurhashImage
+            blurWidth={362}
+            blurHeight={120}
+            src={answerImg}
+            alt="question"
+            className={s.img}
+          />
         </div>
       )}
       <RadioGroup

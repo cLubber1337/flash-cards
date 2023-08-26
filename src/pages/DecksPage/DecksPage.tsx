@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { decksPageTabOptions, DecksPageTabValues } from '@/utils/constants'
 import { AddNewPack } from '@/widgets/AddNewPack'
 import { TableDecks } from '@/widgets/Table'
+import { SkeletonDeckTable } from '@/widgets/Table/TableDecks/SkeletonDeckTable/SkeletonTable.tsx'
 
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
@@ -166,8 +167,17 @@ export const DecksPage = () => {
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      {data?.items.length! > 0 && (
-        <TableDecks data={data?.items} sortBy={sortBy} isFetching={isFetchingDecks} />
+      {data ? (
+        data.items.length > 0 && (
+          <TableDecks
+            data={data.items}
+            sortBy={sortBy}
+            isFetching={isFetchingDecks}
+            countRow={itemsPerPage}
+          />
+        )
+      ) : (
+        <SkeletonDeckTable count={itemsPerPage} />
       )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}

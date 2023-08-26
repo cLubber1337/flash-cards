@@ -28,6 +28,7 @@ export const EditNameForm = ({ onSubmit, value, disabled, setEditMode }: EditNam
     <form onSubmit={handleSubmit(onSubmit)} className={s.editNameForm}>
       <ControlledTextField
         control={control}
+        onKeyDown={e => e.key === 'Escape' && setEditMode(false)}
         name="name"
         autoFocus
         label="Nickname"

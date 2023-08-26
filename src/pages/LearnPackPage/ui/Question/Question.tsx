@@ -1,6 +1,7 @@
 import s from './Question.module.scss'
 
 import { Typography, TypographyVariant } from '@/components/ui'
+import { BlurhashImage } from '@/components/ui/Image/BlurhashImage.tsx'
 
 interface QuestionProps {
   question?: string
@@ -19,7 +20,13 @@ export const Question = ({ question, shots, questionImg }: QuestionProps) => {
       </Typography>
       {questionImg && (
         <div className={s.cover}>
-          <img src={questionImg} alt="question" className={s.img} />
+          <BlurhashImage
+            blurWidth={362}
+            blurHeight={120}
+            src={questionImg}
+            alt="question"
+            className={s.img}
+          />
         </div>
       )}
       <Typography variant={TypographyVariant.Body2} className={s.shots}>

@@ -7,6 +7,6 @@ interface TableRowProps {
   children: ReactNode
 }
 
-export const TRow = memo(({ className, children }: TableRowProps) => {
+export const TRow = memo(({ className = '', children }: TableRowProps) => {
   return <tr className={`${s.tr} ${className}`}>{children}</tr>
 })

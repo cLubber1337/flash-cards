@@ -10,6 +10,7 @@ import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { Grade } from '@/components/ui/Grade/Grade.tsx'
+import { BlurhashImage } from '@/components/ui/Image/BlurhashImage.tsx'
 import { Card, cardsActions, useDeleteCardMutation, useUpdateCardMutation } from '@/services/cards'
 import { SortByType } from '@/services/decks/types.ts'
 import { useAppDispatch } from '@/services/store.ts'
@@ -149,14 +150,20 @@ export const TableCards = memo(({ data, sortBy, isMyPack, isFetching }: TableCar
                 {questionImg && (
                   <div className={s.cardImg}>
                     {isFetching ? (
-                      <Skeleton width={120} height={44} />
+                      <Skeleton width={120} height={44} containerClassName="flex" />
                     ) : (
-                      <img src={questionImg} alt="question" className={s.img} />
+                      <BlurhashImage
+                        src={questionImg}
+                        alt="question"
+                        className={s.img}
+                        blurHeight={44}
+                        blurWidth={120}
+                      />
                     )}
                   </div>
                 )}
                 {isFetching ? (
-                  <Skeleton width={200} height={40} />
+                  <Skeleton width={200} height={24} containerClassName="flex" />
                 ) : (
                   <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
                     {question}
@@ -167,14 +174,20 @@ export const TableCards = memo(({ data, sortBy, isMyPack, isFetching }: TableCar
                 {answerImg && (
                   <div className={s.cardImg}>
                     {isFetching ? (
-                      <Skeleton width={120} height={44} />
+                      <Skeleton width={120} height={44} containerClassName="flex" />
                     ) : (
-                      <img src={answerImg} alt="answer" className={s.img} />
+                      <BlurhashImage
+                        src={answerImg}
+                        alt="answer"
+                        className={s.img}
+                        blurHeight={44}
+                        blurWidth={120}
+                      />
                     )}
                   </div>
                 )}
                 {isFetching ? (
-                  <Skeleton width={200} height={24} />
+                  <Skeleton width={200} height={24} containerClassName="flex" />
                 ) : (
                   <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
                     {answer}
@@ -183,7 +196,7 @@ export const TableCards = memo(({ data, sortBy, isMyPack, isFetching }: TableCar
               </TCell>
               <TCell>
                 {isFetching ? (
-                  <Skeleton width={75} height={24} />
+                  <Skeleton width={75} height={24} containerClassName="flex" />
                 ) : (
                   <Typography tag="span" variant={TypographyVariant.Body2}>
                     {new Date(updated).toLocaleDateString('en-GB')}
@@ -191,11 +204,15 @@ export const TableCards = memo(({ data, sortBy, isMyPack, isFetching }: TableCar
                 )}
               </TCell>
               <TCell>
-                {isFetching ? <Skeleton width={120} height={24} /> : <Grade grade={grade} />}
+                {isFetching ? (
+                  <Skeleton width={120} height={24} containerClassName="flex" />
+                ) : (
+                  <Grade grade={grade} />
+                )}
               </TCell>
               {isMyPack &&
                 (isFetching ? (
-                  <Skeleton width={75} height={24} />
+                  <Skeleton width={75} height={24} containerClassName="flex" />
                 ) : (
                   <TCell>
                     <EditIcon

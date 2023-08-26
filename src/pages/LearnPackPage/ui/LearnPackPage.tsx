@@ -26,7 +26,7 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
   const [previousCardId, setPreviousCardId] = useState('')
 
   const [rateCard, { isLoading: isLoadingRateCard }] = useRateCardMutation()
-  const { data: randomCardData, isLoading: isLoadingRandomCard } = useGetRandomCardQuery({
+  const { data: randomCardData, isFetching: isFetchingRandomCard } = useGetRandomCardQuery({
     id: deckId!,
     previousCardId: previousCardId,
   })
@@ -53,10 +53,11 @@ export const LearnPackPage = ({}: LearnPackPageProps) => {
       })
   }
 
-  if (isLoadingRandomCard) return <Loader />
+  if (isFetchingRandomCard) return <Loader />
 
   return (
     <div className={s.learnPackPage}>
+      {isLoadingRateCard && <Loader overlay />}
       <div onClick={() => navigate(-1)} className={s.linkBack}>
         <BackIcon />
         <Typography variant={TypographyVariant.Body2}>Back</Typography>
