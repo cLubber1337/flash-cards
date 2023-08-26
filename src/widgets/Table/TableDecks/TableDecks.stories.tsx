@@ -77,10 +77,11 @@ export const Primary: Story = {
   args: {
     data: tableData,
     sortBy: '',
+    isFetching: false,
   },
   render: () => (
     <Provider store={store}>
-      <TableDecks sortBy={''} data={tableData} />
+      <TableDecks sortBy={''} data={tableData} isFetching={false} />
     </Provider>
   ),
 }
