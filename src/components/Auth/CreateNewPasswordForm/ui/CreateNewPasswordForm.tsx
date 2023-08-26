@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -29,7 +28,6 @@ export const CreateNewPasswordForm = ({ onSubmit }: CreateNewPasswordFormProps) 
         Create new password
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
-        <DevTool control={control} />
         <ControlledTextField
           control={control}
           name="password"

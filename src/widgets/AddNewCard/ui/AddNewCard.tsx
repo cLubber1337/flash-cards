@@ -1,6 +1,5 @@
 import { memo, useState } from 'react'
 
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
@@ -97,7 +96,6 @@ export const AddNewCard = memo(
               onClickItem={chooseQuestionFormat}
             />
             <form onSubmit={handleSubmit(onSubmit)}>
-              <DevTool control={control} />
               <Typography variant={TypographyVariant.H2} className={s.title}>
                 Question:
               </Typography>

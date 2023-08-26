@@ -1,5 +1,6 @@
 import { memo, useState } from 'react'
 
+import Skeleton from 'react-loading-skeleton'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -15,6 +16,7 @@ import { ReactComponent as TrashIcon } from '@/assets/svg/trash.svg'
 import { Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
+import { cardsActions } from '@/services/cards'
 import { useDeleteDeckMutation, useUpdateDeckMutation } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import { CreateDeckArgs, Deck, SortByType } from '@/services/decks/types.ts'
@@ -23,13 +25,15 @@ import { decksHeaderColumns } from '@/utils/constants'
 import { AddNewPackValues } from '@/widgets/AddNewPack/model/types/types.ts'
 import { EditPack } from '@/widgets/EditPack/EditPack.tsx'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 interface TableProps {
   data?: Deck[]
   sortBy: SortByType | ''
+  isFetching: boolean
 }
 
-export const TableDecks = memo(({ data, sortBy }: TableProps) => {
+export const TableDecks = memo(({ data, sortBy, isFetching }: TableProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [deleteDeck, { isLoading: isLoadingDelete }] = useDeleteDeckMutation()
@@ -46,7 +50,9 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
     dispatch(decksActions.setDeckCover(cover))
     dispatch(decksActions.setAuthorId(id))
     dispatch(decksActions.setDeckName(nameDeck))
+    dispatch(cardsActions.setCurrentPage(1))
   }
+
   const handleDeleteDeck = async (id: string) => {
     toast
       .promise(deleteDeck({ id }).unwrap(), {
@@ -143,36 +149,60 @@ export const TableDecks = memo(({ data, sortBy }: TableProps) => {
                   onClick={() => handleLinkToCardsClick(cover, author.id, name)}
                 >
                   <div className={s.deckImg}>
-                    <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
+                    {isFetching ? (
+                      <Skeleton width={120} height={44} />
+                    ) : (
+                      <img src={cover ? cover : deckImg} alt="deck" className={s.img} />
+                    )}
                   </div>
-                  <div className={s.title}>
-                    <Typography variant={TypographyVariant.Body2}>{name}</Typography>
-                  </div>
+                  {isFetching ? (
+                    <Skeleton width={200} height={40} />
+                  ) : (
+                    <div className={s.title}>
+                      <Typography variant={TypographyVariant.Body2}>{name}</Typography>
+                    </div>
+                  )}
                 </Link>
               </TCell>
 
               <TCell>
-                <Typography variant={TypographyVariant.Body2}>{cardsCount}</Typography>
-              </TCell>
-              <TCell>
-                <Typography tag="span" variant={TypographyVariant.Body2}>
-                  {new Date(updated).toLocaleDateString('en-GB')}
-                </Typography>
-              </TCell>
-              <TCell>
-                <Typography tag="span" variant={TypographyVariant.Body2}>
-                  {author.name}
-                </Typography>
-              </TCell>
-              <TCell>
-                <PlayIcon onClick={() => handlePlay(id, name, cardsCount)} />
-                {authMeData?.id === author.id && (
-                  <EditIcon onClick={() => handleClickToEditDeck(id, name, isPrivate, cover!)} />
-                )}
-                {authMeData?.id === author.id && (
-                  <TrashIcon onClick={() => handleClickDeleteDeck(id, name)} />
+                {isFetching ? (
+                  <Skeleton width={24} height={24} />
+                ) : (
+                  <Typography variant={TypographyVariant.Body2}>{cardsCount}</Typography>
                 )}
               </TCell>
+              <TCell>
+                {isFetching ? (
+                  <Skeleton width={75} height={24} />
+                ) : (
+                  <Typography tag="span" variant={TypographyVariant.Body2}>
+                    {new Date(updated).toLocaleDateString('en-GB')}
+                  </Typography>
+                )}
+              </TCell>
+              <TCell>
+                {isFetching ? (
+                  <Skeleton width={180} height={24} />
+                ) : (
+                  <Typography tag="span" variant={TypographyVariant.Body2}>
+                    {author.name}
+                  </Typography>
+                )}
+              </TCell>
+              {isFetching ? (
+                <Skeleton width={75} height={24} />
+              ) : (
+                <TCell>
+                  <PlayIcon onClick={() => handlePlay(id, name, cardsCount)} />
+                  {authMeData?.id === author.id && (
+                    <EditIcon onClick={() => handleClickToEditDeck(id, name, isPrivate, cover!)} />
+                  )}
+                  {authMeData?.id === author.id && (
+                    <TrashIcon onClick={() => handleClickDeleteDeck(id, name)} />
+                  )}
+                </TCell>
+              )}
             </TRow>
           )
         })}

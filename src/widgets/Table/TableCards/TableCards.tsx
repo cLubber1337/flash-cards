@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 
+import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
 
 import s from './TableCards.module.scss'
@@ -18,14 +19,16 @@ import { AddNewCardValues } from '@/widgets/AddNewCard/model/types/types.ts'
 import { TCell } from '@/widgets/Table/TCell/TCell.tsx'
 import { THeader } from '@/widgets/Table/THeader/THeader.tsx'
 import { TRow } from '@/widgets/Table/TRow/TRow.tsx'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 interface TableCardsProps {
   data?: Card[]
   sortBy: SortByType | ''
   isMyPack: boolean
+  isFetching: boolean
 }
 
-export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => {
+export const TableCards = memo(({ data, sortBy, isMyPack, isFetching }: TableCardsProps) => {
   const [isOpenConfirmDelete, setIsOpenConfirmDelete] = useState(false)
   const [isOpenUpdateCardModal, setIsOpenUpdateCardModal] = useState(false)
   const [editModeCard, setEditModeCard] = useState(false)
@@ -145,39 +148,64 @@ export const TableCards = memo(({ data, sortBy, isMyPack }: TableCardsProps) => 
               <TCell className={s.col_1}>
                 {questionImg && (
                   <div className={s.cardImg}>
-                    <img src={questionImg} alt="question" className={s.img} />
+                    {isFetching ? (
+                      <Skeleton width={120} height={44} />
+                    ) : (
+                      <img src={questionImg} alt="question" className={s.img} />
+                    )}
                   </div>
                 )}
-                <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
-                  {question}
-                </Typography>
+                {isFetching ? (
+                  <Skeleton width={200} height={40} />
+                ) : (
+                  <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
+                    {question}
+                  </Typography>
+                )}
               </TCell>
               <TCell className={s.col_1}>
                 {answerImg && (
                   <div className={s.cardImg}>
-                    <img src={answerImg} alt="question" className={s.img} />
+                    {isFetching ? (
+                      <Skeleton width={120} height={44} />
+                    ) : (
+                      <img src={answerImg} alt="answer" className={s.img} />
+                    )}
                   </div>
                 )}
-                <Typography variant={TypographyVariant.Body2}>{answer}</Typography>
+                {isFetching ? (
+                  <Skeleton width={200} height={24} />
+                ) : (
+                  <Typography variant={TypographyVariant.Body2} className={s.deckTitle}>
+                    {answer}
+                  </Typography>
+                )}
               </TCell>
               <TCell>
-                <Typography tag="span" variant={TypographyVariant.Body2}>
-                  {new Date(updated).toLocaleDateString('en-GB')}
-                </Typography>
+                {isFetching ? (
+                  <Skeleton width={75} height={24} />
+                ) : (
+                  <Typography tag="span" variant={TypographyVariant.Body2}>
+                    {new Date(updated).toLocaleDateString('en-GB')}
+                  </Typography>
+                )}
               </TCell>
               <TCell>
-                <Grade grade={grade} />
+                {isFetching ? <Skeleton width={120} height={24} /> : <Grade grade={grade} />}
               </TCell>
-              {isMyPack && (
-                <TCell>
-                  <EditIcon
-                    onClick={() =>
-                      handleClickToUpdateCard(id, answer, question, questionImg, answerImg)
-                    }
-                  />
-                  <TrashIcon onClick={() => handleClickDeleteCard(id, question)} />
-                </TCell>
-              )}
+              {isMyPack &&
+                (isFetching ? (
+                  <Skeleton width={75} height={24} />
+                ) : (
+                  <TCell>
+                    <EditIcon
+                      onClick={() =>
+                        handleClickToUpdateCard(id, answer, question, questionImg, answerImg)
+                      }
+                    />
+                    <TrashIcon onClick={() => handleClickDeleteCard(id, question)} />
+                  </TCell>
+                ))}
             </TRow>
           )
         })}

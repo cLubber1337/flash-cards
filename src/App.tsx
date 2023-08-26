@@ -1,3 +1,4 @@
+import { SkeletonTheme } from 'react-loading-skeleton'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
@@ -15,7 +16,9 @@ export function App() {
         closeOnClick={false}
         hideProgressBar={true}
       />
-      <Router />
+      <SkeletonTheme baseColor="#4c4c4c" highlightColor="#333">
+        <Router />
+      </SkeletonTheme>
     </Provider>
   )
 }

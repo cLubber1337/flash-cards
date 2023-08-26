@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -30,7 +29,6 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotPasswordFormProps) => {
         Forgot your password?
       </Typography>
       <form onSubmit={handleSubmit(onSubmit!)} className={s.form}>
-        <DevTool control={control} />
         <ControlledTextField
           control={control}
           name="email"

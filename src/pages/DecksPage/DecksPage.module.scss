@@ -53,10 +53,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+
+  color: var(--color-dark-300);
 }
 
 .noDecksTitle {
-  padding: 36px 0;
-  font-size: 48px;
+  padding: 2.25rem 0;
+  font-size: 36px;
 }

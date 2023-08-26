@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -36,7 +35,7 @@ export const EditPack = ({
   isPrivate,
   deckCoverImg,
 }: EditPackProps) => {
-  const { handleSubmit, control, reset, watch, register } = useForm<AddNewPackValues>({
+  const { handleSubmit, control, reset, watch, register, setValue } = useForm<AddNewPackValues>({
     mode: 'onSubmit',
     resolver: zodResolver(addNewPackSchema),
     defaultValues: {
@@ -53,8 +52,9 @@ export const EditPack = ({
     : deckImg
 
   const handleClose = () => {
-    onClose(false)
+    setValue('cover', '')
     reset()
+    onClose(false)
   }
 
   return (
@@ -81,7 +81,6 @@ export const EditPack = ({
             />
           </label>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <DevTool control={control} />
             <ControlledTextField
               className={s.textField}
               control={control}

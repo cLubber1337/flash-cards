@@ -39,7 +39,11 @@ export const DecksPage = () => {
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
 
   const { data: authMeData } = useMeQuery()
-  const { data, isLoading: isLoadingDecks } = useGetDecksQuery({
+  const {
+    data,
+    isLoading: isLoadingDecks,
+    isFetching: isFetchingDecks,
+  } = useGetDecksQuery({
     itemsPerPage,
     name: searchByName,
     currentPage: authorId ? 1 : currentPage,
@@ -109,7 +113,7 @@ export const DecksPage = () => {
             Packs list
           </Typography>
         </div>
-        <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
+        <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack} disabled={isLoadingDecks}>
           Add New Pack
         </Button>
         {isOpenAddNewDeck && <AddNewPack isOpen={isOpenAddNewDeck} onClose={setIsOpenAddNewDeck} />}
@@ -156,20 +160,19 @@ export const DecksPage = () => {
       </div>
       {data && data.items.length === 0 && (
         <div className={s.noDecks}>
-          <Typography className={s.noDecksTitle}>You haven&apos;t pack of cards</Typography>
-          <Button className={s.AddNewPackBtn} onClick={openModalAddNewPack}>
-            Add New Pack
-          </Button>
+          <Typography className={s.noDecksTitle}>No pack of cards found</Typography>
         </div>
       )}
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      {data && data.items.length > 0 && <TableDecks data={data.items} sortBy={sortBy} />}
+      {data?.items.length! > 0 && (
+        <TableDecks data={data?.items} sortBy={sortBy} isFetching={isFetchingDecks} />
+      )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
 
-      {data && data.items.length > 0 && (
+      {data?.items.length! > 0 && (
         <Pagination
           currentPage={currentPage}
           totalPages={data?.pagination.totalPages}

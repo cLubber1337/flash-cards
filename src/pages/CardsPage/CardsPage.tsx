@@ -9,7 +9,6 @@ import deckImg from '@/assets/img/deckImage.jpg'
 import { ReactComponent as BackIcon } from '@/assets/svg/navigateArrowLeft.svg'
 import { Button, Pagination, TextField, Typography, TypographyVariant } from '@/components/ui'
 import { ConfirmModal } from '@/components/ui/ConfirmModal/ConfirmModal.tsx'
-import { Loader } from '@/components/ui/Loader/Loader.tsx'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 import { cardsActions, useCreateCardMutation, useGetCardsOfDeckQuery } from '@/services/cards'
 import {
@@ -43,6 +42,7 @@ export const CardsPage = () => {
   const {
     data,
     isLoading: isLoadingCards,
+    isFetching: isFetchingCards,
     error,
     isError,
   } = useGetCardsOfDeckQuery({
@@ -206,11 +206,19 @@ export const CardsPage = () => {
           </div>
 
           {isMyPack ? (
-            <Button onClick={() => setIsOpenAddNewCard(true)}>Add New Card</Button>
+            <Button
+              variant="tertiary"
+              onClick={() => setIsOpenAddNewCard(true)}
+              disabled={isLoadingCards}
+            >
+              Add New Card
+            </Button>
           ) : (
             <Button
               style={{ display: data?.items.length ? 'block' : 'none' }}
               onClick={handleClickToLearnDeck}
+              variant="tertiary"
+              disabled={isLoadingCards}
             >
               Learn to Pack
             </Button>
@@ -225,27 +233,29 @@ export const CardsPage = () => {
 
       {/*-------------------------------------SEARCH BAR-----------------------------------------*/}
 
-      {!isEmptyPack && data && (
-        <div className={s.search}>
-          <TextField
-            placeholder="Search..."
-            onChange={e => dispatch(cardsActions.setSearchByName(e))}
-            value={searchByName}
-            search
-            fullWidth
-          />
-        </div>
-      )}
+      <div className={s.search}>
+        <TextField
+          placeholder="Search..."
+          onChange={e => dispatch(cardsActions.setSearchByName(e))}
+          value={searchByName}
+          disabled={isLoadingCards}
+          search
+          fullWidth
+        />
+      </div>
 
       {/*-------------------------------------TABLE DECKS-----------------------------------------*/}
 
-      {isLoadingCards ? (
-        <Loader />
-      ) : !isEmptyPack ? (
-        <TableCards sortBy={sortBy} data={data?.items} isMyPack={isMyPack} />
+      {!isEmptyPack ? (
+        <TableCards
+          sortBy={sortBy}
+          data={data?.items}
+          isMyPack={isMyPack}
+          isFetching={isFetchingCards}
+        />
       ) : (
-        <Typography tag="h2" variant={TypographyVariant.Large} className={s.emptyPack}>
-          Pack is empty
+        <Typography tag="h2" className={s.emptyPack}>
+          {searchByName ? 'No cards found' : 'Pack is empty'}
         </Typography>
       )}
 
