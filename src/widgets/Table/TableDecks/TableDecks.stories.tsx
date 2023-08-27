@@ -5,17 +5,6 @@ import { TableDecks } from './TableDecks.tsx'
 
 import { Deck } from '@/services/decks'
 import { store } from '@/services/store.ts'
-
-const meta = {
-  title: 'Widgets/Table',
-  component: TableDecks,
-  tags: ['autodocs'],
-  argTypes: {},
-}
-
-export default meta
-type Story = StoryObj<typeof meta>
-
 const tableData: Deck[] = [
   {
     id: 'cllplse0807qqvo2qxoxkrn6l',
@@ -73,15 +62,25 @@ const tableData: Deck[] = [
   },
 ]
 
-export const Primary: Story = {
+const meta = {
+  title: 'Widgets/Table',
+  component: TableDecks,
+  tags: ['autodocs'],
   args: {
     data: tableData,
     sortBy: '',
     isFetching: false,
+    countRow: 8,
   },
-  render: () => (
+}
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {
+  render: args => (
     <Provider store={store}>
-      <TableDecks sortBy={''} data={tableData} isFetching={false} />
+      <TableDecks {...args} />
     </Provider>
   ),
 }

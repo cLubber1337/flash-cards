@@ -21,7 +21,6 @@ import {
   selectCardsSortBy,
 } from '@/services/cards/selectors.ts'
 import { useDeleteDeckMutation, useGetDeckByIdQuery, useUpdateDeckMutation } from '@/services/decks'
-import { selectAuthorId } from '@/services/decks/selectors.ts'
 import { CreateDeckArgs } from '@/services/decks/types.ts'
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { AddNewCardValues } from '@/widgets/AddNewCard/model/types/types.ts'
@@ -39,7 +38,6 @@ export const CardsPage = () => {
   const currentPage = useAppSelector(selectCardsCurrentPage)
   const searchByName = useAppSelector(selectCardsSearchByName)
   const sortBy = useAppSelector(selectCardsSortBy)
-  const authorId = useAppSelector(selectAuthorId)
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
   const { data: authMeData } = useMeQuery()
   const {
@@ -61,7 +59,7 @@ export const CardsPage = () => {
   const [createCard] = useCreateCardMutation()
 
   const isEmptyPack = data?.items.length === 0
-  const isMyPack = authMeData?.id === authorId
+  const isMyPack = authMeData?.id === deckData?.userId
 
   const [isOpenAddNewCard, setIsOpenAddNewCard] = useState(false)
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false)
@@ -71,14 +69,14 @@ export const CardsPage = () => {
     (page: number) => {
       dispatch(cardsActions.setCurrentPage(page))
     },
-    [dispatch, cardsActions]
+    [dispatch]
   )
 
   const handleSetItemsPerPage = useCallback(
     (itemsPerPage: number) => {
       dispatch(cardsActions.setItemsPerPage(itemsPerPage))
     },
-    [dispatch, cardsActions]
+    [dispatch]
   )
   const handleDeleteDeck = () => {
     toast
@@ -281,7 +279,7 @@ export const CardsPage = () => {
       )}
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
-      {!isEmptyPack && data && (
+      {data && !isEmptyPack && (
         <Pagination
           currentPage={currentPage}
           totalPages={data.pagination.totalPages}

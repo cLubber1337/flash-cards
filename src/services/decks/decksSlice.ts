@@ -3,15 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DecksState } from './types.ts'
 
 const initialState: DecksState = {
-  deckCover: localStorage.getItem('deckCover') || null,
   itemsPerPage: 8,
   currentPage: 1,
   searchByName: '',
   sortBy: '',
-  authorId: localStorage.getItem('authorId') || null,
   deckName: localStorage.getItem('deckName') || null,
-  numberOfCards: [0, 20],
-  deckIdForEdit: '',
+  numberOfCards: [0, 77],
+  isInitDecks: false,
 }
 
 export const decksSlice = createSlice({
@@ -30,14 +28,6 @@ export const decksSlice = createSlice({
     setSortBy: (state, action: PayloadAction<DecksState['sortBy']>) => {
       state.sortBy = action.payload
     },
-    setDeckCover: (state, action: PayloadAction<string | null>) => {
-      localStorage.setItem('deckCover', action.payload || '')
-      state.deckCover = localStorage.getItem('deckCover')
-    },
-    setAuthorId: (state, action: PayloadAction<string>) => {
-      localStorage.setItem('authorId', action.payload)
-      state.authorId = localStorage.getItem('authorId')
-    },
     setNumberOfCards: (state, action: PayloadAction<[number, number]>) => {
       state.numberOfCards = action.payload
     },
@@ -45,8 +35,8 @@ export const decksSlice = createSlice({
       localStorage.setItem('deckName', action.payload)
       state.deckName = localStorage.getItem('deckName')
     },
-    setDeckIdForEdit: (state, action: PayloadAction<string>) => {
-      state.deckIdForEdit = action.payload
+    setIsInitDecks: (state, action: PayloadAction<boolean>) => {
+      state.isInitDecks = action.payload
     },
   },
 })

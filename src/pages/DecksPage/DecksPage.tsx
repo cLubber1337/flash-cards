@@ -1,4 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+import Skeleton from 'react-loading-skeleton'
 
 import s from './DecksPage.module.scss'
 
@@ -17,6 +19,7 @@ import { useGetDecksQuery } from '@/services/decks'
 import { decksActions } from '@/services/decks/decksSlice.ts'
 import {
   selectCurrentPage,
+  selectIsInitDecks,
   selectItemsPerPage,
   selectNumberOfCards,
   selectSearchByName,
@@ -25,8 +28,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/services/store.ts'
 import { decksPageTabOptions, DecksPageTabValues } from '@/utils/constants'
 import { AddNewPack } from '@/widgets/AddNewPack'
-import { TableDecks } from '@/widgets/Table'
-import { SkeletonDeckTable } from '@/widgets/Table/TableDecks/SkeletonDeckTable/SkeletonTable.tsx'
+import { SkeletonDeckTable, TableDecks } from '@/widgets/Table'
 
 export const DecksPage = () => {
   const dispatch = useAppDispatch()
@@ -35,6 +37,7 @@ export const DecksPage = () => {
   const searchByName = useAppSelector(selectSearchByName)
   const sortBy = useAppSelector(selectSortBy)
   const numberOfCards = useAppSelector(selectNumberOfCards)
+  const isInitDecks = useAppSelector(selectIsInitDecks)
   const [isOpenAddNewDeck, setIsOpenAddNewDeck] = useState(false)
   const [authorId, setAuthorId] = useState('')
   const orderBy = sortBy ? `${sortBy.key}-${sortBy.direction}` : ''
@@ -58,19 +61,19 @@ export const DecksPage = () => {
     (page: number) => {
       dispatch(decksActions.setCurrentPage(page))
     },
-    [dispatch, decksActions]
+    [dispatch]
   )
 
   const setItemsPerPageHandler = useCallback(
     (itemsPerPage: number) => {
       dispatch(decksActions.setItemsPerPage(itemsPerPage))
     },
-    [dispatch, decksActions]
+    [dispatch]
   )
 
   const openModalAddNewPack = useCallback(() => {
     setIsOpenAddNewDeck(prevState => !prevState)
-  }, [setIsOpenAddNewDeck])
+  }, [])
 
   const filterDecksByAuthorId = useCallback(
     (tabValue: string) => {
@@ -80,7 +83,7 @@ export const DecksPage = () => {
         setAuthorId('')
       }
     },
-    [setAuthorId, authMeData]
+    [authMeData?.id]
   )
 
   const handleSliderChange = useCallback(
@@ -88,7 +91,7 @@ export const DecksPage = () => {
       dispatch(decksActions.setNumberOfCards(value))
       dispatch(decksActions.setCurrentPage(1))
     },
-    [dispatch, decksActions]
+    [dispatch]
   )
 
   const onChangeSearchByName = useCallback(
@@ -96,15 +99,26 @@ export const DecksPage = () => {
       dispatch(decksActions.setSearchByName(value))
       dispatch(decksActions.setCurrentPage(1))
     },
-    [dispatch, decksActions]
+    [dispatch]
   )
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     dispatch(decksActions.setSearchByName(''))
     dispatch(decksActions.setSortBy(''))
     dispatch(decksActions.setCurrentPage(1))
-    dispatch(decksActions.setNumberOfCards([0, 20]))
-  }
+    dispatch(decksActions.setNumberOfCards([0, data?.maxCardsCount || 99]))
+  }, [dispatch, data?.maxCardsCount])
+
+  useEffect(() => {
+    if (data) {
+      if (!isInitDecks) {
+        dispatch(decksActions.setIsInitDecks(true))
+        dispatch(decksActions.setNumberOfCards([0, data?.maxCardsCount || 99]))
+      }
+    } else {
+      dispatch(decksActions.setIsInitDecks(false))
+    }
+  }, [data, dispatch, isInitDecks])
 
   return (
     <div className={s.decksPage}>
@@ -143,8 +157,9 @@ export const DecksPage = () => {
           <Typography variant={TypographyVariant.Body2}>Number of cards</Typography>
           <Slider
             defaultValue={numberOfCards}
+            value={numberOfCards}
             min={0}
-            max={20}
+            max={data?.maxCardsCount}
             step={1}
             onValueChange={v => handleSliderChange(v)}
           />
@@ -182,20 +197,26 @@ export const DecksPage = () => {
 
       {/*-------------------------------------PAGINATION------------------------------------------*/}
 
-      {data?.items.length! > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={data?.pagination.totalPages}
-          siblingsCount={1}
-          itemsPerPage={itemsPerPage}
-          setCurrentPage={setCurrentPageHandler}
-          setItemsPerPage={setItemsPerPageHandler}
-          selectOptions={[
-            { id: 1, title: '3' },
-            { id: 2, title: '5' },
-            { id: 3, title: '8' },
-          ]}
-        />
+      {data ? (
+        data?.items.length! > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={data?.pagination.totalPages}
+            siblingsCount={1}
+            itemsPerPage={itemsPerPage}
+            setCurrentPage={setCurrentPageHandler}
+            setItemsPerPage={setItemsPerPageHandler}
+            selectOptions={[
+              { id: 1, title: '3' },
+              { id: 2, title: '5' },
+              { id: 3, title: '8' },
+            ]}
+          />
+        )
+      ) : (
+        <div className={s.skeletonPagination}>
+          <Skeleton height={24} width={470} containerClassName="flex" />
+        </div>
       )}
     </div>
   )

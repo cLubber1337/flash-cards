@@ -13,10 +13,19 @@ interface SliderProps {
   minStepsBetweenThumbs?: number
   min?: number
   onValueChange: (v: [number, number]) => void
+  value: [number, number]
 }
 
 export const Slider = memo(
-  ({ defaultValue, onValueChange, max, min, step = 1, minStepsBetweenThumbs = 1 }: SliderProps) => {
+  ({
+    onValueChange,
+    max,
+    min,
+    step = 1,
+    minStepsBetweenThumbs = 1,
+    defaultValue,
+    value,
+  }: SliderProps) => {
     const handlerChangeValue = (v: [number, number]) => {
       onValueChange(v)
     }
@@ -24,10 +33,10 @@ export const Slider = memo(
     return (
       <form className={s.form}>
         <div className={s.volume}>
-          <Typography variant={TypographyVariant.Body1}>{defaultValue?.[0]}</Typography>
+          <Typography variant={TypographyVariant.Body1}>{value?.[0]}</Typography>
         </div>
         <slider.Root
-          value={defaultValue}
+          value={value}
           className={s.root}
           defaultValue={defaultValue}
           max={max}
@@ -43,7 +52,7 @@ export const Slider = memo(
           <slider.Thumb className={s.thumb} aria-label="Volume1" />
         </slider.Root>
         <div className={s.volume}>
-          <Typography variant={TypographyVariant.Body1}>{defaultValue?.[1]}</Typography>
+          <Typography variant={TypographyVariant.Body1}>{value?.[1]}</Typography>
         </div>
       </form>
     )

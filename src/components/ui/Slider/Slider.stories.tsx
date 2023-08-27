@@ -11,6 +11,7 @@ const meta = {
     step: 1,
     minStepsBetweenThumbs: 10,
     defaultValue: [0, 100],
+    value: [0, 100],
   },
 } satisfies Meta<typeof Slider>
 

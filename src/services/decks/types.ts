@@ -65,13 +65,11 @@ export type SortByType = {
   direction: 'asc' | 'desc'
 }
 export interface DecksState {
-  authorId: string | null
-  deckCover: string | null
   deckName: string | null
   itemsPerPage: number
   currentPage: number
   searchByName: string
   sortBy: SortByType | ''
   numberOfCards: [number, number]
-  deckIdForEdit: string
+  isInitDecks: boolean
 }

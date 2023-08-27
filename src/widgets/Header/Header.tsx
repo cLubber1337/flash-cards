@@ -8,7 +8,11 @@ import { Button } from '@/components/ui/Button'
 import { useMeQuery } from '@/services/auth/authApi.ts'
 
 export const Header = () => {
-  const { data } = useMeQuery()
+  const { data, isLoading } = useMeQuery()
+
+  if (isLoading) {
+    return null
+  }
 
   return (
     <header className={s.header}>
