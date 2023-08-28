@@ -13,7 +13,7 @@ export const Question = ({ question, shots, questionImg }: QuestionProps) => {
   return (
     <div className={s.question}>
       <Typography variant={TypographyVariant.Body1} className={s.title}>
-        Question:{' '}
+        Question:
         <Typography tag="span" variant={TypographyVariant.Body2}>
           {question}
         </Typography>
@@ -30,7 +30,7 @@ export const Question = ({ question, shots, questionImg }: QuestionProps) => {
         </div>
       )}
       <Typography variant={TypographyVariant.Body2} className={s.shots}>
-        Количество попыток ответов на вопрос: {shots}
+        Number of attempts to answer the question: {shots}
       </Typography>
     </div>
   )

@@ -5,7 +5,6 @@ import { CreateNewPasswordForm } from '@/components/Auth/CreateNewPasswordForm'
 const meta = {
   title: 'Auth/CreateNewPasswordForm',
   component: CreateNewPasswordForm,
-  tags: ['autodocs'],
 } satisfies Meta<typeof CreateNewPasswordForm>
 
 export default meta

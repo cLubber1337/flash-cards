@@ -1,14 +1,15 @@
 import type { StoryObj } from '@storybook/react'
+import { Meta } from '@storybook/react'
 import { Provider } from 'react-redux'
 
-import { ProfilePage } from './ProfilePage.tsx'
+import { LoginPage } from './LoginPage.tsx'
 
 import { store } from '@/services/store.ts'
 
 const meta = {
-  title: 'pages/ProfilePage',
-  component: ProfilePage,
-}
+  title: 'Pages/LoginPage',
+  component: LoginPage,
+} satisfies Meta<typeof LoginPage>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -16,7 +17,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   render: () => (
     <Provider store={store}>
-      <ProfilePage />
+      <LoginPage />
     </Provider>
   ),
 }

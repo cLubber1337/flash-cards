@@ -8,8 +8,9 @@ const meta = {
   tags: ['autodocs'],
   args: {
     style: {
-      width: '100%',
-      height: '100%',
+      width: '420px',
+      height: '500px',
+      padding: '30px',
     },
   },
 }

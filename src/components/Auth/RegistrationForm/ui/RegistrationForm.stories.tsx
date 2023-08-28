@@ -5,7 +5,6 @@ import { RegistrationForm } from '@/components/Auth/RegistrationForm'
 const meta = {
   title: 'Auth/RegistrationForm',
   component: RegistrationForm,
-  tags: ['autodocs'],
 } satisfies Meta<typeof RegistrationForm>
 
 export default meta
